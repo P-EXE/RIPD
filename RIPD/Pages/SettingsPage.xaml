@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RIPD.Pages.SettingsPage"
+             Title="SettingsPage">
+  <VerticalStackLayout>
+    <Button Text="Dev Settings" Clicked="SettingsDev_Clicked"/>
+    <ListView ItemsSource="{Binding Settings}">
+      <ListView.ItemTemplate>
+        <DataTemplate>
+          <ViewCell>
+            <HorizontalStackLayout>
+              <VerticalStackLayout>
+                <Label Text="{Binding Title}"></Label>
+                <Label Text="{Binding Subtitle}"></Label>
+              </VerticalStackLayout>
+              <Switch />
+            </HorizontalStackLayout>
+          </ViewCell>
+        </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
+  </VerticalStackLayout>
+</ContentPage>
