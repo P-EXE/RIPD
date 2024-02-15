@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using RIPD.DataServices;
 
 namespace RIPD
 {
@@ -14,6 +15,8 @@ namespace RIPD
           fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
           fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
         });
+
+      builder.Services.AddSingleton<IFoodDataService, FoodDataService>(); 
 
 #if DEBUG
   		builder.Logging.AddDebug();
