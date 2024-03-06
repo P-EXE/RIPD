@@ -1,4 +1,6 @@
-﻿namespace RIPD
+﻿using RIPD.Pages;
+
+namespace RIPD
 {
   public partial class App : Application
   {

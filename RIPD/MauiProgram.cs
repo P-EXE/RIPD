@@ -1,5 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using RIPD.DataServices;
+using RIPD.Pages;
+using RIPD.ViewModels;
+using RIPD.Views;
 
 namespace RIPD
 {
@@ -16,10 +19,23 @@ namespace RIPD
           fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
         });
 
-      builder.Services.AddSingleton<IFoodDataService, FoodDataService>(); 
+      #region Data Services
+      builder.Services.AddSingleton<IFoodDataService, FoodDataService>();
+      #endregion Data Services
+
+      #region Pages
+      builder.Services.AddSingleton<AddFoodPage>();
+      builder.Services.AddSingleton<AddFoodVM>();
+
+      builder.Services.AddTransient<FoodListFoodV>();
+      builder.Services.AddTransient<FoodListFoodVM>();
+
+      builder.Services.AddTransient<FoodDetailsPage>();
+      builder.Services.AddTransient<FoodDetailsVM>();
+      #endregion Pages
 
 #if DEBUG
-  		builder.Logging.AddDebug();
+      builder.Logging.AddDebug();
 #endif
 
       return builder.Build();

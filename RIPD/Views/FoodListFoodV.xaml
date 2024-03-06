@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:RIPD.ViewModels"
+             xmlns:models="clr-namespace:RIPD.Models"
+             x:Class="RIPD.Views.FoodListFoodV"
+             x:DataType="viewmodels:FoodListFoodVM">
+  <FlexLayout Direction="Row" Background="#ff000000">
+    <VerticalStackLayout x:DataType="models:Food">
+      <Label Text="{Binding Name}"/>
+      <Label Text="{Binding Manufacturer}"/>
+    </VerticalStackLayout>
+    <Label x:DataType="models:Food" Text="{Binding Energy}"/>
+  </FlexLayout>
+</ContentView>

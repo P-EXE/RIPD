@@ -24,10 +24,10 @@
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
     </Tab>
-    <Tab Title="Add to Diary">
+    <Tab Title="Add Food">
       <ShellContent
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        ContentTemplate="{DataTemplate pages:AddFoodPage}"
+        Route="AddFoodPage" />
     </Tab>
     <Tab Title="Profile">
       <ShellContent
