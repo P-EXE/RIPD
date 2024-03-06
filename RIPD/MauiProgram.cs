@@ -23,7 +23,10 @@ namespace RIPD
       builder.Services.AddSingleton<IFoodDataService, FoodDataService>();
       #endregion Data Services
 
-      #region Pages
+      #region Pages Views ViewModels
+      builder.Services.AddSingleton<StatusBarV>();
+      builder.Services.AddSingleton<StatusBarVM>();
+
       builder.Services.AddSingleton<AddFoodPage>();
       builder.Services.AddSingleton<AddFoodVM>();
 
@@ -35,7 +38,7 @@ namespace RIPD
 
       builder.Services.AddTransient<NewFoodPage>();
       builder.Services.AddTransient<NewFoodVM>();
-      #endregion Pages
+      #endregion Pages Views ViewModels
 
 #if DEBUG
       builder.Logging.AddDebug();

@@ -5,12 +5,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:RIPD"
     xmlns:pages="clr-namespace:RIPD.Pages"
-    xmlns:statusbar="clr-namespace:RIPD.Views.StatusBar"
+    xmlns:views="clr-namespace:RIPD.Views"
     Shell.FlyoutBehavior="Disabled"
     Title="RIPD">
 
   <Shell.TitleView>
-    <statusbar:StatusBarView/>
+    <views:StatusBarV/>
   </Shell.TitleView>
 
   <TabBar>

@@ -72,6 +72,9 @@
 	  <Compile Update="Views\FoodListFoodV.xaml.cs">
 	    <DependentUpon>FoodListFoodV.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Views\StatusBar\StatusBarV.xaml.cs">
+	    <DependentUpon>StatusBarV.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -96,7 +99,7 @@
 	  <MauiXaml Update="Views\Login\LoginView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\StatusBar\StatusBarView.xaml">
+	  <MauiXaml Update="Views\StatusBar\StatusBarV.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

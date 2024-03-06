@@ -6,18 +6,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RIPD.Views.StatusBar
+namespace RIPD.ViewModels
 {
-  internal partial class StatusBarViewModel : ObservableObject
+  public partial class StatusBarVM : ObservableObject
   {
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(MessageV))]
-    private string messageF;
-    public string MessageV => messageF;
+    private string _message;
 
-    public StatusBarViewModel()
+    public StatusBarVM()
     {
-      messageF = Connectivity.NetworkAccess.ToString();
+      Message = Connectivity.NetworkAccess.ToString();
       Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
     }
 
@@ -26,21 +24,21 @@ namespace RIPD.Views.StatusBar
       switch (e.NetworkAccess)
       {
         default:
-          MessageF = "Oops!";
+          Message = "Oops!";
           break;
         case NetworkAccess.Unknown:
           {
-            MessageF = "Network Connection Unknown";
+            Message = "Network Connection Unknown";
             break;
           }
         case NetworkAccess.None:
           {
-            MessageF = "Network Connection None";
+            Message = "Network Connection None";
             break;
           }
         case NetworkAccess.Internet:
           {
-            MessageF = "Network Connection Connected";
+            Message = "Network Connection Connected";
             break;
           }
       }

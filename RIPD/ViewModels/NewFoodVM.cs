@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace RIPD.ViewModels
 {
-  partial class NewFoodVM : ObservableObject
+  public partial class NewFoodVM : ObservableObject
   {
     private IFoodDataService _foodDataService;
     [ObservableProperty]
