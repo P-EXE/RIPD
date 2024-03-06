@@ -32,6 +32,9 @@ namespace RIPD
 
       builder.Services.AddTransient<FoodDetailsPage>();
       builder.Services.AddTransient<FoodDetailsVM>();
+
+      builder.Services.AddTransient<NewFoodPage>();
+      builder.Services.AddTransient<NewFoodVM>();
       #endregion Pages
 
 #if DEBUG

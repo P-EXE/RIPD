@@ -24,6 +24,8 @@ namespace RIPD.DataServices
       _baseAddress = DeviceInfo.Platform == DevicePlatform.WinUI ? WindowsApiConnection.BaseAddress : null;
       _baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? AndroidApiConnection.BaseAddress : null;
 
+      /*_baseAddress = DefaultApiConnection.BaseAddress;*/
+
       _url = _baseAddress + "foods";
 
       _jsonSerializerOptions = new JsonSerializerOptions

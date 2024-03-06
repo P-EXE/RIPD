@@ -5,7 +5,7 @@
              x:Class="RIPD.Pages.FoodDetailsPage"
              xmlns:models="clr-namespace:RIPD.Models"
              x:DataType="viewmodels:FoodDetailsVM">
-  <VerticalStackLayout x:DataType="models:Food">
-    <Label Text="{Binding Name}"/>
+  <VerticalStackLayout x:DataType="viewmodels:FoodDetailsVM">
+    <Label Text="{Binding Food.Name}"/>
   </VerticalStackLayout>
 </ContentPage>
