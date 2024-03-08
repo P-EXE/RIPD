@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using RIPD.DataServices;
 using RIPD.Models;
+using RIPD.Pages;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -62,5 +63,8 @@ namespace RIPD.ViewModels
 
     [RelayCommand]
     async Task GoBack() => await Shell.Current.GoToAsync("..");
+
+    [RelayCommand]
+    async Task GoToBarcodescannerPage() => await Shell.Current.GoToAsync(nameof(BarcodeScannerPage));
   }
 }

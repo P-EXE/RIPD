@@ -10,8 +10,8 @@
         Padding="30,0"
         VerticalOptions="Center">
 
-
-        <cv:CameraView x:Name="cameraView" WidthRequest="400" HeightRequest="300" CamerasLoaded="CamerasLoaded" BarCodeDetectionEnabled="True"
+    <Label Text="HUAN DRECK SCHEISS"/>
+    <cv:CameraView x:Name="cameraView" WidthRequest="400" HeightRequest="300" CamerasLoaded="CamerasLoaded" BarCodeDetectionEnabled="True"
                            BarcodeDetected="BarcodeDetected"/>
 
 
