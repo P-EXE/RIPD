@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Camera.MAUI;
+using Microsoft.Extensions.Logging;
 using RIPD.DataServices;
 using RIPD.Pages;
 using RIPD.ViewModels;
@@ -13,6 +14,7 @@ namespace RIPD
       var builder = MauiApp.CreateBuilder();
       builder
         .UseMauiApp<App>()
+        .UseMauiCameraView()
         .ConfigureFonts(fonts =>
         {
           fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -38,6 +40,9 @@ namespace RIPD
 
       builder.Services.AddTransient<NewFoodPage>();
       builder.Services.AddTransient<NewFoodVM>();
+
+      builder.Services.AddTransient<BarcodeScannerV>();
+      builder.Services.AddTransient<BarcodeScannerVM>();
       #endregion Pages Views ViewModels
 
 #if DEBUG
