@@ -1,9 +1,9 @@
-﻿using Camera.MAUI;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using RIPD.DataServices;
 using RIPD.Pages;
 using RIPD.ViewModels;
 using RIPD.Views;
+using Camera.MAUI;
 
 namespace RIPD
 {

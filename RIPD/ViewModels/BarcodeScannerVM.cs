@@ -12,8 +12,8 @@ using Camera.MAUI.ZXingHelper;
 
 namespace RIPD.ViewModels
 {
-    internal partial class BarcodeScannerVM
-    {
-       
-    }
+  internal partial class BarcodeScannerVM
+  {
+
+  }
 }
