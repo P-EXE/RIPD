@@ -40,6 +40,9 @@ namespace RIPD
 
       builder.Services.AddTransient<NewFoodPage>();
       builder.Services.AddTransient<NewFoodVM>();
+
+      builder.Services.AddTransient<BarcodeScannerV>();
+      builder.Services.AddTransient<BarcodeScannerVM>();
       #endregion Pages Views ViewModels
 
 #if DEBUG

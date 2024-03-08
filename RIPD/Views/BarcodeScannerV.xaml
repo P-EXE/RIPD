@@ -11,7 +11,7 @@
         VerticalOptions="Center">
 
 
-        <cv:CameraView WidthRequest="400" HeightRequest="300" CamerasLoaded="CamerasLoadedCommand" BarCodeDetectionEnabled="True"
+        <cv:CameraView x:Name="cameraView" WidthRequest="400" HeightRequest="300" CamerasLoaded="CamerasLoadedCommand" BarCodeDetectionEnabled="True"
                            BarcodeDetected="BarcodeDetected"/>
 
 
