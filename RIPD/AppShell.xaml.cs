@@ -12,7 +12,6 @@ namespace RIPD
       #region Routes
       Routing.RegisterRoute(nameof(FoodDetailsPage), typeof(FoodDetailsPage));
       Routing.RegisterRoute(nameof(NewFoodPage), typeof(NewFoodPage));
-      Routing.RegisterRoute(nameof(BarcodeScannerPage), typeof(BarcodeScannerPage));
       #endregion Routes
     }
   }

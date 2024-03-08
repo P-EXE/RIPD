@@ -61,7 +61,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Camera.MAUI" Version="1.5.1" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.2" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
@@ -103,15 +102,6 @@
 	  <MauiXaml Update="Views\StatusBar\StatusBarV.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Update="Pages\BarcodeScannerPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </None>
-	  <None Update="Views\BarcodeScannerV.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </None>
 	</ItemGroup>
 
 </Project>
