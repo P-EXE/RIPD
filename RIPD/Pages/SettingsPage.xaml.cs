@@ -9,6 +9,6 @@ public partial class SettingsPage : ContentPage
 
   private async void SettingsDev_Clicked(object sender, EventArgs e)
   {
-    await Navigation.PushAsync(new SettingsDevPage(),true);
+    await Shell.Current.GoToAsync($"{nameof(SettingsDevPage)}", true);
   }
 }

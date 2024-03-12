@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using RIPD.DataServices;
 using RIPD.Pages;
 using RIPD.ViewModels;
@@ -20,15 +21,28 @@ namespace RIPD
         });
 
       #region Data Services
+
+      builder.Services.AddDbContext<LocalDBContext>();
+      LocalDBContext ldbc = new();
+      ldbc.Database.EnsureCreated();
+      ldbc.Dispose();
+
       builder.Services.AddSingleton<IFoodDataService, FoodDataService>();
+
       #endregion Data Services
 
       #region Pages Views ViewModels
+
       builder.Services.AddSingleton<StatusBarV>();
       builder.Services.AddSingleton<StatusBarVM>();
 
       builder.Services.AddSingleton<AddFoodPage>();
       builder.Services.AddSingleton<AddFoodVM>();
+
+      builder.Services.AddSingleton<SettingsPage>();
+
+      builder.Services.AddTransient<SettingsDevPage>();
+      builder.Services.AddTransient<SettingsDevVM>();
 
       builder.Services.AddTransient<FoodListFoodV>();
       builder.Services.AddTransient<FoodListFoodVM>();
@@ -38,6 +52,7 @@ namespace RIPD
 
       builder.Services.AddTransient<NewFoodPage>();
       builder.Services.AddTransient<NewFoodVM>();
+
       #endregion Pages Views ViewModels
 
 #if DEBUG

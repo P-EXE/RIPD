@@ -1,11 +1,26 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace RIPD.Models.ApiConnection
 {
+  [PrimaryKey(nameof(Name))]
+  public class ApiConnection
+  {
+    public string Name { get; set; }
+    public string Protocol { get; set; }
+    public string Domain { get; set; }
+    public int Port { get; set; }
+    public string ApiPage { get; set; }
+    public string BaseAddress { get => $"{Protocol}://{Domain}:{Port}/{ApiPage}/"; }
+    public string StatusPage { get; set; }
+    public string StatusAddress { get => $"{Protocol}://{Domain}:{Port}/{ApiPage}/{StatusPage}"; }
+    public bool Active { get; set; }
+  }
   public static class WindowsApiConnection
   {
     public const string Protocol = "http";
