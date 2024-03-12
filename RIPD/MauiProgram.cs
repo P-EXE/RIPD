@@ -27,22 +27,22 @@ namespace RIPD
       ldbc.Database.EnsureCreated();
       ldbc.Dispose();
 
+      builder.Services.AddSingleton<APIStatusChecker>();
+
       builder.Services.AddSingleton<IFoodDataService, FoodDataService>();
 
       #endregion Data Services
 
       #region Pages Views ViewModels
 
+      #region global
       builder.Services.AddSingleton<StatusBarV>();
       builder.Services.AddSingleton<StatusBarVM>();
+      #endregion global
 
+      #region food
       builder.Services.AddSingleton<AddFoodPage>();
       builder.Services.AddSingleton<AddFoodVM>();
-
-      builder.Services.AddSingleton<SettingsPage>();
-
-      builder.Services.AddTransient<SettingsDevPage>();
-      builder.Services.AddTransient<SettingsDevVM>();
 
       builder.Services.AddTransient<FoodListFoodV>();
       builder.Services.AddTransient<FoodListFoodVM>();
@@ -52,6 +52,25 @@ namespace RIPD
 
       builder.Services.AddTransient<NewFoodPage>();
       builder.Services.AddTransient<NewFoodVM>();
+      #endregion food
+
+      #region user
+      builder.Services.AddSingleton<ProfilePage>();
+      builder.Services.AddSingleton<ProfilePageVM>();
+
+      builder.Services.AddTransient<UserRegisterPage>();
+      builder.Services.AddTransient<UserRegisterVM>();
+
+      builder.Services.AddTransient<UserLoginPage>();
+      builder.Services.AddTransient<UserLoginVM>();
+      #endregion user
+
+      builder.Services.AddSingleton<SettingsPage>();
+
+      builder.Services.AddTransient<SettingsDevPage>();
+      builder.Services.AddTransient<SettingsDevVM>();
+
+
 
       #endregion Pages Views ViewModels
 

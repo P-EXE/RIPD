@@ -6,7 +6,7 @@ namespace RIPD.Models
   [PrimaryKey(nameof(Id))]
   public class User
   {
-    public int Id { get; set; }
+    public int Id { get; }
     [Required]
     public string? Name { get; set; }
     [Required]
