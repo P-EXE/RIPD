@@ -1,3 +1,5 @@
+using Camera.MAUI;
+
 namespace RIPD.Pages;
 
 public partial class BarcodeScannerPage : ContentPage
@@ -5,7 +7,5 @@ public partial class BarcodeScannerPage : ContentPage
 	public BarcodeScannerPage()
 	{
 		InitializeComponent();
-
-		BindingContext = this;
 	}
 }

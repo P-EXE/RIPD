@@ -4,6 +4,7 @@ using RIPD.Pages;
 using RIPD.ViewModels;
 using RIPD.Views;
 using Camera.MAUI;
+using ZXing.Net.Maui.Controls;
 
 namespace RIPD
 {
@@ -14,12 +15,13 @@ namespace RIPD
       var builder = MauiApp.CreateBuilder();
       builder
         .UseMauiApp<App>()
-        .UseMauiCameraView()
         .ConfigureFonts(fonts =>
         {
           fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
           fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-        });
+        })
+        .UseMauiCameraView()
+        .UseBarcodeReader();
 
       #region Data Services
       builder.Services.AddSingleton<IFoodDataService, FoodDataService>();
@@ -41,9 +43,9 @@ namespace RIPD
       builder.Services.AddTransient<NewFoodPage>();
       builder.Services.AddTransient<NewFoodVM>();
 
-      builder.Services.AddSingleton<BarcodeScannerPage>();
-      builder.Services.AddTransient<BarcodeScannerV>();
-      builder.Services.AddTransient<BarcodeScannerVM>();
+      builder.Services.AddTransient<BarcodeScannerPage>();
+      builder.Services.AddTransient<BarcodeScannerZXingV>();
+      builder.Services.AddTransient<BarcodeScannerZXingVM>();
       #endregion Pages Views ViewModels
 
 #if DEBUG

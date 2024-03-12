@@ -5,6 +5,6 @@
              x:Class="RIPD.Pages.BarcodeScannerPage"
              Title="BarcodeScannerPage">
   <VerticalStackLayout>
-    <views:BarcodeScannerV/>
+    <views:BarcodeScannerZXingV/>
   </VerticalStackLayout>
 </ContentPage>

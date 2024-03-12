@@ -61,7 +61,7 @@ namespace RIPD.ViewModels
     }
 
     [RelayCommand]
-    private async void NewFood()
+    private async Task NewFood()
     {
       await Shell.Current.GoToAsync($"{nameof(NewFoodPage)}", true);
     }

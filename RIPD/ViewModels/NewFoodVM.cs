@@ -62,9 +62,9 @@ namespace RIPD.ViewModels
     }
 
     [RelayCommand]
-    async Task GoBack() => await Shell.Current.GoToAsync("..");
+    private async Task GoBack() => await Shell.Current.GoToAsync("..");
 
     [RelayCommand]
-    async Task GoToBarcodescannerPage() => await Shell.Current.GoToAsync(nameof(BarcodeScannerPage));
+    private async Task GoToBarcodescannerPage() => await Shell.Current.GoToAsync($"{nameof(BarcodeScannerPage)}", true);
   }
 }
