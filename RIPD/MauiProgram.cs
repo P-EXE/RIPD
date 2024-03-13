@@ -44,7 +44,6 @@ namespace RIPD
       builder.Services.AddTransient<NewFoodVM>();
 
       builder.Services.AddTransient<BarcodeScannerPage>();
-      builder.Services.AddTransient<BarcodeScannerZXingV>();
       builder.Services.AddTransient<BarcodeScannerZXingVM>();
       #endregion Pages Views ViewModels
 
