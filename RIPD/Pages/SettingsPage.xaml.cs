@@ -1,14 +1,14 @@
+using RIPD.ViewModels;
+
 namespace RIPD.Pages;
 
 public partial class SettingsPage : ContentPage
 {
-  public SettingsPage()
+  private SettingsVM _vm;
+  public SettingsPage(SettingsVM vm)
   {
     InitializeComponent();
-  }
-
-  private async void SettingsDev_Clicked(object sender, EventArgs e)
-  {
-    await Shell.Current.GoToAsync($"{nameof(SettingsDevPage)}", true);
+    _vm = vm;
+    BindingContext = _vm;
   }
 }

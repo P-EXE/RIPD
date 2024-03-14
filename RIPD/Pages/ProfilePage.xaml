@@ -5,7 +5,5 @@
              x:Class="RIPD.Pages.ProfilePage"
              x:DataType="viewmodels:ProfilePageVM">
   <VerticalStackLayout>
-    <Button Text="Register" Command="{Binding GoToRegisterPageCommand}"/>
-    <Button Text="Login" Command="{Binding GoToLoginPageCommand}"/>
   </VerticalStackLayout>
 </ContentPage>

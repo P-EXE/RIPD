@@ -4,7 +4,7 @@ namespace RIPD.Pages;
 
 public partial class UserRegisterPage : ContentPage
 {
-	private readonly UserRegisterVM _vm;
+	private UserRegisterVM _vm;
 	public UserRegisterPage(UserRegisterVM vm)
 	{
 		InitializeComponent();

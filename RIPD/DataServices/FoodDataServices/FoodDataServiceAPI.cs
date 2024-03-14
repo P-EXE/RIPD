@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace RIPD.DataServices
 {
-  public class FoodDataService : IFoodDataService
+  public class FoodDataServiceAPI : IFoodDataService
   {
     private readonly HttpClient _httpClient;
     private readonly string _baseAddress;
     private readonly string _url;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
 
-    public FoodDataService()
+    public FoodDataServiceAPI()
     {
       _httpClient = new HttpClient();
 

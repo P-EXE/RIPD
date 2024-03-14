@@ -13,7 +13,7 @@ namespace RIPD.ViewModels
 {
   public partial class UserRegisterVM : ObservableObject
   {
-    private readonly UserDataService _userDataService;
+    private readonly UserDataServiceAPI _userDataService;
     [ObservableProperty]
     private string _name;
     [ObservableProperty]
@@ -23,7 +23,7 @@ namespace RIPD.ViewModels
     [ObservableProperty]
     private string _password;
 
-    public UserRegisterVM(UserDataService userDataService)
+    public UserRegisterVM(UserDataServiceAPI userDataService)
     {
       _userDataService = userDataService;
     }
@@ -42,10 +42,15 @@ namespace RIPD.ViewModels
           Password = Password
         };
 
-        user = await _userDataService.GetUserAsync(Email);
+        user = await _userDataService.GetUserAsync(
+          new Dictionary<string, string>()
+          {
+            { "email", Email }
+          });
+
         if (user == null)
         {
-          await _userDataService.CreateUserAsync(user);
+          await _userDataService.CreateAsync(user);
         }
       }
       catch (Exception ex)

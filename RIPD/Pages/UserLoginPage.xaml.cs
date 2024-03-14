@@ -1,9 +1,14 @@
+using RIPD.ViewModels;
+
 namespace RIPD.Pages;
 
 public partial class UserLoginPage : ContentPage
 {
-	public UserLoginPage()
+  private UserLoginVM _vm;
+	public UserLoginPage(UserLoginVM vm)
 	{
-		InitializeComponent();
-	}
+    InitializeComponent();
+    _vm = vm;
+    BindingContext = _vm;
+  }
 }

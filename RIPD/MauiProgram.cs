@@ -29,7 +29,8 @@ namespace RIPD
 
       builder.Services.AddSingleton<APIStatusChecker>();
 
-      builder.Services.AddSingleton<IFoodDataService, FoodDataService>();
+      builder.Services.AddSingleton<IUserDataService, UserDataServiceAPI>();
+      builder.Services.AddSingleton<IFoodDataService, FoodDataServiceAPI>();
 
       #endregion Data Services
 
@@ -66,11 +67,10 @@ namespace RIPD
       #endregion user
 
       builder.Services.AddSingleton<SettingsPage>();
+      builder.Services.AddSingleton<SettingsVM>();
 
       builder.Services.AddTransient<SettingsDevPage>();
       builder.Services.AddTransient<SettingsDevVM>();
-
-
 
       #endregion Pages Views ViewModels
 
