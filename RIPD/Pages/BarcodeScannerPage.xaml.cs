@@ -1,4 +1,5 @@
 using Camera.MAUI;
+using CommunityToolkit.Mvvm.ComponentModel;
 using RIPD.ViewModels;
 using System.Diagnostics;
 using ZXing.Net.Maui;
@@ -13,14 +14,14 @@ public partial class BarcodeScannerPage : ContentPage
   //{
   //  Debug.WriteLine("--> Custom(Error): BarcodeScannerZXingV.Constructor: Parameterloser Constructor aufgerufen");
   //}
-  private int BarcodeCounter = 0;
+  private bool BarcodeCounter = false;
   public BarcodeScannerPage(BarcodeScannerZXingVM vm)
   {
     InitializeComponent();
     _vm = vm;
     BindingContext = _vm;
 
-    BarcodeCounter = 0;
+    BarcodeCounter = false;
     barcodeReaderZXing.BindingContext = this;
     barcodeReaderZXing.Options = new BarcodeReaderOptions()
     {
@@ -32,16 +33,22 @@ public partial class BarcodeScannerPage : ContentPage
 
   private void CameraBarcodeReaderView_BarcodesDetected(object sender, BarcodeDetectionEventArgs e)
   {
-    if (BarcodeCounter == 0)
+    _vm.Barcode = e.Results?.FirstOrDefault().Value;
+
+   // Debug.WriteLine($"--> Custom(Warning): BarcodeScannerPage.BarcodesDetected: Barcodes scanned: {BarcodeCounter}");
+
+    //BarcodeCounter++;
+
+    ReturnToPreviousPage();
+
+  }
+
+  private async void ReturnToPreviousPage()
+  {
+    if ( BarcodeCounter )
     {
-      _vm.Barcode = e.Results?.FirstOrDefault().Value;
-     
-      _vm.GoBack();
+      await _vm.GoBack();
     }
-    Debug.WriteLine($"--> Custom(Warning): BarcodeScannerPage.BarcodesDetected: Barcodes scanned: {BarcodeCounter}");
-    BarcodeCounter++;
-    
-    
     
   }
 }

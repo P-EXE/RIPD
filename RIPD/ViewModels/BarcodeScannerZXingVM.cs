@@ -12,9 +12,12 @@ namespace RIPD.ViewModels
   public partial class BarcodeScannerZXingVM : ObservableObject
   {
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ButtonBarcode))]
     private string? _barcode;
 
+    public string? ButtonBarcode => "Add " + Barcode;
+
     [RelayCommand]
-    internal async Task GoBack() => await Shell.Current.GoToAsync($"..",true);
+    internal async Task GoBack() => await Shell.Current.GoToAsync($"..?Barcode={Barcode}",true);
   }
 }

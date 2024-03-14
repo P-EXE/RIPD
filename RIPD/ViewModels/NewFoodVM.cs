@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace RIPD.ViewModels
 {
+  [QueryProperty("Barcode", "Barcode")]
   public partial class NewFoodVM : ObservableObject
   {
     private IFoodDataService _foodDataService;
