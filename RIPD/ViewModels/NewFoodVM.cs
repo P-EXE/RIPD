@@ -47,7 +47,7 @@ namespace RIPD.ViewModels
           Image = Image,
           CreationDateTime = DateTime.Now
         };
-        await _foodDataService.AddFoodAsync(food);
+        await _foodDataService.CreateAsync(food);
       }
       catch (Exception ex)
       {

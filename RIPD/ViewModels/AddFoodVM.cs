@@ -34,7 +34,7 @@ namespace RIPD.ViewModels
       try
       {
         Foods.Clear();
-        Foods = await _foodDataService.GetAllFoodsAsync();
+        Foods = await _foodDataService.GetMultipleAsync();
       }
       catch (Exception ex)
       {
