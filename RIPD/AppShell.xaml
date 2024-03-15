@@ -31,8 +31,8 @@
     </Tab>
     <Tab Title="Profile">
       <ShellContent
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        ContentTemplate="{DataTemplate pages:ProfilePage}"
+        Route="ProfilePage" />
     </Tab>
     <Tab Title="Settings">
       <ShellContent

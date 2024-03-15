@@ -4,9 +4,11 @@ namespace RIPD.Pages;
 
 public partial class AddFoodPage : ContentPage
 {
+	private AddFoodVM _vm;
 	public AddFoodPage(AddFoodVM vm)
 	{ 
 		InitializeComponent();
-		BindingContext = vm;
+		_vm = vm;
+		BindingContext = _vm;
   }
 }

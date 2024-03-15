@@ -3,10 +3,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RIPD.Models
 {
+  /// <summary>
+  /// Represents a User with EF Core
+  /// </summary>
+  /// <remarks>
+  /// Author: Paul
+  /// </remarks>
   [PrimaryKey(nameof(Id))]
   public class User
   {
-    public int Id { get; set; }
+    public int Id { get; }
     [Required]
     public string? Name { get; set; }
     [Required]
@@ -14,9 +20,11 @@ namespace RIPD.Models
     [Required]
     public string? Email { get; set; }
     [Required]
-    public string Password { get; set; }
+    public string? Password { get; set; }
     [Required]
-    public DateTime CreationDateTime { get; set; }
-    public Diary Diary { get; set; }
+    public DateTime? CreationDateTime { get; }
+    public Diary? Diary { get; set; }
+
+    public User() { }
   }
 }

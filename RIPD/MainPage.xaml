@@ -5,7 +5,6 @@
              xmlns:views="clr-namespace:RIPD.Views.Login"
              x:Class="RIPD.MainPage">
   <FlexLayout>
-    <views:LoginView/>
   </FlexLayout>
 
 </ContentPage>

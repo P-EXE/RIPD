@@ -2,11 +2,11 @@ using RIPD.ViewModels;
 
 namespace RIPD.Pages;
 
-public partial class SettingsPage : ContentPage
+public partial class UserLoginPage : ContentPage
 {
-  private SettingsVM _vm;
-  public SettingsPage(SettingsVM vm)
-  {
+  private UserLoginVM _vm;
+	public UserLoginPage(UserLoginVM vm)
+	{
     InitializeComponent();
     _vm = vm;
     BindingContext = _vm;
