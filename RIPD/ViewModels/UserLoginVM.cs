@@ -31,7 +31,7 @@ namespace RIPD.ViewModels
       User user = new();
       try
       {
-        user = await _userDataService.GetUserAsync(Email);
+        user = await _userDataService.GetOneAsync(("email",Email));
       }
       catch (Exception ex)
       {

@@ -48,7 +48,7 @@ namespace RIPD.ViewModels
           Password = Password
         };
 
-        user = await _userDataService.GetAsync(("email", Email));
+        user = await _userDataService.GetOneAsync(("email", Email));
 
         if (user == null)
         {

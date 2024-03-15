@@ -14,16 +14,16 @@ namespace RIPD.Models
   {
     public int Id { get; }
     [Required]
-    public string Name { get; set; }
+    public string? Name { get; set; }
     [Required]
-    public string DisplayName { get; set; }
+    public string? DisplayName { get; set; }
     [Required]
-    public string Email { get; set; }
+    public string? Email { get; set; }
     [Required]
-    public string Password { get; set; }
+    public string? Password { get; set; }
     [Required]
-    public DateTime CreationDateTime { get; }
-    public Diary Diary { get; set; }
+    public DateTime? CreationDateTime { get; }
+    public Diary? Diary { get; set; }
 
     public User() { }
   }
