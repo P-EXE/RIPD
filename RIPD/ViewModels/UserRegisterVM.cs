@@ -15,19 +15,25 @@ namespace RIPD.ViewModels
   {
     private readonly UserDataServiceAPI _userDataService;
     [ObservableProperty]
-    private string _name;
+    private string? _name;
     [ObservableProperty]
-    private string _displayName;
+    private string? _displayName;
     [ObservableProperty]
-    private string _email;
+    private string? _email;
     [ObservableProperty]
-    private string _password;
+    private string? _password;
 
     public UserRegisterVM(UserDataServiceAPI userDataService)
     {
       _userDataService = userDataService;
     }
 
+    /// <summary>
+    /// Tries creating a User model and checks if it already exists.
+    /// If it does not, tell the UserDataService to create it.
+    /// If it does, navigate to the LoginPage
+    /// </summary>
+    /// <returns>Nothing for now</returns>
     [RelayCommand]
     private async Task Register()
     {
@@ -42,11 +48,7 @@ namespace RIPD.ViewModels
           Password = Password
         };
 
-        user = await _userDataService.GetUserAsync(
-          new Dictionary<string, string>()
-          {
-            { "email", Email }
-          });
+        user = await _userDataService.GetAsync(("email", Email));
 
         if (user == null)
         {
