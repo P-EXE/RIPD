@@ -21,7 +21,11 @@ namespace RIPD.DataServices
     {
       _httpClient = new HttpClient();
 
-      _baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? AndroidApiConnection.BaseAddress : WindowsApiConnection.BaseAddress;
+      _baseAddress = DeviceInfo.Platform == DevicePlatform.WinUI ? WindowsApiConnection.BaseAddress : null;
+      _baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? AndroidApiConnection.BaseAddress : null;
+
+      /*_baseAddress = DefaultApiConnection.BaseAddress;*/
+
       _url = _baseAddress + "foods";
 
       _jsonSerializerOptions = new JsonSerializerOptions
@@ -30,7 +34,7 @@ namespace RIPD.DataServices
       };
     }
 
-    public async Task CreateAsync(Food food)
+    public async Task AddFoodAsync(Food food)
     {
       if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
       {
@@ -60,19 +64,36 @@ namespace RIPD.DataServices
       }
     }
 
-    public Task<Food> GetOneAsync(int id)
+    public async Task DeleteFoodAsync(int id)
     {
-      throw new NotImplementedException();
+      if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+      {
+        Debug.WriteLine("--> Custom(Error): FoodDataService.DeleteFoodAsync: No Internet Access");
+        return;
+      }
+
+      try
+      {
+        HttpResponseMessage response = await _httpClient.DeleteAsync($"{_url}/{id}");
+
+        if (response.IsSuccessStatusCode)
+        {
+          Debug.WriteLine("--> Custom(Success): FoodDataService.DeleteFoodAsync: Deleted Food");
+        }
+        else
+        {
+          Debug.WriteLine("--> Custom(Error): FoodDataService.DeleteFoodAsync: Non 2XX http Response");
+        }
+      }
+      catch (Exception ex)
+      {
+        Debug.WriteLine($"--> StdEx(Error): FoodDataService.DeleteFoodAsync: {ex.Message}");
+      }
     }
 
-    public Task<Food> GetOneAsync(string barcode)
+    public async Task<List<Food>> GetAllFoodsAsync()
     {
-      throw new NotImplementedException();
-    }
-
-    public async Task<List<Food>> GetMultipleAsync()
-    {
-      List<Food>? foods = new();
+      List<Food> foods = new List<Food>();
 
       if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
       {
@@ -102,12 +123,7 @@ namespace RIPD.DataServices
       return foods;
     }
 
-    public Task<List<Food>> GetMultipleAsync(Dictionary<string, string> queryParams)
-    {
-      throw new NotImplementedException();
-    }
-
-    public async Task UpdateAsync(Food food)
+    public async Task UpdateFoodAsync(Food food)
     {
       if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
       {
@@ -134,33 +150,6 @@ namespace RIPD.DataServices
       catch (Exception ex)
       {
         Debug.WriteLine($"--> StdEx(Error): FoodDataService.UpdateFoodAsync: {ex.Message}");
-      }
-    }
-
-    public async Task DeleteAsync(int id)
-    {
-      if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
-      {
-        Debug.WriteLine("--> Custom(Error): FoodDataService.DeleteFoodAsync: No Internet Access");
-        return;
-      }
-
-      try
-      {
-        HttpResponseMessage response = await _httpClient.DeleteAsync($"{_url}/{id}");
-
-        if (response.IsSuccessStatusCode)
-        {
-          Debug.WriteLine("--> Custom(Success): FoodDataService.DeleteFoodAsync: Deleted Food");
-        }
-        else
-        {
-          Debug.WriteLine("--> Custom(Error): FoodDataService.DeleteFoodAsync: Non 2XX http Response");
-        }
-      }
-      catch (Exception ex)
-      {
-        Debug.WriteLine($"--> StdEx(Error): FoodDataService.DeleteFoodAsync: {ex.Message}");
       }
     }
   }
