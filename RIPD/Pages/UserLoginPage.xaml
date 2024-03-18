@@ -8,6 +8,6 @@
     <Label Text="Login"/>
     <Entry Text="{Binding Email}" Placeholder="Email"/>
     <Entry Text="{Binding Password}" Placeholder="Password" IsPassword="True"/>
-    <Button Text="Register" Command="{Binding LoginCommand}"/>
+    <Button Text="Login" Command="{Binding LoginCommand}"/>
   </VerticalStackLayout>
 </ContentPage>

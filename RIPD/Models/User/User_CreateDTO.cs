@@ -1,11 +1,10 @@
 ﻿namespace RIPD.Models
 {
-    public class User_CreateDTO
-    {
-        public string? Name { get; set; }
-        public string? DisplayName { get; set; }
-        public string? Email { get; set; }
-        public string Password { get; set; }
-        public DateTime CreationDateTime { get; set; }
-    }
+  public class User_CreateDTO
+  {
+    public string Name { get; set; }
+    public string DisplayName { get; set; }
+    public string Email { get; set; }
+    public string Password { get; set; }
+  }
 }

@@ -28,7 +28,8 @@ namespace RIPD
       ldbc.Dispose();
 
       builder.Services.AddSingleton<APIStatusChecker>();
-
+      
+      builder.Services.AddSingleton<IUserDataServiceLocal, UserDataServiceLocal>();
       builder.Services.AddSingleton<IUserDataService, UserDataServiceAPI>();
       builder.Services.AddSingleton<IFoodDataService, FoodDataServiceAPI>();
 

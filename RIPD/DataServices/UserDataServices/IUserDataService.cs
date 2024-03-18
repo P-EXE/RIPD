@@ -18,14 +18,14 @@ namespace RIPD.DataServices
   /// <remarks>
   /// Author: Paul
   /// </remarks>
-  internal interface IUserDataService
+  public interface IUserDataService
   {
     /// <summary>
     /// Create a User
     /// </summary>
     /// <param name="user">A User</param>
     /// <returns>Nothing</returns>
-    public Task CreateAsync(User user);
+    public Task CreateAsync(User_CreateDTO user);
 
     /// <summary>
     /// Get a single User via an ID.

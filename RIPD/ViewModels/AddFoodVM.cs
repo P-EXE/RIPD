@@ -46,11 +46,6 @@ namespace RIPD.ViewModels
     [RelayCommand]
     async Task ShowDetails(Food food)
     {
-      /*      await Shell.Current.GoToAsync(nameof(FoodDetailsPage),
-      new Dictionary<string, object>
-      {
-              { nameof(food), food }
-      });*/
       await Shell.Current.GoToAsync($"{nameof(FoodDetailsPage)}?Food={food}");
     }
 

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Maui.Controls;
 using RIPD.DataServices;
 using RIPD.Models;
 using System;
@@ -11,16 +12,17 @@ using System.Threading.Tasks;
 
 namespace RIPD.ViewModels
 {
+  [QueryProperty("Email", "Email"), QueryProperty("Password", "Password")]
   public partial class UserLoginVM : ObservableObject
   {
-    private readonly UserDataServiceAPI _userDataService;
+    private readonly IUserDataService _userDataService;
 
     [ObservableProperty]
     private string _email;
     [ObservableProperty]
     private string _password;
 
-    public UserLoginVM(UserDataServiceAPI userDataService)
+    public UserLoginVM(IUserDataService userDataService)
     {
       _userDataService = userDataService;
     }

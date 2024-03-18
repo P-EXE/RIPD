@@ -14,7 +14,8 @@ namespace RIPD.ViewModels
 {
   public partial class NewFoodVM : ObservableObject
   {
-    private IFoodDataService _foodDataService;
+    private readonly IFoodDataService _foodDataService;
+    private readonly IUserDataServiceLocal _userDataService;
     [ObservableProperty]
     private string _barcode;
     [ObservableProperty]
@@ -26,9 +27,10 @@ namespace RIPD.ViewModels
     [ObservableProperty]
     private string _image;
 
-    public NewFoodVM(IFoodDataService foodDataService)
+    public NewFoodVM(IFoodDataService foodDataService, IUserDataServiceLocal userDataService)
     {
       _foodDataService = foodDataService;
+      _userDataService = userDataService;
     }
 
     [RelayCommand]
@@ -37,11 +39,11 @@ namespace RIPD.ViewModels
       Debug.WriteLine("Starting to add food");
       try
       {
-        Food food = new()
+        Food_CreateDTO food = new()
         {
-          Id = -1,
           Barcode = Barcode,
           Name = Name,
+          Contributer = _userDataService.GetFirstAsync().Result.Id,
           Manufacturer = Manufacturer,
           Description = Description,
           Image = Image,

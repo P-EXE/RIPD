@@ -9,10 +9,7 @@ namespace RIPD.DataServices
   {
     public DbSet<ApiConnection> ApiConnections { get; set; }
 
-/*    public LocalDBContext(DbContextOptions<LocalDBContext> options) : base(options)
-    {
-
-    }*/
+    public DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

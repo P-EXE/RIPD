@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using RIPD.DataServices;
 using RIPD.Models;
+using RIPD.Pages;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,7 +14,7 @@ namespace RIPD.ViewModels
 {
   public partial class UserRegisterVM : ObservableObject
   {
-    private readonly UserDataServiceAPI _userDataService;
+    private readonly IUserDataService _userDataService;
     [ObservableProperty]
     private string? _name;
     [ObservableProperty]
@@ -23,7 +24,7 @@ namespace RIPD.ViewModels
     [ObservableProperty]
     private string? _password;
 
-    public UserRegisterVM(UserDataServiceAPI userDataService)
+    public UserRegisterVM(IUserDataService userDataService)
     {
       _userDataService = userDataService;
     }
@@ -37,10 +38,10 @@ namespace RIPD.ViewModels
     [RelayCommand]
     private async Task Register()
     {
-      User user = new();
+      User_CreateDTO userCreate = new();
       try
       {
-        user = new()
+        userCreate = new()
         {
           Name = Name,
           DisplayName = DisplayName,
@@ -48,11 +49,17 @@ namespace RIPD.ViewModels
           Password = Password
         };
 
-        user = await _userDataService.GetOneAsync(("email", Email));
-
-        if (user == null)
+        if (await _userDataService.GetOneAsync(("Email", Email)) == null)
         {
-          await _userDataService.CreateAsync(user);
+          await _userDataService.CreateAsync(userCreate);
+        }
+        else
+        { // Go to Login Page
+          await Shell.Current.GoToAsync(nameof(UserLoginPage), new Dictionary<string, object>()
+          {
+            { "Email", Email },
+            { "Password", Password }
+          });
         }
       }
       catch (Exception ex)

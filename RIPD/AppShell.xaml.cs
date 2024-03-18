@@ -13,6 +13,8 @@ namespace RIPD
       Routing.RegisterRoute(nameof(FoodDetailsPage), typeof(FoodDetailsPage));
       Routing.RegisterRoute(nameof(NewFoodPage), typeof(NewFoodPage));
 
+      Routing.RegisterRoute(nameof(ProfilePage), typeof(ProfilePage));
+
       Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
       Routing.RegisterRoute(nameof(SettingsDevPage), typeof(SettingsDevPage));
 

@@ -4,6 +4,12 @@
              xmlns:viewmodels="clr-namespace:RIPD.ViewModels"
              x:Class="RIPD.Pages.ProfilePage"
              x:DataType="viewmodels:ProfilePageVM">
-  <VerticalStackLayout>
-  </VerticalStackLayout>
+  <Grid RowDefinitions="auto,*">
+    <VerticalStackLayout Grid.Row="0">
+      <Label Text="{Binding ActiveUser.DisplayName}"/>
+      <Label Text="{Binding ActiveUser.Name}"/>
+    </VerticalStackLayout>
+    <VerticalStackLayout Grid.Row="1">
+    </VerticalStackLayout>
+  </Grid>
 </ContentPage>

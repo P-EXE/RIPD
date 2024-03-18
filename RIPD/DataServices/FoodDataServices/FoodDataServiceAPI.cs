@@ -30,7 +30,7 @@ namespace RIPD.DataServices
       };
     }
 
-    public async Task CreateAsync(Food food)
+    public async Task CreateAsync(Food_CreateDTO food)
     {
       if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
       {
@@ -40,7 +40,7 @@ namespace RIPD.DataServices
 
       try
       {
-        string jsonFood = JsonSerializer.Serialize<Food>(food, _jsonSerializerOptions);
+        string jsonFood = JsonSerializer.Serialize<Food_CreateDTO>(food, _jsonSerializerOptions);
         StringContent content = new StringContent(jsonFood, Encoding.UTF8, "application/json");
 
         HttpResponseMessage response = await _httpClient.PostAsync($"{_url}", content);

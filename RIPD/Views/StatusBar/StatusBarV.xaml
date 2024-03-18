@@ -5,6 +5,7 @@
              x:Class="RIPD.Views.StatusBarV"
              x:DataType="viewmodels:StatusBarVM">
   <VerticalStackLayout>
-    <Label Text="{Binding Message}"/>
+    <Label Text="{Binding InternetStatus}"/>
+    <Label Text="{Binding User.Name}"/>
   </VerticalStackLayout>
 </ContentView>

@@ -14,7 +14,7 @@ namespace RIPD.DataServices
     /// </summary>
     /// <param name="food">Represents a Food Entity.</param>
     /// <returns>Nothing</returns>
-    Task CreateAsync(Food food);
+    Task CreateAsync(Food_CreateDTO food);
 
     /// <summary>
     /// Get a single Food via an ID.

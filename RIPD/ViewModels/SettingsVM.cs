@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using RIPD.DataServices;
+using RIPD.Models;
 using RIPD.Pages;
 using System;
 using System.Collections.Generic;
@@ -11,6 +13,13 @@ namespace RIPD.ViewModels
 {
   public partial class SettingsVM : ObservableObject
   {
+    private readonly IUserDataServiceLocal _userDataServiceLocal;
+
+    public SettingsVM(IUserDataServiceLocal userDataServiceLocal)
+    {
+      _userDataServiceLocal = userDataServiceLocal;
+    }
+
     [RelayCommand]
     private async void GoToSettingsDev()
     {

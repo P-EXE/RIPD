@@ -26,11 +26,11 @@ namespace RIPD.DataServices
 
     // Serialization fields
     private readonly JsonSerializerOptions _jsonSerializerOptions;
-    
-    // Local DB EF Core fields
-    // private readonly LocalDBContext _localDBContext;
 
-    public UserDataServiceAPI()
+    // Local DB EF Core fields
+    private readonly LocalDBContext _localDBContext;
+
+    public UserDataServiceAPI(LocalDBContext localDBContext)
     {
       _httpClient = new HttpClient();
 
@@ -41,6 +41,8 @@ namespace RIPD.DataServices
       {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
       };
+
+      _localDBContext = localDBContext;
     }
 
     /// <summary>
@@ -50,15 +52,16 @@ namespace RIPD.DataServices
     /// </summary>
     /// <param name="user">A User</param>
     /// <returns>Nothing for now</returns>
-    public async Task CreateAsync(User user)
+    public async Task CreateAsync(User_CreateDTO user)
     {
+      User userRes = new();
       if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
       {
-        Debug.WriteLine("--> Custom(Error): FoodDataService.AddFoodAsync: No Internet Access");
+        Debug.WriteLine("--> Custom(Error): UserDataService.CreateAsync: No Internet Access");
         return;
       }
 
-      string jsonUser = JsonSerializer.Serialize<User>(user, _jsonSerializerOptions);
+      string jsonUser = JsonSerializer.Serialize<User_CreateDTO>(user, _jsonSerializerOptions);
       StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
 
       try
@@ -66,22 +69,28 @@ namespace RIPD.DataServices
         HttpResponseMessage response = await _httpClient.PostAsync($"{_url}", content);
         switch (response.StatusCode)
         {
-          case System.Net.HttpStatusCode.OK:
+          case System.Net.HttpStatusCode.Created:
             {
-              Debug.WriteLine("--> Custom(Success): FoodDataService.AddFoodAsync: Added Food");
+              string res = await response.Content.ReadAsStringAsync();
+              userRes = JsonSerializer.Deserialize<User>(res, _jsonSerializerOptions);
+              await _localDBContext.AddAsync(userRes);
+              _localDBContext.SaveChanges();
+              Debug.WriteLine("--> Custom(Success): UserDataService.CreateAsync: Added User");
               break;
             }
           default:
             {
-              Debug.WriteLine("--> Custom(Error): FoodDataService.AddFoodAsync: Non 2XX http Response");
+              Debug.WriteLine("--> Custom(Error): UserDataService.CreateAsync: Non 2XX http Response");
+              Debug.WriteLine(response);
               break;
             }
         }
       }
       catch (Exception ex)
       {
-        Debug.WriteLine($"--> StdEx(Error): FoodDataService.AddFoodAsync: {ex.Message}");
+        Debug.WriteLine($"--> StdEx(Error): UserDataService.CreateAsync: {ex.Message}");
       }
+      return;
     }
 
     /// <summary>
@@ -135,11 +144,11 @@ namespace RIPD.DataServices
     /// <returns>A singular User</returns>
     public async Task<User> GetOneAsync((string, string) unique)
     {
-      User? user = new();
+      IEnumerable<User?> users;
       if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
       {
         Debug.WriteLine("--> Custom(Error): UserDataService.GetByUnique: No Internet Access");
-        return user;
+        return null;
       }
 
       try
@@ -150,22 +159,27 @@ namespace RIPD.DataServices
           case System.Net.HttpStatusCode.OK:
             {
               string content = await response.Content.ReadAsStringAsync();
-              user = JsonSerializer.Deserialize<User>(content, _jsonSerializerOptions);
+              users = JsonSerializer.Deserialize<IEnumerable<User>>(content, _jsonSerializerOptions);
+              if (users.Count() < 1)
+              {
+                return null;
+              }
               break;
             }
           default:
             {
               Debug.WriteLine("--> Custom(Error): UserDataService.GetByUniqueAsync: Non 2XX http Response");
-              break;
+              return null;
             }
         }
       }
       catch (Exception ex)
       {
         Debug.WriteLine($"--> StdEx(Error): UserDataService.GetByUniqueAsync: {ex.Message}");
+        return null;
       }
 
-      return user;
+      return users.First();
     }
 
     /// <summary>

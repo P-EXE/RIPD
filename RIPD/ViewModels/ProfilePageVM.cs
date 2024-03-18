@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RIPD.DataServices;
+using RIPD.Models;
 using RIPD.Pages;
 using System;
 using System.Collections.Generic;
@@ -12,23 +13,14 @@ namespace RIPD.ViewModels
 {
   public partial class ProfilePageVM : ObservableObject
   {
-    private readonly LocalDBContext _localDBContext;
+    private readonly IUserDataServiceLocal _userDataServiceLocal;
+    [ObservableProperty]
+    private User _activeUser;
 
-    public ProfilePageVM(LocalDBContext localDBContext)
+    public ProfilePageVM(IUserDataServiceLocal userDataServiceLocal)
     {
-      _localDBContext = localDBContext;
-    }
-
-    [RelayCommand]
-    private async void GoToRegisterPage()
-    {
-      await Shell.Current.GoToAsync($"{nameof(UserRegisterPage)}", true);
-    }
-
-    [RelayCommand]
-    private async void GoToLoginPage()
-    {
-      await Shell.Current.GoToAsync($"{nameof(UserLoginPage)}", true);
+      _userDataServiceLocal = userDataServiceLocal;
+      ActiveUser = _userDataServiceLocal.GetFirstAsync().Result;
     }
   }
 }

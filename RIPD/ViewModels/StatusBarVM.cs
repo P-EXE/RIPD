@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using RIPD.DataServices;
+using RIPD.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +12,19 @@ namespace RIPD.ViewModels
 {
   public partial class StatusBarVM : ObservableObject
   {
+    private readonly IUserDataServiceLocal _userdataServiceLocal;
     [ObservableProperty]
-    private string _message;
+    private string _internetStatus;
 
-    public StatusBarVM()
+    [ObservableProperty]
+    private User _user;
+
+    public StatusBarVM(IUserDataServiceLocal userDataServiceLocal)
     {
-      Message = Connectivity.NetworkAccess.ToString();
+      InternetStatus = Connectivity.NetworkAccess.ToString();
       Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
+      _userdataServiceLocal = userDataServiceLocal;
+      User = _userdataServiceLocal.GetFirstAsync().Result;
     }
 
     private void Connectivity_ConnectivityChanged(object? sender, ConnectivityChangedEventArgs e)
@@ -24,21 +32,21 @@ namespace RIPD.ViewModels
       switch (e.NetworkAccess)
       {
         default:
-          Message = "Oops!";
+          InternetStatus = "Oops!";
           break;
         case NetworkAccess.Unknown:
           {
-            Message = "Network Connection Unknown";
+            InternetStatus = "Network Connection Unknown";
             break;
           }
         case NetworkAccess.None:
           {
-            Message = "Network Connection None";
+            InternetStatus = "Network Connection None";
             break;
           }
         case NetworkAccess.Internet:
           {
-            Message = "Network Connection Connected";
+            InternetStatus = "Network Connection Connected";
             break;
           }
       }

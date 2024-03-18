@@ -9,5 +9,6 @@ public partial class ProfilePage : ContentPage
 	{
 		InitializeComponent();
 		_vm = vm;
+		BindingContext = _vm;
 	}
 }
