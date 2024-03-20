@@ -39,6 +39,11 @@
         ContentTemplate="{DataTemplate pages:SettingsPage}"
         Route="MainPage" />
     </Tab>
+    <Tab Title="GPSTest">
+      <ShellContent
+    ContentTemplate="{DataTemplate pages:GPSTestPage}"
+    Route="MainPage" />
+    </Tab>
   </TabBar>
 
 </Shell>
