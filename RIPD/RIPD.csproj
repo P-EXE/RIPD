@@ -106,9 +106,6 @@
 	  <MauiXaml Update="Views\FoodListFoodV.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Login\LoginView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Views\StatusBar\StatusBarV.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

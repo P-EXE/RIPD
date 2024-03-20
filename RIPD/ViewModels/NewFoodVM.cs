@@ -2,67 +2,60 @@
 using CommunityToolkit.Mvvm.Input;
 using RIPD.DataServices;
 using RIPD.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RIPD.ViewModels
+namespace RIPD.ViewModels;
+
+public partial class NewFoodVM : ObservableObject
 {
-  public partial class NewFoodVM : ObservableObject
+  private readonly IFoodDataService _foodDataService;
+  private readonly IUserDataServiceLocal _userDataService;
+  [ObservableProperty]
+  private string _barcode;
+  [ObservableProperty]
+  private string _name;
+  [ObservableProperty]
+  private int _manufacturer;
+  [ObservableProperty]
+  private string _description;
+  [ObservableProperty]
+  private string _image;
+
+  public NewFoodVM(IFoodDataService foodDataService, IUserDataServiceLocal userDataService)
   {
-    private readonly IFoodDataService _foodDataService;
-    private readonly IUserDataServiceLocal _userDataService;
-    [ObservableProperty]
-    private string _barcode;
-    [ObservableProperty]
-    private string _name;
-    [ObservableProperty]
-    private int _manufacturer;
-    [ObservableProperty]
-    private string _description;
-    [ObservableProperty]
-    private string _image;
-
-    public NewFoodVM(IFoodDataService foodDataService, IUserDataServiceLocal userDataService)
-    {
-      _foodDataService = foodDataService;
-      _userDataService = userDataService;
-    }
-
-    [RelayCommand]
-    private async Task CreateNewFood()
-    {
-      Debug.WriteLine("Starting to add food");
-      try
-      {
-        Food_CreateDTO food = new()
-        {
-          Barcode = Barcode,
-          Name = Name,
-          Contributer = _userDataService.GetFirstAsync().Result.Id,
-          Manufacturer = Manufacturer,
-          Description = Description,
-          Image = Image,
-          CreationDateTime = DateTime.Now
-        };
-        await _foodDataService.CreateAsync(food);
-      }
-      catch (Exception ex)
-      {
-        Debug.WriteLine(ex);
-      }
-      finally
-      {
-        
-      }
-      GoBack();
-    }
-
-    [RelayCommand]
-    async Task GoBack() => await Shell.Current.GoToAsync("..");
+    _foodDataService = foodDataService;
+    _userDataService = userDataService;
   }
+
+  [RelayCommand]
+  private async Task CreateNewFood()
+  {
+    Debug.WriteLine("Starting to add food");
+    try
+    {
+      Food_CreateDTO food = new()
+      {
+        Barcode = Barcode,
+        Name = Name,
+        Contributer = _userDataService.GetFirstAsync().Result.Id,
+        Manufacturer = Manufacturer,
+        Description = Description,
+        Image = Image,
+        CreationDateTime = DateTime.Now
+      };
+      await _foodDataService.CreateAsync(food);
+    }
+    catch (Exception ex)
+    {
+      Debug.WriteLine(ex);
+    }
+    finally
+    {
+      
+    }
+    GoBack();
+  }
+
+  [RelayCommand]
+  async Task GoBack() => await Shell.Current.GoToAsync("..");
 }

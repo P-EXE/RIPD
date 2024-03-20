@@ -1,44 +1,37 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Maui.Controls;
 using RIPD.DataServices;
 using RIPD.Models;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RIPD.ViewModels
+namespace RIPD.ViewModels;
+
+[QueryProperty("Email", "Email"), QueryProperty("Password", "Password")]
+public partial class UserLoginVM : ObservableObject
 {
-  [QueryProperty("Email", "Email"), QueryProperty("Password", "Password")]
-  public partial class UserLoginVM : ObservableObject
+  private readonly IUserDataService _userDataService;
+
+  [ObservableProperty]
+  private string _email;
+  [ObservableProperty]
+  private string _password;
+
+  public UserLoginVM(IUserDataService userDataService)
   {
-    private readonly IUserDataService _userDataService;
+    _userDataService = userDataService;
+  }
 
-    [ObservableProperty]
-    private string _email;
-    [ObservableProperty]
-    private string _password;
-
-    public UserLoginVM(IUserDataService userDataService)
+  [RelayCommand]
+  private async Task Login()
+  {
+    User user = new();
+    try
     {
-      _userDataService = userDataService;
+      user = await _userDataService.GetOneAsync(("email",Email));
     }
-
-    [RelayCommand]
-    private async Task Login()
+    catch (Exception ex)
     {
-      User user = new();
-      try
-      {
-        user = await _userDataService.GetOneAsync(("email",Email));
-      }
-      catch (Exception ex)
-      {
-        Debug.WriteLine("--> Custom(Error): UserLoginVM.Login: OOOPS!");
-      }
+      Debug.WriteLine("--> Custom(Error): UserLoginVM.Login: OOOPS!");
     }
   }
 }

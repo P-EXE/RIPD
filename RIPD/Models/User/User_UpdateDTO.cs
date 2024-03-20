@@ -1,18 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RIPD.Models
+namespace RIPD.Models;
+
+public class User_UpdateDTO
 {
-    public class User_UpdateDTO
-    {
-        public string? Name { get; set; }
-        [Required]
-        public string? DisplayName { get; set; }
-        [Required]
-        public string? Email { get; set; }
-        [Required]
-        public string Password { get; set; }
-        [Required]
-        public DateTime CreationDateTime { get; set; }
-        public Diary Diary { get; set; }
-    }
+  public string? Name { get; set; }
+  [Required]
+  public string? DisplayName { get; set; }
+  [Required]
+  public string? Email { get; set; }
+  [Required]
+  public string Password { get; set; }
+  [Required]
+  public DateTime CreationDateTime { get; set; }
+  public Diary Diary { get; set; }
 }
