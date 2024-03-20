@@ -6,19 +6,19 @@ namespace RIPD.ViewModels;
 
 public partial class StatusBarVM : ObservableObject
 {
-  private readonly IUserDataServiceLocal _userdataServiceLocal;
+  private readonly IUserDataService _userdataService;
   [ObservableProperty]
   private string _internetStatus;
 
   [ObservableProperty]
-  private User _user;
+  private User? _user;
 
-  public StatusBarVM(IUserDataServiceLocal userDataServiceLocal)
+  public StatusBarVM(IUserDataService userDataService)
   {
     InternetStatus = Connectivity.NetworkAccess.ToString();
     Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
-    _userdataServiceLocal = userDataServiceLocal;
-    User = _userdataServiceLocal.GetFirstAsync().Result;
+    _userdataService = userDataService;
+    User = _userdataService.GetOwnerAsync().Result;
   }
 
   private void Connectivity_ConnectivityChanged(object? sender, ConnectivityChangedEventArgs e)

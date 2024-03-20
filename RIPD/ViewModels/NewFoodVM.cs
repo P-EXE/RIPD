@@ -9,7 +9,7 @@ namespace RIPD.ViewModels;
 public partial class NewFoodVM : ObservableObject
 {
   private readonly IFoodDataService _foodDataService;
-  private readonly IUserDataServiceLocal _userDataService;
+  private readonly IUserDataService _userDataService;
   [ObservableProperty]
   private string _barcode;
   [ObservableProperty]
@@ -21,7 +21,7 @@ public partial class NewFoodVM : ObservableObject
   [ObservableProperty]
   private string _image;
 
-  public NewFoodVM(IFoodDataService foodDataService, IUserDataServiceLocal userDataService)
+  public NewFoodVM(IFoodDataService foodDataService, IUserDataService userDataService)
   {
     _foodDataService = foodDataService;
     _userDataService = userDataService;
@@ -37,7 +37,7 @@ public partial class NewFoodVM : ObservableObject
       {
         Barcode = Barcode,
         Name = Name,
-        Contributer = _userDataService.GetFirstAsync().Result.Id,
+        Contributer = _userDataService.GetOwnerAsync().Result.Id,
         Manufacturer = Manufacturer,
         Description = Description,
         Image = Image,

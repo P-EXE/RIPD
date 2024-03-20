@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:RIPD.ViewModels"
+             x:Class="RIPD.Pages.LoginPage"
+             x:DataType="vm:LoginVM">
+  <Grid RowDefinitions="*,auto">
+    <Label Grid.Row="0" Text="Login" FontSize="70"/>
+    <VerticalStackLayout Grid.Row="1">
+      <VerticalStackLayout Margin="0,10">
+        <Entry Placeholder="e-mail" Text="{Binding Email}"/>
+        <Entry IsPassword="True" Placeholder="Password" Text="{Binding Password}"/>
+      </VerticalStackLayout>
+      <Button Text="Log in" Command="{Binding LogInCommand}"/>
+      <Button Text="Register instead" Command="{Binding NavBackCommand}"/>
+    </VerticalStackLayout>
+  </Grid>
+</ContentPage>

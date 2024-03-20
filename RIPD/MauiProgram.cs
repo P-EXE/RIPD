@@ -29,8 +29,10 @@ namespace RIPD
 
       builder.Services.AddSingleton<APIStatusChecker>();
       
-      builder.Services.AddSingleton<IUserDataServiceLocal, UserDataServiceLocal>();
-      builder.Services.AddSingleton<IUserDataService, UserDataServiceAPI>();
+      builder.Services.AddSingleton<IUserDataService, UserDataServiceSwitch>();
+      builder.Services.AddSingleton<UserDataServiceLocal>();
+      builder.Services.AddSingleton<UserDataServiceAPI>();
+      builder.Services.AddSingleton<IUserDataService, UserDataServiceSwitch>();
       builder.Services.AddSingleton<IFoodDataService, FoodDataServiceAPI>();
 
       #endregion Data Services
@@ -58,13 +60,15 @@ namespace RIPD
 
       #region user
       builder.Services.AddSingleton<ProfilePage>();
-      builder.Services.AddSingleton<ProfilePageVM>();
+      builder.Services.AddSingleton<ProfileVM>();
+      builder.Services.AddSingleton<OwnerProfilePage>();
+      builder.Services.AddSingleton<OwnerProfileVM>();
 
-      builder.Services.AddTransient<UserRegisterPage>();
-      builder.Services.AddTransient<UserRegisterVM>();
+      builder.Services.AddTransient<RegisterPage>();
+      builder.Services.AddTransient<RegisterVM>();
 
-      builder.Services.AddTransient<UserLoginPage>();
-      builder.Services.AddTransient<UserLoginVM>();
+      builder.Services.AddTransient<LoginPage>();
+      builder.Services.AddTransient<LoginVM>();
       #endregion user
 
       builder.Services.AddSingleton<SettingsPage>();

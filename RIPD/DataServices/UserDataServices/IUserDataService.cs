@@ -2,51 +2,26 @@
 
 namespace RIPD.DataServices;
 
-/// <summary>
-/// <para>
-/// Interface for a UserDataService
-/// </para>
-/// <para>
-/// Should be used for API or Local implementations
-/// </para>
-/// </summary>
-/// <remarks>
-/// Author: Paul
-/// </remarks>
 public interface IUserDataService
 {
-  /// <summary>
-  /// Create a User
-  /// </summary>
-  /// <param name="user">A User</param>
-  /// <returns>Nothing</returns>
-  public Task CreateAsync(User_CreateDTO user);
+  #region Owner
+  Task CreateOwnerAsync(Owner owner);
+  Task<Owner?> LogInOwnerAsync(string email, string password);
+  Task<Owner?> GetOwnerAsync();
+  Task DeleteOwnerAsync();
+  #endregion Owner
 
-  /// <summary>
-  /// Get a single User via an ID.
-  /// </summary>
-  /// <param name="id">A unique ID of a User</param>
-  /// <returns>A User</returns>
-  public Task<User> GetOneAsync(int id);
+  #region Users
+  Task<User?> GetUserByEmailAsync(string email);
+  Task<IEnumerable<User?>?> GetUserByNameAsync(string name);
+  #endregion Users
 
-  /// <summary>
-  /// Get a singular User via a singular, matchable, Property-Value pair.
-  /// </summary>
-  /// <example>
-  /// ("email", "email@domain.top")
-  /// </example>
-  /// <param name="unique">Common Property, unique Value</param>
-  /// <returns>A User</returns>
-  public Task<User> GetOneAsync((string, string) unique);
+  #region Inter
+  Task FollowUserAsync(User user);
+  Task<IEnumerable<User?>> GetFollowingAsync();
+  #endregion Inter
 
-  /// <summary>
-  /// Get multiple Users via matchable Property-Value pairs.
-  /// </summary>
-  /// <example>
-  /// { "name", "User Name" },
-  /// { "foo", "bar" }
-  /// </example>
-  /// <param name="queryParams">Dictionary of common Properties and common Values</param>
-  /// <returns>A List of Users</returns>
-  public Task<List<User>> GetMultipleAsync(Dictionary<string,string> queryParams);
+  #region Debug
+  Task CreateUserAsync(User user);
+  #endregion Debug
 }

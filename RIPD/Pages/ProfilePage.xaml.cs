@@ -1,14 +1,15 @@
+using RIPD.DataServices;
 using RIPD.ViewModels;
 
 namespace RIPD.Pages;
 
 public partial class ProfilePage : ContentPage
 {
-	private ProfilePageVM _vm;
-	public ProfilePage(ProfilePageVM vm)
-	{
-		InitializeComponent();
-		_vm = vm;
-		BindingContext = _vm;
-	}
+  private ProfileVM _vm;
+  public ProfilePage(ProfileVM vm)
+  {
+    InitializeComponent();
+    _vm = vm;
+    BindingContext = _vm;
+  }
 }

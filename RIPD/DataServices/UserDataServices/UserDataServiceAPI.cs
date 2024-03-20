@@ -17,7 +17,7 @@ namespace RIPD.DataServices;
 /// <remarks>
 /// Author: Paul
 /// </remarks>
-public class UserDataServiceAPI : IUserDataService
+public class UserDataServiceAPI
 {
   // API fields
   private readonly HttpClient _httpClient;
@@ -52,7 +52,7 @@ public class UserDataServiceAPI : IUserDataService
   /// </summary>
   /// <param name="user">A User</param>
   /// <returns>Nothing for now</returns>
-  public async Task CreateAsync(User_CreateDTO user)
+  public async Task CreateAsync(User user)
   {
     User userRes = new();
     if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
@@ -61,7 +61,7 @@ public class UserDataServiceAPI : IUserDataService
       return;
     }
 
-    string jsonUser = JsonSerializer.Serialize<User_CreateDTO>(user, _jsonSerializerOptions);
+    string jsonUser = JsonSerializer.Serialize<User>(user, _jsonSerializerOptions);
     StringContent content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
 
     try

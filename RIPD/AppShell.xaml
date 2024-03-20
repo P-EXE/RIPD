@@ -30,8 +30,8 @@
     </Tab>
     <Tab Title="Profile">
       <ShellContent
-        ContentTemplate="{DataTemplate pages:ProfilePage}"
-        Route="ProfilePage" />
+        ContentTemplate="{DataTemplate pages:OwnerProfilePage}"
+        Route="OwnerProfilePage" />
     </Tab>
     <Tab Title="Settings">
       <ShellContent

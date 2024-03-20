@@ -2,17 +2,17 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:RIPD.ViewModels"
-             x:Class="RIPD.Pages.ProfilePage"
-             x:DataType="vm:ProfileVM">
+             x:Class="RIPD.Pages.OwnerProfilePage"
+             x:DataType="vm:OwnerProfileVM">
   <Grid RowDefinitions="auto,*">
     <HorizontalStackLayout Grid.Row="0">
       <VerticalStackLayout>
-        <Label Text="{Binding User.Name}"/>
-        <Label Text="{Binding User.Email}"/>
+        <Label Text="{Binding Owner.Name}"/>
+        <Label Text="{Binding Owner.Email}"/>
       </VerticalStackLayout>
     </HorizontalStackLayout>
     <VerticalStackLayout Grid.Row="1">
-      <Button Text="Add to Contacts" Command="{Binding AddToContactsCommand}"/>
+      <Button Text="Delete Account" Command="{Binding DeleteAccountCommand}"/>
     </VerticalStackLayout>
   </Grid>
 </ContentPage>

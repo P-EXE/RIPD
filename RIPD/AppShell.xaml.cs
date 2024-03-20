@@ -14,12 +14,12 @@ namespace RIPD
       Routing.RegisterRoute(nameof(NewFoodPage), typeof(NewFoodPage));
 
       Routing.RegisterRoute(nameof(ProfilePage), typeof(ProfilePage));
+      Routing.RegisterRoute(nameof(OwnerProfilePage), typeof(OwnerProfilePage));
+      Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
+      Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
 
       Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
       Routing.RegisterRoute(nameof(SettingsDevPage), typeof(SettingsDevPage));
-
-      Routing.RegisterRoute(nameof(UserRegisterPage), typeof(UserRegisterPage));
-      Routing.RegisterRoute(nameof(UserLoginPage), typeof(UserLoginPage));
       #endregion Routes
     }
   }

@@ -7,11 +7,11 @@ namespace RIPD.ViewModels;
 
 public partial class SettingsVM : ObservableObject
 {
-  private readonly IUserDataServiceLocal _userDataServiceLocal;
+  private readonly IUserDataService _userDataService;
 
-  public SettingsVM(IUserDataServiceLocal userDataServiceLocal)
+  public SettingsVM(IUserDataService userDataService)
   {
-    _userDataServiceLocal = userDataServiceLocal;
+    _userDataService= userDataService;
   }
 
   [RelayCommand]
@@ -22,11 +22,11 @@ public partial class SettingsVM : ObservableObject
   [RelayCommand]
   private async void GoToRegisterPage()
   {
-    await Shell.Current.GoToAsync($"{nameof(UserRegisterPage)}", true);
+    await Shell.Current.GoToAsync($"{nameof(RegisterPage)}", true);
   }
   [RelayCommand]
   private async void GoToLoginPage()
   {
-    await Shell.Current.GoToAsync($"{nameof(UserLoginPage)}", true);
+    await Shell.Current.GoToAsync($"{nameof(LoginPage)}", true);
   }
 }
