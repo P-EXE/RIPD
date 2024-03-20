@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RIPD.DataServices;
+using RIPD.DataServices.RunDataServices;
 using RIPD.Pages;
 using RIPD.ViewModels;
 using RIPD.Views;
@@ -28,6 +29,7 @@ namespace RIPD
       ldbc.Dispose();
 
       builder.Services.AddSingleton<IFoodDataService, FoodDataService>();
+      builder.Services.AddSingleton<IRunDataService, RunDataService>();
 
       #endregion Data Services
 

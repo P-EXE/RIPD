@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace RIPD.DataServices
 {
-  internal interface IRunDataService
+  public interface IRunDataService
   {
-    Task CreateAsync(Run run);
-    Task<Run> GetAsync(User user, int id);
-    Task<List<Run>> GetAllAsync(User user);
+    Task AddRunAsync(User user, Run run);
+    Task<Run> GetRunAsync(User user, int id);
+    Task<List<Run>> GetAllRunsByUserAsync(User user);
   }
 }

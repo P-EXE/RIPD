@@ -1,15 +1,19 @@
+using RIPD.DataServices;
+
 namespace RIPD.Pages;
 
 public partial class GPSTestPage : ContentPage
 {
-	
+  private readonly IRunDataService _runDataService;
+
   public bool stst = false;
 
   public List<Location> locations = new List<Location>();
 
-  public GPSTestPage()
+  public GPSTestPage(IRunDataService runDataService)
   {
     InitializeComponent();
+    _runDataService = runDataService;
   }
   private async void OnCounterClicked(object sender, EventArgs e)
   {
