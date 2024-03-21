@@ -15,18 +15,8 @@ public partial class SettingsVM : ObservableObject
   }
 
   [RelayCommand]
-  private async void GoToSettingsDev()
+  private async Task GoToSettingsDev()
   {
     await Shell.Current.GoToAsync($"{nameof(SettingsDevPage)}", true);
-  }
-  [RelayCommand]
-  private async void GoToRegisterPage()
-  {
-    await Shell.Current.GoToAsync($"{nameof(RegisterPage)}", true);
-  }
-  [RelayCommand]
-  private async void GoToLoginPage()
-  {
-    await Shell.Current.GoToAsync($"{nameof(LoginPage)}", true);
   }
 }

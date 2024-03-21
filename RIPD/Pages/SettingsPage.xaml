@@ -6,7 +6,5 @@
              x:DataType="viewmodels:SettingsVM">
   <VerticalStackLayout>
     <Button Text="Dev Settings" Command="{Binding GoToSettingsDevCommand}"/>
-    <Button Text="Register" Command="{Binding GoToRegisterPageCommand}"/>
-    <Button Text="Login" Command="{Binding GoToLoginPageCommand}"/>
   </VerticalStackLayout>
 </ContentPage>
