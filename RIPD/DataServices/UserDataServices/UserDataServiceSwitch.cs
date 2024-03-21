@@ -1,4 +1,5 @@
 ﻿using RIPD.Models;
+using RIPD.Services;
 
 namespace RIPD.DataServices;
 
@@ -6,17 +7,18 @@ public class UserDataServiceSwitch : IUserDataService
 {
   private readonly UserDataServiceAPI _api;
   private readonly UserDataServiceLocal _loc;
-  const bool _online = false;
-  public UserDataServiceSwitch(UserDataServiceAPI api, UserDataServiceLocal loc)
+  private readonly APIStatusChecker _apiStatusChecker;
+  public UserDataServiceSwitch(UserDataServiceAPI api, UserDataServiceLocal loc, APIStatusChecker apiStatusChecker)
   {
     _api = api;
     _loc = loc;
+    _apiStatusChecker = apiStatusChecker;
   }
 
   #region Owner
   public async Task CreateOwnerAsync(Owner owner)
   {
-    if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+    if (_apiStatusChecker.CheckAPI().Result)
     {
     }
     else
@@ -27,7 +29,7 @@ public class UserDataServiceSwitch : IUserDataService
   }
   public async Task<Owner?> LogInOwnerAsync(string email, string password)
   {
-    if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+    if (_apiStatusChecker.CheckAPI().Result)
     {
     }
     else
@@ -38,7 +40,7 @@ public class UserDataServiceSwitch : IUserDataService
   }
   public async Task<Owner?> GetOwnerAsync()
   {
-    if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+    if (_apiStatusChecker.CheckAPI().Result)
     {
     }
     else
@@ -49,7 +51,7 @@ public class UserDataServiceSwitch : IUserDataService
   }
   public async Task DeleteOwnerAsync()
   {
-    if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+    if (_apiStatusChecker.CheckAPI().Result)
     {
     }
     else
@@ -63,7 +65,7 @@ public class UserDataServiceSwitch : IUserDataService
   #region User
   public async Task<User?> GetUserByEmailAsync(string email)
   {
-    if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+    if (_apiStatusChecker.CheckAPI().Result)
     {
     }
     else
@@ -74,7 +76,7 @@ public class UserDataServiceSwitch : IUserDataService
   }
   public async Task<IEnumerable<User?>> GetUserByNameAsync(string name)
   {
-    if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+    if (_apiStatusChecker.CheckAPI().Result)
     {
     }
     else
@@ -88,7 +90,7 @@ public class UserDataServiceSwitch : IUserDataService
   #region Inter
   public async Task FollowUserAsync(User user)
   {
-    if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+    if (_apiStatusChecker.CheckAPI().Result)
     {
     }
     else
@@ -99,7 +101,7 @@ public class UserDataServiceSwitch : IUserDataService
   }
   public async Task<IEnumerable<User?>> GetFollowingAsync()
   {
-    if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+    if (_apiStatusChecker.CheckAPI().Result)
     {
     }
     else
@@ -113,7 +115,7 @@ public class UserDataServiceSwitch : IUserDataService
   #region Debug
   public async Task CreateUserAsync(User user)
   {
-    if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+    if (_apiStatusChecker.CheckAPI().Result)
     {
     }
     else

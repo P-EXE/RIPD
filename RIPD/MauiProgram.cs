@@ -1,13 +1,15 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using RIPD.DataBase;
 using RIPD.DataServices;
 using RIPD.Pages;
+using RIPD.Services;
 using RIPD.ViewModels;
 using RIPD.Views;
 
 namespace RIPD
 {
-  public static class MauiProgram
+    public static class MauiProgram
   {
     public static MauiApp CreateMauiApp()
     {
@@ -20,14 +22,18 @@ namespace RIPD
           fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
         });
 
+      #region Services
+
+      builder.Services.AddSingleton<APIStatusChecker>();
+
+      #endregion Services
+
       #region Data Services
 
       builder.Services.AddDbContext<LocalDBContext>();
       LocalDBContext ldbc = new();
       ldbc.Database.EnsureCreated();
       ldbc.Dispose();
-
-      builder.Services.AddSingleton<APIStatusChecker>();
       
       builder.Services.AddSingleton<IUserDataService, UserDataServiceSwitch>();
       builder.Services.AddSingleton<UserDataServiceLocal>();

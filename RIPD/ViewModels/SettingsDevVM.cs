@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
-using RIPD.DataServices;
+using RIPD.DataBase;
 using RIPD.Models.ApiConnection;
 
 namespace RIPD.ViewModels;
