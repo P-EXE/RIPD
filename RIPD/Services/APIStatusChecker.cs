@@ -8,10 +8,12 @@ namespace RIPD.Services;
 public class APIStatusChecker
 {
   private readonly HttpClient _httpClient;
+  private readonly CancellationTokenSource _cancellationTokenSource;
 
   public APIStatusChecker()
   {
     _httpClient = new();
+    _cancellationTokenSource = new();
   }
   public async Task<bool> CheckAPI()
   {
@@ -28,6 +30,11 @@ public class APIStatusChecker
       Debug.WriteLine($"==CUSTOM=> APIStatusChecker/CheckAPI: HTTP Request cancelled! \n {ex}");
       cancellationTokenSource.Dispose();
       return false;
+    }
+    finally
+    {
+      _httpClient.Dispose();
+      _cancellationTokenSource.Dispose();
     }
   }
 }
