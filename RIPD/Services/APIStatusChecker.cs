@@ -16,7 +16,7 @@ public class APIStatusChecker
   public async Task<bool> CheckAPI()
   {
     CancellationTokenSource cancellationTokenSource = new();
-    cancellationTokenSource.CancelAfter(100);
+    cancellationTokenSource.CancelAfter(1000);
     CancellationToken cancellationToken = cancellationTokenSource.Token;
     try
     {
