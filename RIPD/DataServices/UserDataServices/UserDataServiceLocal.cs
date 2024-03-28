@@ -80,7 +80,6 @@ public class UserDataServiceLocal
       Debug.WriteLine($"----> UserDataService/GetOwnerAsync: Error while fetching Owner: {e}");
       return null;
     }
-    return null;
   }
   public async Task DeleteOwnerAsync()
   {

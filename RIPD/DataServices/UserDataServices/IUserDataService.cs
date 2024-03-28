@@ -7,6 +7,7 @@ public interface IUserDataService
   #region Owner
   Task CreateOwnerAsync(Owner owner);
   Task<Owner?> LogInOwnerAsync(string email, string password);
+  Task<bool> LogOutOwnerAsync();
   Task<Owner?> GetOwnerAsync();
   Task DeleteOwnerAsync();
   #endregion Owner
