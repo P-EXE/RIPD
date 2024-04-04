@@ -2,6 +2,7 @@
 
 public class Owner : User
 {
+  public Owner() { }
   public Owner(
     string name,
     string displayName,

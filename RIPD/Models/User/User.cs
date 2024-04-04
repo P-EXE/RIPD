@@ -3,19 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RIPD.Models;
 
-/// <summary>
-/// Represents a User with EF Core
-/// </summary>
-/// <remarks>
-/// Author: Paul
-/// </remarks>
 [PrimaryKey(nameof(Id))]
 [Index(nameof(Email), IsUnique = true)]
+[Index(nameof(Name), IsUnique = true)]
 //[Index(nameof(Token), IsUnique = true)]
 public class User
 {
   private int _id;
-  private string? _token;
   private string _name;
   private string _displayName;
   private string _email;
@@ -26,9 +20,7 @@ public class User
   private ICollection<User?> _followers = new HashSet<User?>();
 
   [Required]
-  public int Id { get => _id; }
-  [Required]
-  public string Token { get => _token; }
+  public int Id { get => _id; set => _id = value; }
   [Required]
   public string Name { get => _name; set => _name = value; }
   [Required]

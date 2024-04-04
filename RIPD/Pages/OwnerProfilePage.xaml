@@ -7,8 +7,12 @@
   <Grid RowDefinitions="auto,*">
     <HorizontalStackLayout Grid.Row="0">
       <VerticalStackLayout>
+        <Label Text="{Binding Owner.Id}"/>
         <Label Text="{Binding Owner.Name}"/>
+        <Label Text="{Binding Owner.DisplayName}"/>
         <Label Text="{Binding Owner.Email}"/>
+        <Label Text="{Binding Owner.Password}"/>
+        <Label Text="{Binding Owner.Created}"/>
       </VerticalStackLayout>
     </HorizontalStackLayout>
     <VerticalStackLayout Grid.Row="1">

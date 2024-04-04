@@ -9,6 +9,9 @@ namespace RIPD.ViewModels;
 public partial class RegisterVM : ObservableObject
 {
   private readonly IUserDataService _userDataService;
+
+  [ObservableProperty]
+  private bool _isAvailable = true;
   [ObservableProperty]
   private string? _name;
   [ObservableProperty]
@@ -26,7 +29,8 @@ public partial class RegisterVM : ObservableObject
   [RelayCommand]
   private async Task Register()
   {
-    Owner owner;
+    IsAvailable = false;
+    User_CreateDTO owner;
     try
     {
       owner = new(Name, DisplayName, Email, Password);
@@ -36,8 +40,13 @@ public partial class RegisterVM : ObservableObject
       Debug.WriteLine($"----> RegisterVM/Register: Error while creating user model: {ex}");
       return;
     }
-    await _userDataService.CreateOwnerAsync(owner);
-    await Shell.Current.Navigation.PopToRootAsync();
+    bool success = await _userDataService.CreateOwnerAsync(owner);
+    if (success)
+    {
+      await Shell.Current.Navigation.PopToRootAsync();
+    }
+    IsAvailable = true;
+    return;
   }
 
   [RelayCommand]

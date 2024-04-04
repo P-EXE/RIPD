@@ -19,7 +19,7 @@ public class UserDataServiceLocal
   {
     try
     {
-      await _localDBContext.AddAsync(owner);
+      await _localDBContext.Owner.AddAsync(owner);
     }
     catch (Exception addException)
     {
@@ -36,22 +36,23 @@ public class UserDataServiceLocal
       return;
     }
   }
-  public async Task<Owner?> LogInAsync(string email, string password)
+  public async Task LogInOwnerAsync(Owner owner)
   {
-    IQueryable<User> iQusers;
-    Owner owner;
     try
     {
-      iQusers = from u in _localDBContext.Users
-                where u.Email.Equals(email) && u.Password.Equals(password)
-                select u as User;
-      owner = await iQusers.FirstAsync() as Owner;
-      return owner;
+      await _localDBContext.Owner.AddAsync(owner);
     }
-    catch (Exception fetchException)
+    catch(Exception addException)
     {
-      Debug.WriteLine($"----> UserDataService/GetByEmailAsync: Error while fetching user by email & password: {fetchException}");
-      return null;
+      Debug.WriteLine($"==Exception==> UserDataService / LogInOwnerAsync: Error while logging in Owner: {addException}");
+    }
+    try
+    {
+      await _localDBContext.SaveChangesAsync();
+    }
+    catch (Exception saveException)
+    {
+      Debug.WriteLine($"==Exception==> UserDataService / LogInOwnerAsync: Error while logging in Owner: {saveException}");
     }
   }
   public async Task<Owner?> GetOwnerAsync()
@@ -81,10 +82,8 @@ public class UserDataServiceLocal
       return null;
     }
   }
-  public async Task DeleteOwnerAsync()
+  public async Task DeleteOwnerAsync(Owner owner)
   {
-    Owner? owner;
-    owner = await GetOwnerAsync();
     try
     {
       _localDBContext.Remove(owner);

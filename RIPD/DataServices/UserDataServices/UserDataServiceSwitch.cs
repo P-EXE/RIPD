@@ -1,4 +1,5 @@
-﻿using RIPD.Models;
+﻿using AutoMapper;
+using RIPD.Models;
 using RIPD.Services;
 using System.Diagnostics;
 
@@ -9,73 +10,45 @@ public class UserDataServiceSwitch : IUserDataService
   private readonly UserDataServiceAPI _api;
   private readonly UserDataServiceLocal _loc;
   private readonly APIStatusChecker _apiStatusChecker;
-  public UserDataServiceSwitch(UserDataServiceAPI api, UserDataServiceLocal loc, APIStatusChecker apiStatusChecker)
+  private readonly IMapper _mapper;
+  public UserDataServiceSwitch(UserDataServiceAPI api, UserDataServiceLocal loc, APIStatusChecker apiStatusChecker, IMapper mapper)
   {
     _api = api;
     _loc = loc;
     _apiStatusChecker = apiStatusChecker;
+    _mapper = mapper;
   }
 
   #region Owner
-  /// <summary>
-  /// Create a new User in the API DB and save it to the local DB as Owner
-  /// </summary>
-  /// <param name="owner"></param>
-  /// <returns></returns>
-  public async Task CreateOwnerAsync(Owner owner)
+  public async Task CreateOwnerAsync(User_CreateDTO user)
   {
-    if (_apiStatusChecker.CheckAPI().Result)
-    {
-      Debug.WriteLine($"==CUSTOM=> UserDataServiceSwitch/CreateOwnerAsync: Hit Online");
-      // Create User via API
-      // Save User as Owner in local DB
-    }
-    else
-    {
-      Debug.WriteLine($"==CUSTOM=> UserDataServiceSwitch/CreateOwnerAsync: Hit Online");
-      // For Debugging only
-      await _loc.CreateOwnerAsync(owner);
-    }
-    return;
+    Debug.WriteLine($"==Status==> UserDataServiceSwitch / CreateOwnerAsync : Hit Online");
+    User resultUser = await _api.CreateUserAsync(user);
+    Owner owner = _mapper.Map<Owner>(resultUser);
+    await _loc.CreateOwnerAsync(owner);
+    Debug.WriteLine($"==Status==> UserDataServiceSwitch / CreateOwnerAsync : Done Online");
   }
-  public async Task<Owner?> LogInOwnerAsync(string email, string password)
+  public async Task LogInOwnerAsync(string email, string password)
   {
-    if (_apiStatusChecker.CheckAPI().Result)
-    {
-      // Check credentials and return the matching User as Owner
-    }
-    else
-    {
-      // For Debugging only
-      return await _loc.LogInAsync(email, password);
-    }
-    return null;
+    User user = await _api.GetUserByEmailAndPassword(email, password);
+    Owner owner = _mapper.Map<Owner>(user);
+    await _loc.LogInOwnerAsync(owner);
   }
-  public async Task<bool> LogOutOwnerAsync()
+  public async Task LogOutOwnerAsync()
   {
-    return false;
+    Owner owner = await _loc.GetOwnerAsync();
+    await _loc.DeleteOwnerAsync(owner);
   }
 
-  /// <summary>
-  /// Fetch the owner from the Local DB
-  /// </summary>
-  /// <returns></returns>
   public async Task<Owner?> GetOwnerAsync()
   {
     return await _loc.GetOwnerAsync();
   }
   public async Task DeleteOwnerAsync()
   {
-    if (_apiStatusChecker.CheckAPI().Result)
-    {
-      // Delete user in API DB & Local DB
-    }
-    else
-    {
-      // Only for local Debugging
-      await _loc.DeleteOwnerAsync();
-    }
-    return;
+    Owner owner = await _loc.GetOwnerAsync();
+    await _api.DeleteUserAsync(owner.Id);
+    await _loc.DeleteOwnerAsync(owner);
   }
   #endregion Owner
 

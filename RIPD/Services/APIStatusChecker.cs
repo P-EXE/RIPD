@@ -12,7 +12,7 @@ public class APIStatusChecker
   public APIStatusChecker()
   {
     _httpClient = new();
-    _httpClient.Timeout = TimeSpan.FromMicroseconds(1000);
+    _httpClient.Timeout = TimeSpan.FromMilliseconds(2000);
   }
   public async Task<bool> CheckAPI()
   {

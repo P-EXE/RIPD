@@ -13,7 +13,7 @@
         <Entry Placeholder="e-mail" Text="{Binding Email}"/>
         <Entry IsPassword="True" Placeholder="Password" Text="{Binding Password}"/>
       </VerticalStackLayout>
-      <Button Text="Register" Command="{Binding RegisterCommand}"/>
+      <Button Text="Register" Command="{Binding RegisterCommand}" IsEnabled="{Binding IsAvailable}"/>
       <Button Text="Log in instead" Command="{Binding NavToLoginPageCommand}"/>
     </VerticalStackLayout>
   </Grid>

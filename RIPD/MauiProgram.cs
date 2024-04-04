@@ -25,6 +25,7 @@ namespace RIPD
       #region Services
 
       builder.Services.AddSingleton<APIStatusChecker>();
+      builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
       #endregion Services
 
