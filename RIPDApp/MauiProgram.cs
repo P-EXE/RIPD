@@ -1,4 +1,7 @@
 ﻿using CommunityToolkit.Maui;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RIPDApp.DataBase;
@@ -22,6 +25,21 @@ public static class MauiProgram
         fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
         fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
       });
+
+    #region SQLite
+
+    SqliteConnection sqliteConnection = new SqliteConnection(
+      builder.Configuration.GetConnectionString("SQLiteConnection")
+    );
+    sqliteConnection.Open();
+    builder.Services.AddDbContext<LocalDBContext>(options =>
+      options.UseSqlite(sqliteConnection)
+    );
+
+
+    #endregion SQLite
+
+
 
     #region Services
 

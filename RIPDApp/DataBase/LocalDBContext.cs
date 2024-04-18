@@ -10,6 +10,11 @@ public class LocalDBContext : DbContext
 
   public DbSet<AppUser> Users { get; set; }
 
+  public LocalDBContext(DbContextOptions<LocalDBContext> options) : base(options)
+  {
+    Database.EnsureCreated();
+  }
+
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
   {
   }
