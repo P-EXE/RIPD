@@ -9,19 +9,29 @@
     Shell.FlyoutBehavior="Disabled"
     Title="RIPD">
 
-  <Shell.TitleView>
-  </Shell.TitleView>
+  <FlyoutItem Title="Register" FlyoutItemIsVisible="True">
+    <Tab Title="Register">
+      <ShellContent
+        ContentTemplate="{DataTemplate pages:RegisterPage}"
+        Route="RegisterPage" />
+    </Tab>
+    <Tab Title="Log in">
+      <ShellContent
+        ContentTemplate="{DataTemplate pages:LoginPage}"
+        Route="LoginPage" />
+    </Tab>
+  </FlyoutItem>
 
   <TabBar>
     <Tab Title="Home">
       <ShellContent
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        ContentTemplate="{DataTemplate pages:HomePage}"
+        Route="HomePage" />
     </Tab>
     <Tab Title="Feed">
       <ShellContent
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        ContentTemplate="{DataTemplate pages:FeedPage}"
+        Route="FeedPage" />
     </Tab>
     <Tab Title="Add Food">
       <ShellContent

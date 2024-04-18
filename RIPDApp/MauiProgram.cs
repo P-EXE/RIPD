@@ -36,10 +36,7 @@ public static class MauiProgram
       options.UseSqlite(sqliteConnection)
     );
 
-
     #endregion SQLite
-
-
 
     #region Services
 
@@ -48,7 +45,7 @@ public static class MauiProgram
     builder.Services.AddTransient<IHttpService, HttpService>();
     builder.Services.AddHttpClient<IHttpService, HttpService>(options =>
     {
-      options.BaseAddress = new("");
+      options.BaseAddress = new(Statics.APIRouteBaseHttp);
     });
 
     builder.Services.AddTransient<IOwnerService, OwnerService>();
@@ -59,14 +56,41 @@ public static class MauiProgram
 
     #region Pages Views ViewModels
 
+    #region Register & Login
+
+    builder.Services.AddTransient<RegisterPage>();
+    builder.Services.AddTransient<RegisterVM>();
+
+    builder.Services.AddTransient<LoginPage>();
+    builder.Services.AddTransient<LoginVM>();
+
+    #endregion Register & Login
+
     #region global
-    builder.Services.AddSingleton<StatusBarV>();
-    builder.Services.AddSingleton<StatusBarVM>();
+
+    builder.Services.AddTransient<StatusBarV>();
+    builder.Services.AddTransient<StatusBarVM>();
+
     #endregion global
 
+    #region Home
+
+    builder.Services.AddTransient<HomePage>();
+    builder.Services.AddTransient<HomeVM>();
+
+    #endregion Home
+
+    #region Feed
+
+    builder.Services.AddTransient<FeedPage>();
+    builder.Services.AddTransient<FeedVM>();
+
+    #endregion Feed
+
     #region food
-    builder.Services.AddSingleton<AddFoodPage>();
-    builder.Services.AddSingleton<AddFoodVM>();
+
+    builder.Services.AddTransient<AddFoodPage>();
+    builder.Services.AddTransient<AddFoodVM>();
 
     builder.Services.AddTransient<FoodListFoodV>();
     builder.Services.AddTransient<FoodListFoodVM>();
@@ -76,26 +100,27 @@ public static class MauiProgram
 
     builder.Services.AddTransient<NewFoodPage>();
     builder.Services.AddTransient<NewFoodVM>();
+
     #endregion food
 
     #region user
-    builder.Services.AddSingleton<ProfilePage>();
-    builder.Services.AddSingleton<ProfileVM>();
-    builder.Services.AddSingleton<OwnerProfilePage>();
-    builder.Services.AddSingleton<OwnerProfileVM>();
 
-    builder.Services.AddTransient<RegisterPage>();
-    builder.Services.AddTransient<RegisterVM>();
+    builder.Services.AddTransient<ProfilePage>();
+    builder.Services.AddTransient<ProfileVM>();
+    builder.Services.AddTransient<OwnerProfilePage>();
+    builder.Services.AddTransient<OwnerProfileVM>();
 
-    builder.Services.AddTransient<LoginPage>();
-    builder.Services.AddTransient<LoginVM>();
     #endregion user
 
-    builder.Services.AddSingleton<SettingsPage>();
-    builder.Services.AddSingleton<SettingsVM>();
+    #region Settings
+
+    builder.Services.AddTransient<SettingsPage>();
+    builder.Services.AddTransient<SettingsVM>();
 
     builder.Services.AddTransient<SettingsDevPage>();
     builder.Services.AddTransient<SettingsDevVM>();
+
+    #endregion Settings
 
     #endregion Pages Views ViewModels
 

@@ -8,13 +8,10 @@
     <Label Grid.Row="0" Text="Register" FontSize="70"/>
     <VerticalStackLayout Grid.Row="1">
       <VerticalStackLayout Margin="0,10">
-        <Entry Placeholder="Name" Text="{Binding Name}"/>
-        <Entry Placeholder="Display Name" Text="{Binding DisplayName}"/>
         <Entry Placeholder="e-mail" Text="{Binding Email}"/>
         <Entry IsPassword="True" Placeholder="Password" Text="{Binding Password}"/>
       </VerticalStackLayout>
       <Button Text="Register" Command="{Binding RegisterCommand}" IsEnabled="{Binding IsAvailable}"/>
-      <Button Text="Log in instead" Command="{Binding NavToLoginPageCommand}"/>
     </VerticalStackLayout>
   </Grid>
 </ContentPage>

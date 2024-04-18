@@ -4,8 +4,5 @@
              xmlns:statusbar="clr-namespace:RIPDApp.Views"
              xmlns:views="clr-namespace:RIPDApp.Views.Login"
              x:Class="RIPDApp.MainPage">
-  <FlexLayout>
-    <statusbar:StatusBarV/>
-  </FlexLayout>
 
 </ContentPage>

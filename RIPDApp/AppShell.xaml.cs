@@ -1,26 +1,27 @@
-﻿using Microsoft.Maui.Controls;
-using RIPDApp.Pages;
+﻿using RIPDApp.Pages;
 
-namespace RIPDApp
+namespace RIPDApp;
+
+public partial class AppShell : Shell
 {
-  public partial class AppShell : Shell
+  public AppShell()
   {
-    public AppShell()
-    {
-      InitializeComponent();
+    InitializeComponent();
 
-      #region Routes      
-      Routing.RegisterRoute(nameof(FoodDetailsPage), typeof(FoodDetailsPage));
-      Routing.RegisterRoute(nameof(NewFoodPage), typeof(NewFoodPage));
+    #region Routes
+    Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
+    Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
 
-      Routing.RegisterRoute(nameof(ProfilePage), typeof(ProfilePage));
-      Routing.RegisterRoute(nameof(OwnerProfilePage), typeof(OwnerProfilePage));
-      Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
-      Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
+    Routing.RegisterRoute(nameof(HomePage), typeof(HomePage));
 
-      Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
-      Routing.RegisterRoute(nameof(SettingsDevPage), typeof(SettingsDevPage));
-      #endregion Routes
-    }
+    Routing.RegisterRoute(nameof(FoodDetailsPage), typeof(FoodDetailsPage));
+    Routing.RegisterRoute(nameof(NewFoodPage), typeof(NewFoodPage));
+
+    Routing.RegisterRoute(nameof(ProfilePage), typeof(ProfilePage));
+    Routing.RegisterRoute(nameof(OwnerProfilePage), typeof(OwnerProfilePage));
+
+    Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
+    Routing.RegisterRoute(nameof(SettingsDevPage), typeof(SettingsDevPage));
+    #endregion Routes
   }
 }
