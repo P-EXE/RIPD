@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:RIPDApp.ViewModels"
+             x:Class="RIPDApp.Pages.FoodDetailsPage"
+             xmlns:models="clr-namespace:RIPDApp.Models"
+             x:DataType="viewmodels:FoodDetailsVM">
+  <VerticalStackLayout x:DataType="viewmodels:FoodDetailsVM">
+    <Label Text="{Binding Food.Name}"/>
+  </VerticalStackLayout>
+</ContentPage>
