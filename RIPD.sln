@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34322.80
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RIPD", "RIPD\RIPD.csproj", "{40E512EA-2CD6-4B2E-9D8E-8A6F664FD38B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RIPDShared", "RIPDShared\RIPDShared.csproj", "{DC3BD834-AFB3-4623-87CA-8C7B216B35ED}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RIPDApi", "RIPDApi\RIPDApi.csproj", "{31649C3B-C883-414C-8083-6F06A8BB4A92}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RIPDApp", "RIPDApp\RIPDApp.csproj", "{D6F600F7-3309-4182-8244-D9551C6698C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,12 +15,20 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{40E512EA-2CD6-4B2E-9D8E-8A6F664FD38B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{40E512EA-2CD6-4B2E-9D8E-8A6F664FD38B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{40E512EA-2CD6-4B2E-9D8E-8A6F664FD38B}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{40E512EA-2CD6-4B2E-9D8E-8A6F664FD38B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{40E512EA-2CD6-4B2E-9D8E-8A6F664FD38B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{40E512EA-2CD6-4B2E-9D8E-8A6F664FD38B}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{DC3BD834-AFB3-4623-87CA-8C7B216B35ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC3BD834-AFB3-4623-87CA-8C7B216B35ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC3BD834-AFB3-4623-87CA-8C7B216B35ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC3BD834-AFB3-4623-87CA-8C7B216B35ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31649C3B-C883-414C-8083-6F06A8BB4A92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31649C3B-C883-414C-8083-6F06A8BB4A92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31649C3B-C883-414C-8083-6F06A8BB4A92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31649C3B-C883-414C-8083-6F06A8BB4A92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6F600F7-3309-4182-8244-D9551C6698C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6F600F7-3309-4182-8244-D9551C6698C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6F600F7-3309-4182-8244-D9551C6698C9}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{D6F600F7-3309-4182-8244-D9551C6698C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6F600F7-3309-4182-8244-D9551C6698C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6F600F7-3309-4182-8244-D9551C6698C9}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
