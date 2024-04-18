@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="RIPDApp.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:RIPDApp"
+    xmlns:pages="clr-namespace:RIPDApp.Pages"
+    xmlns:views="clr-namespace:RIPDApp.Views"
+    Shell.FlyoutBehavior="Disabled"
+    Title="RIPD">
+
+  <Shell.TitleView>
+  </Shell.TitleView>
+
+  <TabBar>
+    <Tab Title="Home">
+      <ShellContent
+        ContentTemplate="{DataTemplate local:MainPage}"
+        Route="MainPage" />
+    </Tab>
+    <Tab Title="Feed">
+      <ShellContent
+        ContentTemplate="{DataTemplate local:MainPage}"
+        Route="MainPage" />
+    </Tab>
+    <Tab Title="Add Food">
+      <ShellContent
+        ContentTemplate="{DataTemplate pages:AddFoodPage}"
+        Route="AddFoodPage" />
+    </Tab>
+    <Tab Title="Profile">
+      <ShellContent
+        ContentTemplate="{DataTemplate pages:OwnerProfilePage}"
+        Route="OwnerProfilePage" />
+    </Tab>
+    <Tab Title="Settings">
+      <ShellContent
+        ContentTemplate="{DataTemplate pages:SettingsPage}"
+        Route="MainPage" />
+    </Tab>
+  </TabBar>
+
+</Shell>
