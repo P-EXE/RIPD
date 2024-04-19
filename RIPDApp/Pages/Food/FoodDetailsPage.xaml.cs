@@ -4,9 +4,11 @@ namespace RIPDApp.Pages;
 
 public partial class FoodDetailsPage : ContentPage
 {
-	public FoodDetailsPage()
+	private readonly FoodDetailsVM _vm;
+	public FoodDetailsPage(FoodDetailsVM vm)
 	{
+		_vm = vm;
+		BindingContext = _vm;
 		InitializeComponent();
-		BindingContext = new FoodDetailsVM();
 	}
 }

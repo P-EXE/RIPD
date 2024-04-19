@@ -60,10 +60,10 @@ public class FoodController : ControllerBase
   }
 
   [HttpGet]
-  public async Task<IEnumerable<Food>> GetFoodsByNameAtPositionAsync([FromQuery] string foodName, [FromQuery] int position)
+  public async Task<IEnumerable<Food>?> GetFoodsByNameAtPositionAsync([FromQuery] string foodName, [FromQuery] int position)
   {
-    IEnumerable<Food> foods = _dbContext.Foods
-      .Where(f => f.Name.Contains(foodName))
+    IEnumerable<Food>? foods = _dbContext.Foods
+      .Where(f => f.Name.StartsWith(foodName))
       .OrderBy(f => f.Name)
       .Skip(position)
       .Take(5)

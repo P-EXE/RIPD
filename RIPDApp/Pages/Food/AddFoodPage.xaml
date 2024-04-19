@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:v="clr-namespace:RIPDApp.Views"
              xmlns:vm="clr-namespace:RIPDApp.ViewModels"
              x:Class="RIPDApp.Pages.AddFoodPage"
              x:DataType="vm:AddFoodVM">
-  <Grid RowDefinitions="*,auto" >
-    <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
-      <CollectionView Grid.Row="0"
-                      SelectionMode="Single"
+  <Grid RowDefinitions="auto, *,auto">
+    <SearchBar Grid.Row="0"
+               Text="{Binding SearchText}">
+      <SearchBar.Behaviors>
+        <toolkit:EventToCommandBehavior
+          EventName="TextChanged"
+          Command="{Binding SearchCommand}"
+          />
+      </SearchBar.Behaviors>
+    </SearchBar>
+    <RefreshView Grid.Row="1"
+                 Command="{Binding RefreshCommand}"
+                 IsRefreshing="{Binding IsRefreshing}">
+      <CollectionView SelectionMode="Single"
                       ItemsSource="{Binding Foods}"
                       SelectedItem="{Binding SelectedFood}"
                       SelectionChangedCommand="{Binding ShowDetailsCommand}">
@@ -16,19 +27,19 @@
           <DataTemplate>
             <SwipeView>
               <v:FoodListFoodV/>
-              <SwipeView.RightItems>
+              <!--<SwipeView.RightItems>
                 <SwipeItems Mode="Execute">
                   <SwipeItemView BackgroundColor="#00ff00" 
                                  Command="{Binding QuickAddFoodCommand}">
                     <Label Text="Add" HorizontalOptions="Center" VerticalOptions="Center" Padding="10,0"/>
                   </SwipeItemView>
                 </SwipeItems>
-              </SwipeView.RightItems>
+              </SwipeView.RightItems>-->
             </SwipeView>
           </DataTemplate>
         </CollectionView.ItemTemplate>
       </CollectionView>
     </RefreshView>
-    <Button Grid.Row="1" Text="New Food" Command="{Binding NewFoodCommand}"/>
+    <Button Grid.Row="2" Text="New Food" Command="{Binding NewFoodCommand}"/>
   </Grid>
 </ContentPage>

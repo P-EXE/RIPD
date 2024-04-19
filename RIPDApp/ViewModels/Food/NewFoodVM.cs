@@ -40,7 +40,7 @@ public partial class NewFoodVM : ObservableObject
       {
         Barcode = Barcode,
         Name = Name,
-        ManufacturerId = new(),
+        ManufacturerId = new(Manufacturer),
         Description = Description,
         Image = Image
       };

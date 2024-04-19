@@ -14,4 +14,21 @@ public class FoodService : IFoodService
   {
     return await _httpService.PostAsync("foods", createFood);
   }
+
+  public Task<IEnumerable<Food>?> GetUsersRecentlyAddedFoods()
+  {
+    throw new NotImplementedException();
+  }
+
+  public async Task<IEnumerable<Food>?> GetFoodsByNameAtPositionAsync(string query, int position)
+  {
+    IEnumerable<Food>? foods;
+    Dictionary<string, string> queries = new()
+    {
+      ["foodName"] = query,
+      ["position"] = position.ToString(),
+    };
+    foods = await _httpService.GetAsync<IEnumerable<Food>?>("foods", queries);
+    return foods;
+  }
 }

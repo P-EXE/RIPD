@@ -29,6 +29,7 @@ public partial class RegisterVM : ObservableObject
     bool result = await _ownerService.RegisterAsync(Email, Password);
     if (result)
     {
+      await _ownerService.LoginAsync(Email, Password);
       await Shell.Current.GoToAsync($"//{nameof(HomePage)}");
       return;
     }

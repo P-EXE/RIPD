@@ -5,11 +5,12 @@ using RIPDShared.Models;
 namespace RIPDApp.ViewModels;
 
 [QueryProperty("Food", "Food")]
-internal partial class FoodDetailsVM : ObservableObject
+public partial class FoodDetailsVM : ObservableObject
 {
-  [ObservableProperty]
-  private Food _food;
+  public FoodDetailsVM()
+  {
+  }
 
-  [RelayCommand]
-  async Task GoBack() => await Shell.Current.GoToAsync("..");
+  [ObservableProperty]
+  private Food? _food;
 }

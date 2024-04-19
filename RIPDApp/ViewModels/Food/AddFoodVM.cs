@@ -9,22 +9,32 @@ namespace RIPDApp.ViewModels;
 
 public partial class AddFoodVM : ObservableObject
 {
-  private readonly IFoodService _foodDataService;
+  private readonly IFoodService _foodService;
 
-  public AddFoodVM(IFoodService foodDataService)
+  public AddFoodVM(IFoodService foodService)
   {
     _foods = new List<Food>();
-    _foodDataService = foodDataService;
+    _foodService = foodService;
   }
 
   [ObservableProperty]
   private bool _isRefreshing;
 
   [ObservableProperty]
-  private List<Food> _foods;
+  private string _searchText;
+
+  [ObservableProperty]
+  private IEnumerable<Food>? _foods;
 
   [ObservableProperty]
   private Food? _selectedFood;
+
+
+  [RelayCommand]
+  async Task Search()
+  {
+    Foods = await _foodService.GetFoodsByNameAtPositionAsync(SearchText, 0);
+  }
 
   [RelayCommand]
   async Task Refresh()
@@ -32,9 +42,13 @@ public partial class AddFoodVM : ObservableObject
   }
 
   [RelayCommand]
-  async Task ShowDetails(Food food)
+  async Task ShowDetails()
   {
-    await Shell.Current.GoToAsync($"{nameof(FoodDetailsPage)}?Food={food}");
+    await Shell.Current.GoToAsync($"{nameof(FoodDetailsPage)}", true, new Dictionary<string, object>
+    {
+      [nameof(Food)] = SelectedFood
+    });
+    SelectedFood = null;
   }
 
   [RelayCommand]
