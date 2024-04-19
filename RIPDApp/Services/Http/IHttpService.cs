@@ -4,6 +4,7 @@ namespace RIPDApp.Services;
 
 public interface IHttpService
 {
+  /*Task<bool> Authorize();*/
   Task<T?> GetAsync<T>(string route, [CallerMemberName] string caller = "");
   Task<T?> GetAsync<T>(string route, Dictionary<string, string> queriesDict, [CallerMemberName] string caller = "");
 

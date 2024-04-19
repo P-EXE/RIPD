@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using System.Net;
+using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
@@ -7,7 +9,7 @@ namespace RIPDApp.Services;
 
 internal class HttpService : IHttpService
 {
-  private readonly HttpClient _httpClient;
+  private HttpClient _httpClient;
   private readonly JsonSerializerOptions _jsonSerializerOptions;
   public HttpService(HttpClient httpClient)
   {
@@ -18,6 +20,19 @@ internal class HttpService : IHttpService
       PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
     };
   }
+
+/*  public async Task<bool> Authorize()
+  {
+    try
+    {
+      _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Statics.API.BearerToken?.AccessToken);
+    }
+    catch (Exception ex)
+    {
+      return false;
+    }
+    return true;
+  }*/
 
   public async Task<T?> GetAsync<T>(string route, [CallerMemberName] string caller = "")
   {

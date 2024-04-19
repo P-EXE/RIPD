@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RIPDApi.Data;
@@ -17,6 +18,14 @@ public class UserController : ControllerBase
   {
     _mapper = mapper;
     _dbContext = dbContext;
+  }
+
+  [HttpGet("GetSelf"), Authorize]
+  public async Task<AppUser?> GetUserName()
+  {
+    string? userName = User?.Identity?.Name;
+    AppUser? appUser = await _dbContext.Users.Where(x => x.UserName == userName).FirstOrDefaultAsync();
+    return appUser;
   }
 
   #region User

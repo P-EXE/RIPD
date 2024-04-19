@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewmodels="clr-namespace:RIPDApp.ViewModels"
-             xmlns:models="clr-namespace:RIPDApp.Models"
+             xmlns:vm="clr-namespace:RIPDApp.ViewModels"
              x:Class="RIPDApp.Pages.NewFoodPage"
-             x:DataType="viewmodels:NewFoodVM">
+             x:DataType="vm:NewFoodVM">
   <Grid RowDefinitions="*,auto">
     <VerticalStackLayout Grid.Row="0">
       <Entry Placeholder="Barcode" Text="{Binding Barcode}"/>

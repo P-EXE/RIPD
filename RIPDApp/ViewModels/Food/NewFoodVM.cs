@@ -8,52 +8,50 @@ namespace RIPDApp.ViewModels;
 
 public partial class NewFoodVM : ObservableObject
 {
-  private readonly IFoodService _foodDataService;
-  private readonly IUserService _userDataService;
-  [ObservableProperty]
-  private string _barcode;
-  [ObservableProperty]
-  private string _name;
-  [ObservableProperty]
-  private int _manufacturer;
-  [ObservableProperty]
-  private string _description;
-  [ObservableProperty]
-  private string _image;
+  private readonly IFoodService _foodService;
 
-  public NewFoodVM(IFoodService foodDataService, IUserService userDataService)
+  public NewFoodVM(IFoodService foodService)
   {
-    _foodDataService = foodDataService;
-    _userDataService = userDataService;
+    _foodService = foodService;
   }
+
+  [ObservableProperty]
+  private bool _available = true;
+  [ObservableProperty]
+  private string? _barcode;
+  [ObservableProperty]
+  private string? _name;
+  [ObservableProperty]
+  private string? _manufacturer;
+  [ObservableProperty]
+  private string? _description;
+  [ObservableProperty]
+  private string? _image;
+
 
   [RelayCommand]
   private async Task CreateNewFood()
   {
-/*    Debug.WriteLine("Starting to add food");
+    bool success = false;
+    Available = false;
     try
     {
-      Food_CreateDTO food = new()
+      FoodDTO_Create createFood = new()
       {
         Barcode = Barcode,
         Name = Name,
-        Contributer = _userDataService.GetOwnerAsync().Result.Id,
-        Manufacturer = Manufacturer,
+        ManufacturerId = new(),
         Description = Description,
-        Image = Image,
-        CreationDateTime = DateTime.Now
+        Image = Image
       };
-      await _foodDataService.CreateAsync(food);
+      success = await _foodService.CreateFoodAsync(createFood);
     }
     catch (Exception ex)
     {
-      Debug.WriteLine(ex);
+
     }
-    finally
-    {
-      
-    }
-    GoBack();*/
+    if (success) await GoBack();
+    Available = true;
   }
 
   [RelayCommand]

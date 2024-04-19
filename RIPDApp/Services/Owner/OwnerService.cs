@@ -5,7 +5,7 @@ namespace RIPDApp.Services;
 
 public class OwnerService : IOwnerService
 {
-  private readonly IHttpService _httpService;
+  private IHttpService _httpService;
   public OwnerService(IHttpService httpService)
   {
     _httpService = httpService;
@@ -13,7 +13,7 @@ public class OwnerService : IOwnerService
 
   public async Task<bool> RegisterAsync(string email, string password)
   {
-    AppUser_DTOCreate createUser = new() { Email = email, Password = password };
+    AppUserDTO_Create createUser = new() { Email = email, Password = password };
 
     bool result = await _httpService.PostAsync("user/register", createUser);
     return result;
@@ -21,14 +21,15 @@ public class OwnerService : IOwnerService
 
   public async Task<bool> LoginAsync(string email, string password)
   {
-        AppUser_DTOCreate createUser = new() { Email = email, Password = password };
+        AppUserDTO_Create createUser = new() { Email = email, Password = password };
 
-    BearerToken? bt = await _httpService.PostAsync<AppUser_DTOCreate, BearerToken>("user/login", createUser);
+    BearerToken? bt = await _httpService.PostAsync<AppUserDTO_Create, BearerToken>("user/login", createUser);
     if (bt != null)
     {
       Debug.WriteLine($"==Success==> {nameof(LoginAsync)} : Got {nameof(BearerToken)}");
 
       Statics.API.BearerToken = bt;
+      /*await _httpService.Authorize();*/
 /*      await SecureStorage.Default.SetAsync("AccessToken", bt.AccessToken);
       await SecureStorage.Default.SetAsync("RefreshToken", bt.RefreshToken);*/
       return true;

@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:views="clr-namespace:RIPDApp.Views"
-             xmlns:viewmodels="clr-namespace:RIPDApp.ViewModels"
+             xmlns:v="clr-namespace:RIPDApp.Views"
+             xmlns:vm="clr-namespace:RIPDApp.ViewModels"
              x:Class="RIPDApp.Pages.AddFoodPage"
-             x:DataType="viewmodels:AddFoodVM">
+             x:DataType="vm:AddFoodVM">
   <Grid RowDefinitions="*,auto" >
     <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
-      <CollectionView Grid.Row="0" ItemsSource="{Binding Foods}">
+      <CollectionView Grid.Row="0"
+                      SelectionMode="Single"
+                      ItemsSource="{Binding Foods}"
+                      SelectedItem="{Binding SelectedFood}"
+                      SelectionChangedCommand="{Binding ShowDetailsCommand}">
         <CollectionView.ItemTemplate>
-          <DataTemplate x:DataType="viewmodels:FoodListFoodVM">
+          <DataTemplate>
             <SwipeView>
-              <SwipeView.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:AddFoodVM}}, Path=ShowDetailsCommand}" CommandParameter="{Binding Food}"/>
-              </SwipeView.GestureRecognizers>
-              <views:FoodListFoodV  FlexLayout.Grow="1"/>
+              <v:FoodListFoodV/>
               <SwipeView.RightItems>
                 <SwipeItems Mode="Execute">
-                  <SwipeItemView BackgroundColor="#00ff00" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:AddFoodVM}}, Path=AddFoodCommand}">
+                  <SwipeItemView BackgroundColor="#00ff00" 
+                                 Command="{Binding QuickAddFoodCommand}">
                     <Label Text="Add" HorizontalOptions="Center" VerticalOptions="Center" Padding="10,0"/>
                   </SwipeItemView>
                 </SwipeItems>

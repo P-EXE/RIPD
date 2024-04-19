@@ -11,31 +11,24 @@ public partial class AddFoodVM : ObservableObject
 {
   private readonly IFoodService _foodDataService;
 
-  [ObservableProperty]
-  private bool _isRefreshing;
-
-  [ObservableProperty]
-  private List<Food> _foods;
-
   public AddFoodVM(IFoodService foodDataService)
   {
     _foods = new List<Food>();
     _foodDataService = foodDataService;
   }
 
+  [ObservableProperty]
+  private bool _isRefreshing;
+
+  [ObservableProperty]
+  private List<Food> _foods;
+
+  [ObservableProperty]
+  private Food? _selectedFood;
+
   [RelayCommand]
   async Task Refresh()
   {
-    try
-    {
-      Foods.Clear();
-      /*Foods = await _foodDataService.GetMultipleAsync();*/
-    }
-    catch (Exception ex)
-    {
-
-    }
-    finally { IsRefreshing = false; }
   }
 
   [RelayCommand]
@@ -45,7 +38,7 @@ public partial class AddFoodVM : ObservableObject
   }
 
   [RelayCommand]
-  private async void AddFood()
+  private async void QuickAddFood()
   {
 
   }

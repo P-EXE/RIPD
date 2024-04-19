@@ -9,6 +9,7 @@ using RIPDApp.Pages;
 using RIPDApp.Services;
 using RIPDApp.ViewModels;
 using RIPDApp.Views;
+using System.Net.Http.Headers;
 
 namespace RIPDApp;
 
@@ -46,6 +47,7 @@ public static class MauiProgram
     builder.Services.AddHttpClient<IHttpService, HttpService>(options =>
     {
       options.BaseAddress = new(Statics.API.RouteBaseHttp);
+      options.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Statics.API.BearerToken?.AccessToken ?? "");
     });
 
     builder.Services.AddTransient<IOwnerService, OwnerService>();

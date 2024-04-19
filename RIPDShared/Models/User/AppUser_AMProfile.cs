@@ -6,6 +6,6 @@ public class AppUser_AMProfile : Profile
 {
   public AppUser_AMProfile()
   {
-    CreateMap<AppUser_DTOCreate, AppUser>();
+    CreateMap<AppUserDTO_Create, AppUser>();
   }
 }
