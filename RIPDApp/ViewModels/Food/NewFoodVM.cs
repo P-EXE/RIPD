@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using RIPDApp.Services;
 using RIPDShared.Models;
-using System.Diagnostics;
 
 namespace RIPDApp.ViewModels;
 
@@ -27,7 +26,6 @@ public partial class NewFoodVM : ObservableObject
   private string? _description;
   [ObservableProperty]
   private string? _image;
-
 
   [RelayCommand]
   private async Task CreateNewFood()
