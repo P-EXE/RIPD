@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:RIPDApp.ViewModels"
+             x:Class="RIPDApp.Pages.SettingsDevPage"
+             x:DataType="viewmodels:SettingsDevVM">
+  <VerticalStackLayout>
+    <VerticalStackLayout>
+      <Label Text="Type:"/>
+      <Label Text="{Binding BearerToken.TokenType}"/>
+      <Label Text="Token:"/>
+      <Label Text="{Binding BearerToken.AccessToken}"/>
+      <Label Text="Timeout:"/>
+      <Label Text="{Binding BearerToken.ExpiresIn}"/>
+      <Label Text="Refresh:"/>
+      <Label Text="{Binding BearerToken.RefreshToken}"/>
+    </VerticalStackLayout>
+  </VerticalStackLayout>
+</ContentPage>

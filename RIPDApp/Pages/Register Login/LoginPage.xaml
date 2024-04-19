@@ -12,7 +12,6 @@
         <Entry IsPassword="True" Placeholder="Password" Text="{Binding Password}"/>
       </VerticalStackLayout>
       <Button Text="Log in" Command="{Binding LogInCommand}"/>
-      <Button Text="Register instead" Command="{Binding NavBackCommand}"/>
     </VerticalStackLayout>
   </Grid>
 </ContentPage>

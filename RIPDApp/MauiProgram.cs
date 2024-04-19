@@ -45,7 +45,7 @@ public static class MauiProgram
     builder.Services.AddTransient<IHttpService, HttpService>();
     builder.Services.AddHttpClient<IHttpService, HttpService>(options =>
     {
-      options.BaseAddress = new(Statics.APIRouteBaseHttp);
+      options.BaseAddress = new(Statics.API.RouteBaseHttp);
     });
 
     builder.Services.AddTransient<IOwnerService, OwnerService>();

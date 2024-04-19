@@ -28,7 +28,7 @@ public class OwnerService : IOwnerService
     {
       Debug.WriteLine($"==Success==> {nameof(LoginAsync)} : Got {nameof(BearerToken)}");
 
-      Statics.BearerToken = bt;
+      Statics.API.BearerToken = bt;
 /*      await SecureStorage.Default.SetAsync("AccessToken", bt.AccessToken);
       await SecureStorage.Default.SetAsync("RefreshToken", bt.RefreshToken);*/
       return true;

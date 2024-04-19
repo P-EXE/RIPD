@@ -77,7 +77,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Views\FoodListFoodV.xaml.cs">
+	  <Compile Update="Views\Food\FoodListFoodV.xaml.cs">
 	    <DependentUpon>FoodListFoodV.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Views\StatusBar\StatusBarV.xaml.cs">
@@ -86,13 +86,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Pages\AddFoodPage.xaml">
+	  <MauiXaml Update="Pages\Food\AddFoodPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Feed\FeedPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\FoodDetailsPage.xaml">
+	  <MauiXaml Update="Pages\Food\FoodDetailsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Home\HomePage.xaml">
@@ -101,25 +101,25 @@
 	  <MauiXaml Update="Pages\Register Login\LoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\NewFoodPage.xaml">
+	  <MauiXaml Update="Pages\Food\NewFoodPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\OwnerProfilePage.xaml">
+	  <MauiXaml Update="Pages\User\OwnerProfilePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\ProfilePage.xaml">
+	  <MauiXaml Update="Pages\User\ProfilePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Register Login\RegisterPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\SettingsDevPage.xaml">
+	  <MauiXaml Update="Pages\Settings\SettingsDevPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\SettingsPage.xaml">
+	  <MauiXaml Update="Pages\Settings\SettingsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\FoodListFoodV.xaml">
+	  <MauiXaml Update="Views\Food\FoodListFoodV.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\StatusBar\StatusBarV.xaml">

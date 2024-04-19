@@ -1,32 +1,28 @@
 ﻿using RIPDApp.Services;
-using RIPDApp.Models;
-using RIPDApp.Pages;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Diagnostics;
-using RIPDShared.Models;
+using RIPDApp.Pages;
 
 namespace RIPDApp.ViewModels;
-public partial class RegisterVM : ObservableObject
+
+public partial class LoginVM : ObservableObject
 {
   private readonly IOwnerService _ownerService;
 
   [ObservableProperty]
-  private bool _isAvailable = true;
+  private string? _email = Statics.RegisterLogin.Email;
   [ObservableProperty]
-  private string? _email;
-  [ObservableProperty]
-  private string? _password;
+  private string? _password = Statics.RegisterLogin.Password;
 
-  public RegisterVM(IOwnerService ownerService)
+  public LoginVM(IOwnerService ownerService)
   {
     _ownerService = ownerService;
   }
 
   [RelayCommand]
-  private async Task Register()
+  private async Task LogIn()
   {
-    bool result = await _ownerService.RegisterAsync(Email, Password);
+    bool result = await _ownerService.LoginAsync(Email, Password);
     if (result)
     {
       await Shell.Current.GoToAsync($"//{nameof(HomePage)}");
