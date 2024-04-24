@@ -10,5 +10,5 @@ public partial class DiaryVM : ObservableObject
   }
 
   [ObservableProperty]
-  private DateOnly _date;
+  private DateTime? _date;
 }

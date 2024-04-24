@@ -5,7 +5,27 @@
              xmlns:m="clr-namespace:RIPDShared.Models;assembly=RIPDShared"
              x:Class="RIPDApp.Pages.FoodDetailsPage"
              x:DataType="vm:FoodDetailsVM">
-  <VerticalStackLayout>
-    <Label Text="{Binding Food.Name}"/>
-  </VerticalStackLayout>
+  <Grid RowDefinitions="auto,*,auto">
+    <VerticalStackLayout Grid.Row="0">
+      <Label Text="{Binding Food.Name}"/>
+      <Label Text="{Binding Food.Manufacturer}"/>
+      <DatePicker/>
+      <Entry Placeholder="Ammount"/>
+    </VerticalStackLayout>
+    <ScrollView Grid.Row="1">
+      <CollectionView ItemsSource="{Binding FoodProperties}">
+        <CollectionView.ItemTemplate>
+          <DataTemplate x:DataType="vm:FoodProps">
+            <SwipeView>
+              <VerticalStackLayout>
+                <Label Text="{Binding Name}"/>
+                <Label Text="{Binding Value}"/>
+              </VerticalStackLayout>
+            </SwipeView>
+          </DataTemplate>
+        </CollectionView.ItemTemplate>
+      </CollectionView>
+    </ScrollView>
+    <Button Grid.Row="2" Text="Add"/>
+  </Grid>
 </ContentPage>

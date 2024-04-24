@@ -5,6 +5,11 @@
              x:Class="RIPDApp.Pages.DiaryPage"
              x:DataType="vm:DiaryVM">
   <Grid RowDefinitions="auto, *">
-    <DatePicker Date="{Binding Date}"/>
+    <VerticalStackLayout Grid.Row="0">
+      <DatePicker Date="{Binding Date}"/>
+    </VerticalStackLayout>
+    <ScrollView Grid.Row="1">
+      
+    </ScrollView>
   </Grid>
 </ContentPage>
