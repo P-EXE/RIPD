@@ -13,10 +13,11 @@ public partial class AppShell : Shell
     Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
 
     Routing.RegisterRoute(nameof(HomePage), typeof(HomePage));
+    Routing.RegisterRoute(nameof(DiaryPage), typeof(DiaryPage));
 
-    Routing.RegisterRoute(nameof(AddFoodPage), typeof(AddFoodPage));
-    Routing.RegisterRoute(nameof(FoodDetailsPage), typeof(FoodDetailsPage));
-    Routing.RegisterRoute(nameof(NewFoodPage), typeof(NewFoodPage));
+    Routing.RegisterRoute($"{nameof(AddFoodPage)}/{nameof(FoodDetailsPage)}", typeof(FoodDetailsPage));
+    Routing.RegisterRoute($"{nameof(AddFoodPage)}/{nameof(NewFoodPage)}", typeof(NewFoodPage));
+    Routing.RegisterRoute($"{nameof(NewFoodPage)}/{nameof(UserSearchPage)}", typeof(UserSearchPage));
 
     Routing.RegisterRoute(nameof(ProfilePage), typeof(ProfilePage));
     Routing.RegisterRoute(nameof(OwnerProfilePage), typeof(OwnerProfilePage));

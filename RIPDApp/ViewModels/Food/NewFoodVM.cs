@@ -1,10 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RIPDApp.Services;
+using RIPDApp.Pages;
 using RIPDShared.Models;
 
 namespace RIPDApp.ViewModels;
 
+[QueryProperty("Manufacturer", "Manufacturer")]
 public partial class NewFoodVM : ObservableObject
 {
   private readonly IFoodService _foodService;
@@ -21,7 +23,7 @@ public partial class NewFoodVM : ObservableObject
   [ObservableProperty]
   private string? _name;
   [ObservableProperty]
-  private string? _manufacturer;
+  private AppUser? _manufacturer;
   [ObservableProperty]
   private string? _description;
   [ObservableProperty]
@@ -38,7 +40,7 @@ public partial class NewFoodVM : ObservableObject
       {
         Barcode = Barcode,
         Name = Name,
-        ManufacturerId = new(Manufacturer),
+        ManufacturerId = Manufacturer.Id,
         Description = Description,
         Image = Image
       };
@@ -50,6 +52,12 @@ public partial class NewFoodVM : ObservableObject
     }
     if (success) await GoBack();
     Available = true;
+  }
+
+  [RelayCommand]
+  async Task SearchManufacturer ()
+  {
+    await Shell.Current.GoToAsync($"{nameof(UserSearchPage)}", true);
   }
 
   [RelayCommand]

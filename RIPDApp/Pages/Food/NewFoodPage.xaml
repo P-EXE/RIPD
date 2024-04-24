@@ -8,7 +8,10 @@
     <VerticalStackLayout Grid.Row="0">
       <Entry Placeholder="Barcode" Text="{Binding Barcode}"/>
       <Entry Placeholder="Name" Text="{Binding Name}"/>
-      <Entry Placeholder="Manufacturer" Text="{Binding Manufacturer}"/>
+      <HorizontalStackLayout>
+        <Entry Placeholder="Manufacturer" Text="{Binding Manufacturer.UserName}"/>
+        <Button Text="Search" Command="{Binding SearchManufacturerCommand}"/>
+      </HorizontalStackLayout>
       <Entry Placeholder="Description" Text="{Binding Description}"/>
       <Entry Placeholder="Image" Text="{Binding Image}"/>
     </VerticalStackLayout>

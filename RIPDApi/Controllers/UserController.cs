@@ -38,6 +38,18 @@ public class UserController : ControllerBase
     return user;
   }
 
+  [HttpGet]
+  public async Task<IEnumerable<AppUser>?> GetUsersByNameAtPositionAsync([FromQuery] string userName, [FromQuery] int position)
+  {
+    IEnumerable<AppUser>? user = _dbContext.Users
+      .Where(u => u.UserName.StartsWith(userName))
+      .OrderBy(u => u.UserName)
+      .Skip(position)
+      .Take(5)
+      .AsEnumerable();
+    return user;
+  }
+
   #endregion User
 
   #region Food

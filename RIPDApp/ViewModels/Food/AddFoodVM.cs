@@ -13,19 +13,15 @@ public partial class AddFoodVM : ObservableObject
 
   public AddFoodVM(IFoodService foodService)
   {
-    _foods = new List<Food>();
     _foodService = foodService;
   }
 
   [ObservableProperty]
   private bool _isRefreshing;
-
   [ObservableProperty]
   private string _searchText;
-
   [ObservableProperty]
   private IEnumerable<Food>? _foods;
-
   [ObservableProperty]
   private Food? _selectedFood;
 

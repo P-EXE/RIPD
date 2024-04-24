@@ -80,6 +80,9 @@ public static class MauiProgram
     builder.Services.AddTransient<HomePage>();
     builder.Services.AddTransient<HomeVM>();
 
+    builder.Services.AddTransient<DiaryPage>();
+    builder.Services.AddTransient<DiaryVM>();
+
     #endregion Home
 
     #region Feed
@@ -111,6 +114,9 @@ public static class MauiProgram
     builder.Services.AddTransient<ProfileVM>();
     builder.Services.AddTransient<OwnerProfilePage>();
     builder.Services.AddTransient<OwnerProfileVM>();
+
+    builder.Services.AddTransient<UserSearchPage>();
+    builder.Services.AddTransient<UserSearchVM>();
 
     #endregion user
 
