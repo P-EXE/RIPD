@@ -6,6 +6,9 @@ public partial class DiaryVM : ObservableObject
 {
   public DiaryVM()
   {
-
+    
   }
+
+  [ObservableProperty]
+  private DateOnly _date;
 }
