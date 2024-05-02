@@ -21,7 +21,7 @@ public class OwnerService : IOwnerService
 
   public async Task<bool> LoginAsync(string email, string password)
   {
-        AppUserDTO_Create createUser = new() { Email = email, Password = password };
+    AppUserDTO_Create createUser = new() { Email = email, Password = password };
 
     BearerToken? bt = await _httpService.PostAsync<AppUserDTO_Create, BearerToken>("user/login", createUser);
     if (bt != null)
@@ -30,8 +30,8 @@ public class OwnerService : IOwnerService
 
       Statics.API.BearerToken = bt;
       /*await _httpService.Authorize();*/
-/*      await SecureStorage.Default.SetAsync("AccessToken", bt.AccessToken);
-      await SecureStorage.Default.SetAsync("RefreshToken", bt.RefreshToken);*/
+      /*      await SecureStorage.Default.SetAsync("AccessToken", bt.AccessToken);
+            await SecureStorage.Default.SetAsync("RefreshToken", bt.RefreshToken);*/
       return true;
     }
     return false;
