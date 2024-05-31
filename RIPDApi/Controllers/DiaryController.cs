@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RIPDApi.Data;
@@ -7,47 +9,49 @@ using RIPDShared.Models;
 
 namespace RIPDApi.Controllers;
 
-[Route("api/user/{userId}/diary")]
+[Route("api/diary")]
 [ApiController]
 public class DiaryController : ControllerBase
 {
   private readonly IMapper _mapper;
+  private readonly UserManager<AppUser> _userManager;
   private readonly SQLDataBaseContext _sqlContext;
   private readonly MongoDataBaseContext _mongoContext;
   private MongoDBService _mongoDBService;
 
-  public DiaryController(IMapper mapper, SQLDataBaseContext sqlContext, MongoDataBaseContext mongoContext, MongoDBService mongoDBService)
+  public DiaryController(IMapper mapper, UserManager<AppUser> userManager, SQLDataBaseContext sqlContext)
   {
     _mapper = mapper;
+    _userManager = userManager;
     _sqlContext = sqlContext;
-    _mongoContext = mongoContext;
-    _mongoDBService = mongoDBService;
   }
 
   #region Create
 
+  [Authorize]
   [HttpPost("foods")]
-  public async Task AddFoodEntryAsync([FromRoute] Guid userId, Food_DiaryEntryDTO_Create createDiaryFood)
+  public async Task AddFoodEntryAsync(Food_DiaryEntryDTO_Create createDiaryFood)
   {
-    AppUser? user = await _sqlContext.Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
+    string? userName = User?.Identity?.Name;
+    AppUser? user = await _sqlContext.Users.Where(x => x.UserName == userName).FirstOrDefaultAsync();
     Food? food = await _sqlContext.Foods.FindAsync(createDiaryFood.FoodId);
 
     int lastEntryNr = _sqlContext.Users
       .Include(u => u.Diary).ThenInclude(d => d.FoodEntries)
-      .Where(u => u.Id == userId).First()
+      .Where(u => u.Id == user.Id).First()
       .Diary
       .FoodEntries.Select(f => (int?)f.EntryNr).Max() ?? 0;
 
     Food_DiaryEntry diaryFood = new()
     {
-      DiaryId = userId,
+      DiaryId = user.Id,
       Diary = user.Diary,
       EntryNr = lastEntryNr + 1,
       FoodId = createDiaryFood.FoodId,
       Food = food,
       Amount = createDiaryFood.Amount,
       Acted = createDiaryFood.Acted,
-      Added = DateTime.UtcNow
+      Added = DateTime.Now
     };
 
     user.Diary.FoodEntries.Add(diaryFood);
@@ -75,7 +79,7 @@ public class DiaryController : ControllerBase
       Workout = workout,
       Amount = createDiaryWorkout.Amount,
       Acted = createDiaryWorkout.Acted,
-      Added = createDiaryWorkout.Added
+      Added = DateTime.Now
     };
 
     user.Diary.WorkoutEntries.Add(diaryWorkout);
@@ -100,7 +104,7 @@ public class DiaryController : ControllerBase
       EntryNr = lastEntryNr + 1,
       MongoDBId = "No MongoDB",
       Acted = createDiaryRun.Acted,
-      Added = createDiaryRun.Added
+      Added = DateTime.Now
     };
 
     Run run = new()
@@ -160,15 +164,15 @@ public class DiaryController : ControllerBase
 
   #region Update
 
-  [HttpPatch("foods/{foodEntryNr}")]
-  public async Task UpdateFoodEntryById([FromRoute] Guid userId, [FromRoute] int foodEntryNr, Food_DiaryEntryDTO_Update updateDiaryFood)
+  [HttpPatch("foods/{entryNr}")]
+  public async Task UpdateFoodEntryById([FromRoute] Guid userId, [FromRoute] int entryNr, Food_DiaryEntryDTO_Update updateDiaryFood)
   {
     Food_DiaryEntry? foodEntry = _sqlContext.Users
       .Include(u => u.Diary).ThenInclude(d => d.FoodEntries)
       .Where(u => u.Id == userId).FirstOrDefault()
       .Diary
       .FoodEntries
-      .Where(f => f.EntryNr == foodEntryNr).FirstOrDefault();
+      .Where(f => f.EntryNr == entryNr).FirstOrDefault();
 
     foodEntry.Amount = updateDiaryFood.Amount;
     foodEntry.Acted = updateDiaryFood.Added;

@@ -1,18 +1,23 @@
-﻿using RIPDShared.Models;
+﻿using AutoMapper;
+using RIPDShared.Models;
 
 namespace RIPDApp.Services;
 
 public class FoodService : IFoodService
 {
   private readonly IHttpService _httpService;
-  public FoodService(IHttpService httpService)
+  private readonly IMapper _mapper;
+  public FoodService(IHttpService httpService, IMapper mapper)
   {
     _httpService = httpService;
+    _mapper = mapper;
   }
 
-  public async Task<bool> CreateFoodAsync(FoodDTO_Create createFood)
+  public async Task<Food?> CreateFoodAsync(Food food)
   {
-    return await _httpService.PostAsync("foods", createFood);
+    FoodDTO_Create createFood = _mapper.Map<FoodDTO_Create>(food);
+    Food? retFood = await _httpService.PostAsync<FoodDTO_Create, Food>("foods", createFood);
+    return retFood;
   }
 
   public Task<IEnumerable<Food>?> GetUsersRecentlyAddedFoods()

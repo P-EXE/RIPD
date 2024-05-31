@@ -53,6 +53,7 @@ public static class MauiProgram
     builder.Services.AddTransient<IOwnerService, OwnerService>();
     builder.Services.AddTransient<IFoodService, FoodService>();
     builder.Services.AddTransient<IUserService, UserService>();
+    builder.Services.AddTransient<IDiaryService, DiaryService>();
 
     #endregion Services
 

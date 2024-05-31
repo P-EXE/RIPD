@@ -4,14 +4,14 @@ namespace RIPDShared.Models;
 
 public class Food
 {
-  public int Id { get; set; }
+  public int? Id { get; set; }
   public string? Barcode { get; set; }
-  public required string Name { get; set; }
-  public required Guid ManufacturerId { get; set; }
-  public required AppUser Manufacturer { get; set; }
-  public required Guid ContributerId { get; set; }
-  public required AppUser Contributer { get; set; }
-  public required DateTime CreationDateTime { get; set; }
+  public string? Name { get; set; }
+  public Guid? ManufacturerId { get; set; }
+  public AppUser? Manufacturer { get; set; }
+  public Guid? ContributerId { get; set; }
+  public AppUser? Contributer { get; set; }
+  public DateTime? CreationDateTime { get; set; }
   public DateTime? UpdateDateTime { get; set; }
   public string? Description { get; set; }
   public string? Image { get; set; }

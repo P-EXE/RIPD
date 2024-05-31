@@ -3,10 +3,11 @@ using CommunityToolkit.Mvvm.Input;
 using RIPDApp.Services;
 using RIPDApp.Pages;
 using RIPDShared.Models;
+using CommunityToolkit.Mvvm.Messaging;
+using RIPDApp.Messaging;
 
 namespace RIPDApp.ViewModels;
 
-[QueryProperty("Manufacturer", "Manufacturer")]
 public partial class NewFoodVM : ObservableObject
 {
   private readonly IFoodService _foodService;
@@ -14,50 +15,41 @@ public partial class NewFoodVM : ObservableObject
   public NewFoodVM(IFoodService foodService)
   {
     _foodService = foodService;
+
+    WeakReferenceMessenger.Default.Register<PageReturnObjectMessage<AppUser>>(this, (r, m) =>
+    {
+      SetManufacturer(m.Value);
+    });
   }
 
   [ObservableProperty]
   private bool _available = true;
   [ObservableProperty]
-  private string? _barcode;
-  [ObservableProperty]
-  private string? _name;
+  private Food _food = new();
   [ObservableProperty]
   private AppUser? _manufacturer;
-  [ObservableProperty]
-  private string? _description;
-  [ObservableProperty]
-  private string? _image;
+
+  // Sets the Manufacturer field
+  private void SetManufacturer(AppUser manufacturer)
+  {
+    Food.Manufacturer = manufacturer;
+    Manufacturer = manufacturer;
+  }
 
   [RelayCommand]
   private async Task CreateNewFood()
   {
-    bool success = false;
-    Available = false;
-    try
-    {
-      FoodDTO_Create createFood = new()
-      {
-        Barcode = Barcode,
-        Name = Name,
-        ManufacturerId = Manufacturer.Id,
-        Description = Description,
-        Image = Image
-      };
-      success = await _foodService.CreateFoodAsync(createFood);
-    }
-    catch (Exception ex)
-    {
-
-    }
-    if (success) await GoBack();
-    Available = true;
+    _foodService.CreateFoodAsync(Food);
   }
 
+  // Opens the UserSearchPage in return mode to get a User for the Manufacturer field
   [RelayCommand]
-  async Task SearchManufacturer ()
+  async Task SearchManufacturer()
   {
-    await Shell.Current.GoToAsync($"{nameof(UserSearchPage)}", true);
+    await Shell.Current.GoToAsync($"{nameof(UserSearchPage)}", true, new Dictionary<string, object>()
+    {
+      { "PageMode", UserSearchVM.PageMode.Return }
+    });
   }
 
   [RelayCommand]

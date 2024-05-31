@@ -6,14 +6,14 @@
              x:DataType="vm:NewFoodVM">
   <Grid RowDefinitions="*,auto">
     <VerticalStackLayout Grid.Row="0">
-      <Entry Placeholder="Barcode" Text="{Binding Barcode}"/>
-      <Entry Placeholder="Name" Text="{Binding Name}"/>
+      <Entry Placeholder="Barcode" Text="{Binding Food.Barcode}"/>
+      <Entry Placeholder="Name" Text="{Binding Food.Name}"/>
       <HorizontalStackLayout>
         <Entry Placeholder="Manufacturer" Text="{Binding Manufacturer.UserName}"/>
         <Button Text="Search" Command="{Binding SearchManufacturerCommand}"/>
       </HorizontalStackLayout>
-      <Entry Placeholder="Description" Text="{Binding Description}"/>
-      <Entry Placeholder="Image" Text="{Binding Image}"/>
+      <Entry Placeholder="Description" Text="{Binding Food.Description}"/>
+      <Entry Placeholder="Image" Text="{Binding Food.Image}"/>
     </VerticalStackLayout>
     <Button Grid.Row="1" Text="Create Food" Command="{Binding CreateNewFoodCommand}"/>
   </Grid>

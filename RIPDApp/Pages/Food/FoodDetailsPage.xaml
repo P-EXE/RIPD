@@ -26,6 +26,6 @@
         </CollectionView.ItemTemplate>
       </CollectionView>
     </ScrollView>
-    <Button Grid.Row="2" Text="Add"/>
+    <Button Grid.Row="2" Text="Add" Command="{Binding AddFoodToDiaryCommand}"/>
   </Grid>
 </ContentPage>

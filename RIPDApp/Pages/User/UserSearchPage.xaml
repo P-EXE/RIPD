@@ -6,23 +6,24 @@
              xmlns:vm="clr-namespace:RIPDApp.ViewModels"
              x:Class="RIPDApp.Pages.UserSearchPage"
              x:DataType="vm:UserSearchVM">
+
   <Grid RowDefinitions="auto, *">
+
     <SearchBar Grid.Row="0"
                Text="{Binding SearchText}">
       <SearchBar.Behaviors>
-        <toolkit:EventToCommandBehavior
-          EventName="TextChanged"
-          Command="{Binding SearchCommand}"
-          />
+        <toolkit:EventToCommandBehavior EventName="TextChanged"
+                                        Command="{Binding SearchCommand}"/>
       </SearchBar.Behaviors>
     </SearchBar>
+
     <RefreshView Grid.Row="1"
-             Command="{Binding RefreshCommand}"
-             IsRefreshing="{Binding IsRefreshing}">
+                 Command="{Binding RefreshCommand}"
+                 IsRefreshing="{Binding IsRefreshing}">
       <CollectionView SelectionMode="Single"
-                  ItemsSource="{Binding Users}"
-                  SelectedItem="{Binding SelectedUser}"
-                  SelectionChangedCommand="{Binding ReturnSelectionCommand}">
+                      ItemsSource="{Binding Users}"
+                      SelectedItem="{Binding SelectedUser}"
+                      SelectionChangedCommand="{Binding UserSelectedCommand}">
         <CollectionView.ItemTemplate>
           <DataTemplate>
             <SwipeView>
@@ -32,5 +33,6 @@
         </CollectionView.ItemTemplate>
       </CollectionView>
     </RefreshView>
+
   </Grid>
 </ContentPage>
