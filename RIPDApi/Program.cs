@@ -63,6 +63,7 @@ builder.Services.AddSingleton<MongoDBService>();
 #region Repos
 
 builder.Services.AddTransient<IFoodRepo, FoodRepo>();
+builder.Services.AddTransient<IDiaryRepo, DiaryRepo>();
 
 #endregion Repos
 

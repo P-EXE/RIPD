@@ -47,7 +47,7 @@ public class FoodRepo : IFoodRepo
     // Null reference dereference !!!
     IEnumerable<Food>? foods = _sqlContext.Foods
       .Where(f => f.Name.StartsWith(name))
-      .Skip(position)
+      .Skip(position * takeSize)
       .Take(takeSize)
       .AsEnumerable();
 

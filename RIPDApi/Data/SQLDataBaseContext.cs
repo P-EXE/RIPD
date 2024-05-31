@@ -9,10 +9,10 @@ public class SQLDataBaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>,
 {
   public DbSet<Diary> Diaries => Set<Diary>();
   public DbSet<Food> Foods => Set<Food>();
-  public DbSet<Food_DiaryEntry> DiaryFoods => Set<Food_DiaryEntry>();
+  public DbSet<DiaryEntry_Food> DiaryFoods => Set<DiaryEntry_Food>();
   public DbSet<Workout> Workouts => Set<Workout>();
-  public DbSet<Workout_DiaryEntry> DiaryWorkouts => Set<Workout_DiaryEntry>();
-  public DbSet<Run_DiaryEntry> DiaryRuns => Set<Run_DiaryEntry>();
+  public DbSet<DiaryEntry_Workout> DiaryWorkouts => Set<DiaryEntry_Workout>();
+  public DbSet<DiaryEntry_Run> DiaryRuns => Set<DiaryEntry_Run>();
   public DbSet<BodyMetric> BodyMetrics => Set<BodyMetric>();
   public DbSet<FitnessTarget> FitnessTargets => Set<FitnessTarget>();
 
@@ -70,7 +70,7 @@ public class SQLDataBaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>,
     #endregion Diary
 
     #region Things in Diary
-    builder.Entity<Food_DiaryEntry>(fe =>
+    builder.Entity<DiaryEntry_Food>(fe =>
     {
       fe.HasKey(f => new { f.DiaryId, f.EntryNr });
       fe.Property(f => f.DiaryId).ValueGeneratedNever();
@@ -81,14 +81,14 @@ public class SQLDataBaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>,
       .OnDelete(DeleteBehavior.NoAction);
     });
 
-    builder.Entity<Workout_DiaryEntry>(we =>
+    builder.Entity<DiaryEntry_Workout>(we =>
     {
       we.HasOne(w => w.Workout).WithMany()
       .HasForeignKey(w => w.WorkoutId)
       .OnDelete(DeleteBehavior.NoAction);
     });
 
-    builder.Entity<Run_DiaryEntry>(r =>
+    builder.Entity<DiaryEntry_Run>(r =>
     {
     });
 

@@ -10,7 +10,7 @@ public class DiaryService : IDiaryService
     _httpService = httpService;
   }
 
-  public async Task<bool> AddFoodToDiaryAsync(Food_DiaryEntryDTO_Create foodDiaryEntryDTOCreate)
+  public async Task<bool> AddFoodToDiaryAsync(DiaryEntry_Food_Create foodDiaryEntryDTOCreate)
   {
     return await _httpService.PostAsync("diary/foods", foodDiaryEntryDTOCreate);
   }

@@ -2,7 +2,7 @@
 
 namespace RIPDShared.Models;
 
-public class Run_DiaryEntryDTO_Create : DiaryEntryDTO_Create
+public class DiaryEntry_Run_Create : DiaryEntryDTO_Create
 {
   public List<Location> Locations { get; set; }
 }

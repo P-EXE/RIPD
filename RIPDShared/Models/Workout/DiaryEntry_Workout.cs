@@ -4,7 +4,7 @@ namespace RIPDShared.Models;
 
 [PrimaryKey(nameof(DiaryId), nameof(EntryNr))]
 [Owned]
-public class Workout_DiaryEntry : DiaryEntry
+public class DiaryEntry_Workout : DiaryEntry
 {
   public required int? WorkoutId { get; set; }
   public required Workout? Workout { get; set; }

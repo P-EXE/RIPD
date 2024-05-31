@@ -21,7 +21,7 @@ public class WorkoutController : ControllerBase
   #region Create
 
   [HttpPost]
-  public async Task CreateWorkoutAsync([FromBody] WorkoutDTO_Create createWorkout)
+  public async Task CreateWorkoutAsync([FromBody] Workout_Create createWorkout)
   {
     AppUser? contributer = await _dbContext.Users.FindAsync(createWorkout.ContributerId);
     Workout workout = new()

@@ -2,7 +2,7 @@
 
 namespace RIPDShared.Models;
 
-public class Food_DiaryEntryDTO_Update
+public class DiaryEntry_Food_Update
 {
   public double Amount { get; set; }
   public DateTime Consumed { get; set; }
