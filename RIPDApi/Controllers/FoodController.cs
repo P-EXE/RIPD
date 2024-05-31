@@ -1,75 +1,55 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using RIPDApi.Data;
+using RIPDApi.Repos;
 using RIPDShared.Models;
 
 namespace RIPDApi.Controllers;
 
-[Route("api/foods")]
+[Route("api/food")]
 [ApiController]
 public class FoodController : ControllerBase
 {
-  private readonly IMapper _mapper;
   private readonly UserManager<AppUser> _userManager;
-  private readonly SQLDataBaseContext _dbContext;
+  private readonly IFoodRepo _foodRepo;
 
-  public FoodController(IMapper mapper, UserManager<AppUser> userManager, SQLDataBaseContext dbContext)
+  public FoodController(UserManager<AppUser> userManager, IFoodRepo foodRepo)
   {
-    _mapper = mapper;
     _userManager = userManager;
-    _dbContext = dbContext;
+    _foodRepo = foodRepo;
   }
-
-  #region Create
 
   [HttpPost]
-  [Authorize]
-  public async Task CreateFoodAsync([FromBody] FoodDTO_Create createFood)
+  public async Task<Food?> CreateFoodAsync([FromBody] Food_Create createFood)
   {
-    AppUser? manufacturer = await _dbContext.Users.FindAsync(createFood.ManufacturerId);
-    string? userName = User?.Identity?.Name;
-    AppUser? contributer = await _dbContext.Users.Where(x => x.UserName == userName).FirstOrDefaultAsync();
-    Food food = new()
-    {
-      Name = createFood.Name,
-      Barcode = createFood.Barcode,
-      ManufacturerId = manufacturer.Id,
-      Manufacturer = manufacturer,
-      ContributerId = contributer.Id,
-      Contributer = contributer,
-      CreationDateTime = DateTime.Now
-    };
-
-    await _dbContext.Foods.AddAsync(food);
-    await _dbContext.SaveChangesAsync();
+    AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
+    return await _foodRepo.CreateFoodAsync(createFood);
   }
 
-  #endregion Create
-
-  #region Get
-
-  [HttpGet("{foodId}")]
-  public async Task<Food?> GetFoodByIdAsync([FromRoute] int foodId)
+  [HttpGet("{id}")]
+  public async Task<Food?> GetFoodByIdAsync([FromRoute] Guid id)
   {
-    Food? food = await _dbContext.Foods
-      .FindAsync(foodId);
-    return food;
+    AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
+    return await _foodRepo.ReadFoodByIdAsync(id);
   }
 
   [HttpGet]
-  public async Task<IEnumerable<Food>?> GetFoodsByNameAtPositionAsync([FromQuery] string foodName, [FromQuery] int position)
+  public async Task<IEnumerable<Food>?> GetFoodsByNameAtPositionAsync([FromQuery] string name, [FromQuery] int position)
   {
-    IEnumerable<Food>? foods = _dbContext.Foods
-      .Where(f => f.Name.StartsWith(foodName))
-      .OrderBy(f => f.Name)
-      .Skip(position)
-      .Take(5)
-      .AsEnumerable();
-    return foods;
+    AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
+    return await _foodRepo.ReadFoodsByNameAtPositionAsync(name, position);
   }
 
-  #endregion Get
+  [HttpPut]
+  public async Task<Food?> UpdateFoodAsync([FromBody] Food_Update updateFood)
+  {
+    AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
+    return await _foodRepo.UpdateFoodAsync(updateFood);
+  }
+
+  [HttpDelete("{id}")]
+  public async Task<bool> DeleteFoodByIdAsync([FromRoute] Guid id)
+  {
+    AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
+    return await _foodRepo.DeleteFoodByIdAsync(id);
+  }
 }

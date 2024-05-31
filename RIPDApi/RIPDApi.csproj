@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>RIPD_API2</RootNamespace>
+    <RootNamespace>RIPDApi</RootNamespace>
     <UserSecretsId>332bdfac-982d-4c3f-bba5-5140dbeed896</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>

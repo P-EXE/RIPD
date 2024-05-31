@@ -1,19 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace RIPDShared.Models;
 
-namespace RIPDShared.Models;
-
-public class Food
+public class Food_Create
 {
   #region Meta
-  public int? Id { get; set; }
   public string? Barcode { get; set; }
   public string? Name { get; set; }
   public Guid? ManufacturerId { get; set; }
-  public AppUser? Manufacturer { get; set; }
   public Guid? ContributerId { get; set; }
-  public AppUser? Contributer { get; set; }
-  public DateTime? CreationDateTime { get; set; }
-  public DateTime? UpdateDateTime { get; set; }
   public string? Description { get; set; }
   public string? Image { get; set; }
   #endregion Meta

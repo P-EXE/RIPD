@@ -5,6 +5,7 @@ using RIPDApi.Data;
 using RIPDShared.Models;
 using RIPDApi.Services;
 using Microsoft.Data.Sqlite;
+using RIPDApi.Repos;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,15 +56,21 @@ builder.Services.AddDbContext<MongoDataBaseContext>(options =>
   )
 );*/
 
+builder.Services.AddSingleton<MongoDBService>();
+
 #endregion MongoDB
+
+#region Repos
+
+builder.Services.AddTransient<IFoodRepo, FoodRepo>();
+
+#endregion Repos
 
 builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<AppUser>()
   .AddEntityFrameworkStores<SQLDataBaseContext>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-builder.Services.AddSingleton<MongoDBService>();
 
 var app = builder.Build();
 

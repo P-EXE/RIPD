@@ -15,8 +15,8 @@ public class FoodService : IFoodService
 
   public async Task<Food?> CreateFoodAsync(Food food)
   {
-    FoodDTO_Create createFood = _mapper.Map<FoodDTO_Create>(food);
-    Food? retFood = await _httpService.PostAsync<FoodDTO_Create, Food>("foods", createFood);
+    Food_Create createFood = _mapper.Map<Food_Create>(food);
+    Food? retFood = await _httpService.PostAsync<Food_Create, Food>("foods", createFood);
     return retFood;
   }
 

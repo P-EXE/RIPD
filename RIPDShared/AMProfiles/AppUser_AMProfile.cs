@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
+using RIPDShared.Models;
 
-namespace RIPDShared.Models;
+namespace RIPDShared.AMProfiles;
 
 public class AppUser_AMProfile : Profile
 {
