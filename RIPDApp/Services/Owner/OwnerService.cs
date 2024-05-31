@@ -13,7 +13,7 @@ public class OwnerService : IOwnerService
 
   public async Task<bool> RegisterAsync(string email, string password)
   {
-    AppUserDTO_Create createUser = new() { Email = email, Password = password };
+    AppUser_Create createUser = new() { Email = email, Password = password };
 
     bool result = await _httpService.PostAsync("user/register", createUser);
     return result;
@@ -21,9 +21,9 @@ public class OwnerService : IOwnerService
 
   public async Task<bool> LoginAsync(string email, string password)
   {
-    AppUserDTO_Create createUser = new() { Email = email, Password = password };
+    AppUser_Create createUser = new() { Email = email, Password = password };
 
-    BearerToken? bt = await _httpService.PostAsync<AppUserDTO_Create, BearerToken>("user/login", createUser);
+    BearerToken? bt = await _httpService.PostAsync<AppUser_Create, BearerToken>("user/login", createUser);
     if (bt != null)
     {
       Debug.WriteLine($"==Success==> {nameof(LoginAsync)} : Got {nameof(BearerToken)}");
