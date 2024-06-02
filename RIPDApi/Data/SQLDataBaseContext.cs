@@ -25,6 +25,40 @@ public class SQLDataBaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>,
   {
     base.OnModelCreating(builder);
 
+    #region Seeding
+    PasswordHasher<AppUser> ph = new();
+    Guid seededUserId;
+    AppUser seededUser;
+    Diary seededDiary;
+    List<AppUser> seededUsers = [];
+    List<Diary> seededDiaries = [];
+
+    for (int i = 0; i < 10; i++)
+    {
+      seededUserId = new($"11111111-1111-1111-1111-11111111111{i}");
+      seededUser = new()
+      {
+        Id = seededUserId,
+        UserName = $"seededUser{i}",
+        NormalizedUserName = $"USER{i}",
+        Email = $"seededUser{i}@mail.com",
+        NormalizedEmail = $"USER{i}@MAIL.COM",
+        EmailConfirmed = true,
+      };
+      seededUser.PasswordHash = ph.HashPassword(seededUser, "P455w0rd!");
+
+      seededDiary = new()
+      {
+        OwnerId = seededUserId,
+        Owner = seededUser
+      };
+      seededUser.Diary = seededDiary;
+
+      seededDiaries.Add(seededDiary);
+      seededUsers.Add(seededUser);
+    };
+    #endregion Seeding
+
     #region User
     builder.Entity<AppUser>(u =>
     {
@@ -36,6 +70,8 @@ public class SQLDataBaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>,
       u.HasMany(u => u.ContributedFoods).WithOne(f => f.Contributer)
       .HasForeignKey(f => f.ContributerId)
       .OnDelete(DeleteBehavior.NoAction);
+
+      u.HasData(seededUsers);
     });
     #endregion User
 
@@ -66,6 +102,8 @@ public class SQLDataBaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>,
         .WithOne(f => f.Diary)
         .HasForeignKey(f => f.DiaryId)
         .OnDelete(DeleteBehavior.Cascade);
+
+      d.HasData(seededDiaries);
     });
     #endregion Diary
 
@@ -105,7 +143,7 @@ public class SQLDataBaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>,
       ft.Property(ft => ft.DiaryId).ValueGeneratedNever();
       ft.Property(ft => ft.EntryNr).ValueGeneratedNever();
       ft.HasOne(ft => ft.StartBodyMetric).WithMany()
-      .HasForeignKey(ft => new { ft.BodyMetricUser, ft.StartBodyMetricEntryNr})
+      .HasForeignKey(ft => new { ft.BodyMetricUser, ft.StartBodyMetricEntryNr })
       .OnDelete(DeleteBehavior.NoAction);
       ft.HasOne(ft => ft.GoalBodyMetric).WithMany()
       .HasForeignKey(ft => new { ft.BodyMetricUser, ft.GoalBodyMetricEntryNr })

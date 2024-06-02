@@ -2,6 +2,6 @@
 
 public class DiaryEntry_Food_Create : DiaryEntryDTO_Create
 {
-  public required int? FoodId { get; set; }
+  public required Guid? FoodId { get; set; }
   public required double Amount { get; set; }
 }

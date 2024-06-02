@@ -15,5 +15,5 @@ public class DiaryEntry_Run : DiaryEntry
   // This should normally be null.
   // Can be filled at runtime to allow easier CRUD operations.
   // ↑ Previous statement needs to be tested.
-  public Run? Run { get; set; }
+/*  public Run? Run { get; set; }*/
 }

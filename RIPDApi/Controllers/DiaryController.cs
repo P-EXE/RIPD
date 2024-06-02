@@ -7,6 +7,7 @@ namespace RIPDApi.Controllers;
 
 /// <summary>
 /// Controller for all the major CRUD operations concerning the Diary
+/// Middleware and Auth stuff here
 /// </summary>
 [Route("api/diary")]
 [ApiController]
