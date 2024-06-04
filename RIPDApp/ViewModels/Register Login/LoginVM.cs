@@ -10,9 +10,9 @@ public partial class LoginVM : ObservableObject
   private readonly IOwnerService _ownerService;
 
   [ObservableProperty]
-  private string? _email = Statics.RegisterLogin.Email;
+  private string? _email = Statics.Auth.Email;
   [ObservableProperty]
-  private string? _password = Statics.RegisterLogin.Password;
+  private string? _password = Statics.Auth.Password;
 
   public LoginVM(IOwnerService ownerService)
   {

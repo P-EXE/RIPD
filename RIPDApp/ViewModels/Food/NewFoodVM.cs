@@ -39,7 +39,8 @@ public partial class NewFoodVM : ObservableObject
   [RelayCommand]
   private async Task CreateNewFood()
   {
-    _foodService.CreateFoodAsync(Food);
+    await _foodService.CreateFoodAsync(Food);
+    await GoBack();
   }
 
   // Opens the UserSearchPage in return mode to get a User for the Manufacturer field

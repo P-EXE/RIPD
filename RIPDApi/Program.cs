@@ -34,6 +34,8 @@ builder.Services.AddDbContext<SQLDataBaseContext>(options =>
   options.UseSqlite(sqliteConnection)
 );
 
+builder.Services.AddTransient<Seeding>();
+
 #endregion SQLite in Memory
 
 #region SQL Server

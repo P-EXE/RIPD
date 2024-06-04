@@ -9,5 +9,6 @@ public class AppUser : IdentityUser<Guid>
   public ICollection<Workout>? ContributedWorkouts = new HashSet<Workout>();
   public ICollection<AppUser>? Following = new HashSet<AppUser>();
   public ICollection<AppUser>? Followers = new HashSet<AppUser>();
-  public Diary Diary = new Diary();
+  public Guid DiaryId { get; set; }
+  public Diary? Diary {  get; set; }
 }

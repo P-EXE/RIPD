@@ -24,17 +24,25 @@ public class OwnerService : IOwnerService
     AppUser_Create createUser = new() { Email = email, Password = password };
 
     BearerToken? bt = await _httpService.PostAsync<AppUser_Create, BearerToken>("user/login", createUser);
-    if (bt != null)
+    if (bt == null)
     {
-      Debug.WriteLine($"==Success==> {nameof(LoginAsync)} : Got {nameof(BearerToken)}");
-
-      Statics.API.BearerToken = bt;
-      /*await _httpService.Authorize();*/
-      /*      await SecureStorage.Default.SetAsync("AccessToken", bt.AccessToken);
-            await SecureStorage.Default.SetAsync("RefreshToken", bt.RefreshToken);*/
-      return true;
+      return false;
     }
-    return false;
+
+    Debug.WriteLine($"==Success==> {nameof(LoginAsync)} : Got {nameof(BearerToken)}");
+    Statics.Auth.BearerToken = bt;
+    await _httpService.Authorize();
+    
+    AppUser? owner = await _httpService.GetAsync<AppUser>("user/GetSelf");
+    if (owner == null)
+    {
+      return false;
+    }
+
+    Debug.WriteLine($"==Success==> {nameof(LoginAsync)} : Got {nameof(owner)}");
+    Statics.Auth.Owner = owner;
+
+    return true;
   }
 
   public async Task<bool> DeleteAsync()

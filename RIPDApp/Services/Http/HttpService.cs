@@ -21,18 +21,11 @@ internal class HttpService : IHttpService
     };
   }
 
-/*  public async Task<bool> Authorize()
+  public async Task<bool> Authorize()
   {
-    try
-    {
-      _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Statics.API.BearerToken?.AccessToken);
-    }
-    catch (Exception ex)
-    {
-      return false;
-    }
+    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Statics.Auth.BearerToken?.AccessToken ?? "");
     return true;
-  }*/
+  }
 
   public async Task<T?> GetAsync<T>(string route, [CallerMemberName] string caller = "")
   {

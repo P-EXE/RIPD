@@ -1,8 +1,10 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Core.Extensions;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RIPDApp.Pages;
 using RIPDApp.Services;
 using RIPDShared.Models;
+using System.Collections.ObjectModel;
 
 
 namespace RIPDApp.ViewModels;
@@ -21,7 +23,7 @@ public partial class AddFoodVM : ObservableObject
   [ObservableProperty]
   private string _searchText;
   [ObservableProperty]
-  private IEnumerable<Food>? _foods;
+  private ObservableCollection<Food>? _foods;
   [ObservableProperty]
   private Food? _selectedFood;
 
@@ -29,7 +31,8 @@ public partial class AddFoodVM : ObservableObject
   [RelayCommand]
   async Task Search()
   {
-    Foods = await _foodService.GetFoodsByNameAtPositionAsync(SearchText, 0);
+    IEnumerable<Food>? foods = await _foodService.GetFoodsByNameAtPositionAsync(SearchText, 0);
+    Foods = foods?.ToObservableCollection();
   }
 
   [RelayCommand]

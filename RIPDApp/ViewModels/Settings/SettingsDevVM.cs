@@ -11,7 +11,7 @@ public partial class SettingsDevVM : ObservableObject
   public SettingsDevVM(IOwnerService ownerService)
   {
     _ownerService = ownerService;
-    BearerToken = Statics.API.BearerToken;
+    BearerToken = Statics.Auth.BearerToken;
   }
 
   [ObservableProperty]

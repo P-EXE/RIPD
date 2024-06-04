@@ -2,7 +2,6 @@
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RIPDApp.DataBase;
 using RIPDApp.Pages;
@@ -47,7 +46,7 @@ public static class MauiProgram
     builder.Services.AddHttpClient<IHttpService, HttpService>(options =>
     {
       options.BaseAddress = new(Statics.API.RouteBaseHttp);
-      options.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Statics.API.BearerToken?.AccessToken ?? "");
+      options.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Statics.Auth.BearerToken?.AccessToken ?? "");
     });
 
     builder.Services.AddTransient<IOwnerService, OwnerService>();

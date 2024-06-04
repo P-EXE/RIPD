@@ -21,48 +21,22 @@ public class SQLDataBaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>,
     Database.EnsureCreated();
   }
 
+  protected override void OnConfiguring(DbContextOptionsBuilder options)
+  {
+    base.OnConfiguring(options);
+    options.EnableSensitiveDataLogging();
+  }
+
   protected override void OnModelCreating(ModelBuilder builder)
   {
     base.OnModelCreating(builder);
 
-    #region Seeding
-    PasswordHasher<AppUser> ph = new();
-    Guid seededUserId;
-    AppUser seededUser;
-    Diary seededDiary;
-    List<AppUser> seededUsers = [];
-    List<Diary> seededDiaries = [];
-
-    for (int i = 0; i < 10; i++)
-    {
-      seededUserId = new($"11111111-1111-1111-1111-11111111111{i}");
-      seededUser = new()
-      {
-        Id = seededUserId,
-        UserName = $"seededUser{i}",
-        NormalizedUserName = $"USER{i}",
-        Email = $"seededUser{i}@mail.com",
-        NormalizedEmail = $"USER{i}@MAIL.COM",
-        EmailConfirmed = true,
-      };
-      seededUser.PasswordHash = ph.HashPassword(seededUser, "P455w0rd!");
-
-      seededDiary = new()
-      {
-        OwnerId = seededUserId,
-        Owner = seededUser
-      };
-      seededUser.Diary = seededDiary;
-
-      seededDiaries.Add(seededDiary);
-      seededUsers.Add(seededUser);
-    };
-    #endregion Seeding
-
     #region User
     builder.Entity<AppUser>(u =>
     {
-      u.HasOne(u => u.Diary).WithOne(d => d.Owner);
+      u.HasOne(u => u.Diary)
+      .WithOne(d => d.Owner)
+      .HasForeignKey<AppUser>(u => u.DiaryId);
 
       u.HasMany(u => u.ManufacturedFoods).WithOne(f => f.Manufacturer)
       .HasForeignKey(f => f.ManufacturerId)
@@ -70,14 +44,18 @@ public class SQLDataBaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>,
       u.HasMany(u => u.ContributedFoods).WithOne(f => f.Contributer)
       .HasForeignKey(f => f.ContributerId)
       .OnDelete(DeleteBehavior.NoAction);
-
-      u.HasData(seededUsers);
     });
     #endregion User
 
     #region Diary
     builder.Entity<Diary>(d =>
     {
+      d.HasKey(d => d.OwnerId);
+
+      d.HasOne(d => d.Owner)
+      .WithOne(u => u.Diary)
+      .HasForeignKey<Diary>(d => d.OwnerId);
+
       d.HasMany(d => d.FoodEntries)
         .WithOne(f => f.Diary)
         .HasForeignKey(f => f.DiaryId)
@@ -102,8 +80,6 @@ public class SQLDataBaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>,
         .WithOne(f => f.Diary)
         .HasForeignKey(f => f.DiaryId)
         .OnDelete(DeleteBehavior.Cascade);
-
-      d.HasData(seededDiaries);
     });
     #endregion Diary
 

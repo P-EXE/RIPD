@@ -47,13 +47,13 @@ public partial class FoodDetailsVM : ObservableObject
     Available = false;
     try
     {
-      Food_DiaryEntryDTO_Create foodDiaryEntryDTOCreate = new()
+      DiaryEntry_Food_Create createFoodEntry = new()
       {
         FoodId = Food?.Id,
         Amount = 0,
         Acted = Acted
       };
-      success = await _diaryService.AddFoodToDiaryAsync(foodDiaryEntryDTOCreate);
+      success = await _diaryService.AddFoodToDiaryAsync(createFoodEntry);
     }
     catch (Exception ex)
     {

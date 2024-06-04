@@ -13,10 +13,19 @@ public class FoodService : IFoodService
     _mapper = mapper;
   }
 
+  // Needs AutoMapper support
   public async Task<Food?> CreateFoodAsync(Food food)
   {
-    Food_Create createFood = _mapper.Map<Food_Create>(food);
-    Food? retFood = await _httpService.PostAsync<Food_Create, Food>("foods", createFood);
+    // Mapping
+    food.Contributer = Statics.Auth.Owner;
+
+    food.ContributerId = Statics.Auth.Owner?.Id;
+    food.ManufacturerId = food.Manufacturer?.Id;
+
+    // API
+    Food? retFood = await _httpService.PostAsync<Food, Food>("food", food);
+
+    // Return
     return retFood;
   }
 
@@ -30,10 +39,10 @@ public class FoodService : IFoodService
     IEnumerable<Food>? foods;
     Dictionary<string, string> queries = new()
     {
-      ["foodName"] = query,
+      ["name"] = query,
       ["position"] = position.ToString(),
     };
-    foods = await _httpService.GetAsync<IEnumerable<Food>?>("foods", queries);
+    foods = await _httpService.GetAsync<IEnumerable<Food>?>("food", queries);
     return foods;
   }
 }
