@@ -45,7 +45,8 @@ public partial class AddFoodVM : ObservableObject
   {
     await Shell.Current.GoToAsync($"{nameof(FoodDetailsPage)}", true, new Dictionary<string, object>
     {
-      [nameof(Food)] = SelectedFood
+      {"Food", SelectedFood},
+      {"PageMode", FoodDetailsVM.PageMode.AddEntry}
     });
     SelectedFood = null;
   }

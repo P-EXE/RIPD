@@ -4,5 +4,5 @@ namespace RIPDApp.Services;
 
 public interface IDiaryService
 {
-  Task<bool> AddFoodToDiaryAsync(DiaryEntry_Food_Create foodDiaryEntryDTOCreate);
+  Task<bool> AddFoodToDiaryAsync(DiaryEntry_Food entry);
 }

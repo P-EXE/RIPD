@@ -7,6 +7,10 @@ using System.Text.Json;
 
 namespace RIPDApp.Services;
 
+/// <summary>
+/// Default implementation of the IHTTPService interface.
+/// Uses it's own HttpClient which's AuthHeader can be updated via the Authorize Method in an effort to combat socket exhaustion.
+/// </summary>
 internal class HttpService : IHttpService
 {
   private HttpClient _httpClient;
@@ -21,8 +25,16 @@ internal class HttpService : IHttpService
     };
   }
 
-  public async Task<bool> Authorize()
+  public async Task<bool> Authorize(AuthenticationHeaderValue authHeader = null)
   {
+    // Set the AuthHeader if available
+    if (authHeader != null)
+    {
+      _httpClient.DefaultRequestHeaders.Authorization = authHeader;
+      return true;
+    }
+
+    // Get the AuthHeader from Statics
     _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Statics.Auth.BearerToken?.AccessToken ?? "");
     return true;
   }

@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RIPDApi.Data;
+using RIPDApi.Repos;
 using RIPDShared.Models;
 
 namespace RIPDApi.Controllers;
@@ -11,76 +13,97 @@ namespace RIPDApi.Controllers;
 [ApiController]
 public class UserController : ControllerBase
 {
-  private readonly IMapper _mapper;
-  private readonly SQLDataBaseContext _dbContext;
+  private readonly UserManager<AppUser> _userManager;
+  private readonly IUserRepo _userRepo;
 
-  public UserController(IMapper mapper, SQLDataBaseContext dbContext)
+  public UserController(UserManager<AppUser> userManager, IUserRepo userRepo)
   {
-    _mapper = mapper;
-    _dbContext = dbContext;
+    _userManager = userManager;
+    _userRepo = userRepo;
   }
 
-  [HttpGet("GetSelf"), Authorize]
-  public async Task<AppUser?> GetUserName()
+  /// <summary>
+  /// Gets the current User from the BearerToken.
+  /// </summary>
+  /// <returns>The User with all Public information</returns>
+  [HttpGet("self/public"), Authorize]
+  public async Task<AppUser?> GetSelfPublic()
   {
-    string? userName = User?.Identity?.Name;
-    AppUser? appUser = await _dbContext.Users.Where(x => x.UserName == userName).FirstOrDefaultAsync();
-    return appUser;
+    AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
+    return await _userRepo.GetSelfPublicAsync(user);
   }
 
-  #region User
-
-  [HttpGet("{userId}")]
-  public async Task<AppUser?> GetUserAsync([FromRoute] string userId)
+  /// <summary>
+  /// Gets the current User from the BearerToken.
+  /// </summary>
+  /// <returns>The User with all Private information</returns>
+  [HttpGet("self/private"), Authorize]
+  public async Task<AppUser?> GetSelfPrivate()
   {
-    AppUser user = await _dbContext.Users
-      .Where(u => u.Id.ToString() == userId).FirstOrDefaultAsync();
-    return user;
+    AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
+    return await _userRepo.GetSelfPrivateAsync(user);
   }
 
   [HttpGet]
-  public async Task<IEnumerable<AppUser>?> GetUsersByNameAtPositionAsync([FromQuery] string userName, [FromQuery] int position)
+  public async Task<IEnumerable<AppUser>?> GetUsersByNameAtPositionAsync([FromQuery] string name, [FromQuery] int position)
   {
-    IEnumerable<AppUser>? user = _dbContext.Users
-      .Where(u => u.UserName.StartsWith(userName))
-      .OrderBy(u => u.UserName)
-      .Skip(position)
-      .Take(5)
-      .AsEnumerable();
-    return user;
+    AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
+    return await _userRepo.GetUsersByNameAtPosition(name, position);
   }
 
-  #endregion User
+  /* #region User
 
-  #region Food
+   [HttpGet("{userId}")]
+   public async Task<AppUser?> GetUserAsync([FromRoute] string userId)
+   {
+     AppUser user = await _dbContext.Users
+       .Where(u => u.Id.ToString() == userId).FirstOrDefaultAsync();
+     return user;
+   }
 
-  [HttpGet("{userId}/foods/manufactured")]
-  public async Task<List<Food>?> GetUserManufacturedFoodsAsync([FromRoute] string userId)
-  {
-    List<Food> foods = await _dbContext.Foods
-      .Where(f => f.ManufacturerId.ToString() == userId).ToListAsync();
-    return foods;
-  }
+   [HttpGet]
+   public async Task<IEnumerable<AppUser>?> GetUsersByNameAtPositionAsync([FromQuery] string userName, [FromQuery] int position)
+   {
+     IEnumerable<AppUser>? user = _dbContext.Users
+       .Where(u => u.UserName.StartsWith(userName))
+       .OrderBy(u => u.UserName)
+       .Skip(position)
+       .Take(5)
+       .AsEnumerable();
+     return user;
+   }
 
-  [HttpGet("{userId}/foods/contributed")]
-  public async Task<List<Food>?> GetUserContributedFoodsAsync([FromRoute] string userId)
-  {
-    List<Food> foods = await _dbContext.Foods
-      .Where(f => f.ContributerId.ToString() == userId).ToListAsync();
-    return foods;
-  }
+   #endregion User
 
-  #endregion Food
+   #region Food
 
-  #region Workouts
+   [HttpGet("{userId}/foods/manufactured")]
+   public async Task<List<Food>?> GetUserManufacturedFoodsAsync([FromRoute] string userId)
+   {
+     List<Food> foods = await _dbContext.Foods
+       .Where(f => f.ManufacturerId.ToString() == userId).ToListAsync();
+     return foods;
+   }
 
-  [HttpGet("{userId}/workouts/contributed")]
-  public async Task<List<Workout>?> GetUserContributedWorkoutsAsync([FromRoute] string userId)
-  {
-    List<Workout> workouts = await _dbContext.Workouts
-      .Where(w => w.ContributerId.ToString() == userId).ToListAsync();
-    return workouts;
-  }
+   [HttpGet("{userId}/foods/contributed")]
+   public async Task<List<Food>?> GetUserContributedFoodsAsync([FromRoute] string userId)
+   {
+     List<Food> foods = await _dbContext.Foods
+       .Where(f => f.ContributerId.ToString() == userId).ToListAsync();
+     return foods;
+   }
 
-  #endregion Worukouts
+   #endregion Food
+
+   #region Workouts
+
+   [HttpGet("{userId}/workouts/contributed")]
+   public async Task<List<Workout>?> GetUserContributedWorkoutsAsync([FromRoute] string userId)
+   {
+     List<Workout> workouts = await _dbContext.Workouts
+       .Where(w => w.ContributerId.ToString() == userId).ToListAsync();
+     return workouts;
+   }
+
+   #endregion Worukouts*/
 }

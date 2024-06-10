@@ -33,7 +33,7 @@ public class OwnerService : IOwnerService
     Statics.Auth.BearerToken = bt;
     await _httpService.Authorize();
     
-    AppUser? owner = await _httpService.GetAsync<AppUser>("user/GetSelf");
+    AppUser? owner = await _httpService.GetAsync<AppUser>("user/self/private");
     if (owner == null)
     {
       return false;

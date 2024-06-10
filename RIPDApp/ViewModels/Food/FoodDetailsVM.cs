@@ -1,11 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RIPDApp.Services;
+using RIPDApp.Tools;
 using RIPDShared.Models;
 using System.Reflection;
 
 namespace RIPDApp.ViewModels;
 
+[QueryProperty(nameof(ActivePageMode), "PageMode")]
 [QueryProperty("Food", "Food")]
 public partial class FoodDetailsVM : ObservableObject
 {
@@ -16,28 +18,41 @@ public partial class FoodDetailsVM : ObservableObject
   }
 
   [ObservableProperty]
+  private int _activePageMode;
+  [ObservableProperty]
+  private bool _addEntryMode;
+
+
+  [ObservableProperty]
   private bool _available;
   [ObservableProperty]
   [NotifyPropertyChangedFor(nameof(FoodProperties))]
   private Food? _food;
   [ObservableProperty]
-  private int _ammount;
+  private int _amount;
   [ObservableProperty]
   private DateTime _acted;
 
-  public IEnumerable<FoodProps?>? FoodProperties => GetProperties(Food).Result;
+  public Props<Food>? FoodProperties => new(Food);
 
-  private async Task<IEnumerable<FoodProps?>?> GetProperties(Food? food)
+  partial void OnActivePageModeChanged(int value)
   {
-    List<FoodProps?> props = new();
-    if (food == null)
-      return default;
-    foreach (PropertyInfo prop in food.GetType().GetProperties())
+    switch ((PageMode)value)
     {
-      props.Add(new FoodProps(prop.Name, prop?.GetValue(food)?.ToString()));
-      /*      d.Add(prop.Name, "blank");*/
+      case PageMode.View:
+        {
+          break;
+        }
+        case PageMode.Edit:
+        {
+          break;
+        }
+        case PageMode.AddEntry:
+        {
+          AddEntryMode = true;
+          break;
+        }
     }
-    return props;
   }
 
   [RelayCommand]
@@ -47,13 +62,18 @@ public partial class FoodDetailsVM : ObservableObject
     Available = false;
     try
     {
-      DiaryEntry_Food_Create createFoodEntry = new()
+      DiaryEntry_Food entry = new()
       {
-        FoodId = Food?.Id,
-        Amount = 0,
-        Acted = Acted
+        Acted = Acted,
+        Added = DateTime.Now,
+        Amount = Amount,
+        Diary = Statics.Auth.Owner.Diary,
+        DiaryId = Statics.Auth.Owner.DiaryId,
+        EntryNr = Statics.Auth.Owner.Diary.FoodEntries.Count + 1,
+        Food = Food,
+        FoodId = Food.Id
       };
-      success = await _diaryService.AddFoodToDiaryAsync(createFoodEntry);
+      success = await _diaryService.AddFoodToDiaryAsync(entry);
     }
     catch (Exception ex)
     {
@@ -65,16 +85,11 @@ public partial class FoodDetailsVM : ObservableObject
 
   [RelayCommand]
   async Task GoBack() => await Shell.Current.GoToAsync("..");
-}
 
-public class FoodProps
-{
-  public string Name { get; set; }
-  public string? Value { get; set; }
-
-  public FoodProps(string name, string? value)
+  public enum PageMode
   {
-    Name = name;
-    Value = value;
+    View = 0,
+    Edit = 1,
+    AddEntry = 2,
   }
 }

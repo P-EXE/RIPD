@@ -77,6 +77,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Views\Food\ListPropV.xaml.cs">
+	    <DependentUpon>ListPropV.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\Food\FoodListFoodV.xaml.cs">
 	    <DependentUpon>FoodListFoodV.xaml</DependentUpon>
 	  </Compile>
@@ -123,6 +126,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\User\UserSearchPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Food\ListPropV.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Food\FoodListFoodV.xaml">

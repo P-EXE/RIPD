@@ -15,7 +15,7 @@ public class UserService : IUserService
     IEnumerable<AppUser>? users;
     Dictionary<string, string> queries = new()
     {
-      ["userName"] = query,
+      ["name"] = query,
       ["position"] = position.ToString(),
     };
     users = await _httpService.GetAsync<IEnumerable<AppUser>?>("user", queries);

@@ -24,16 +24,23 @@ public partial class NewFoodVM : ObservableObject
 
   [ObservableProperty]
   private bool _available = true;
+
   [ObservableProperty]
-  private Food _food = new();
+  private Food _food = new()
+  {
+    Manufacturer = null,
+    ManufacturerId = null,
+    Contributer = Statics.Auth.Owner,
+    ContributerId = Statics.Auth.Owner?.Id
+  };
   [ObservableProperty]
-  private AppUser? _manufacturer;
+  private string _manufacturerName = "search Manufacturer";
 
   // Sets the Manufacturer field
   private void SetManufacturer(AppUser manufacturer)
   {
     Food.Manufacturer = manufacturer;
-    Manufacturer = manufacturer;
+    ManufacturerName = manufacturer.UserName;
   }
 
   [RelayCommand]

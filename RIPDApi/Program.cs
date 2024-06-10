@@ -6,10 +6,16 @@ using RIPDShared.Models;
 using RIPDApi.Services;
 using Microsoft.Data.Sqlite;
 using RIPDApi.Repos;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+  .AddJsonOptions(options =>
+  {
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    options.JsonSerializerOptions.WriteIndented = true;
+  });
 
 builder.Services.AddEndpointsApiExplorer();
 
@@ -66,6 +72,7 @@ builder.Services.AddSingleton<MongoDBService>();
 
 builder.Services.AddTransient<IFoodRepo, FoodRepo>();
 builder.Services.AddTransient<IDiaryRepo, DiaryRepo>();
+builder.Services.AddTransient<IUserRepo, UserRepo>();
 
 #endregion Repos
 

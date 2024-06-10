@@ -3,29 +3,41 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:RIPDApp.ViewModels"
              xmlns:m="clr-namespace:RIPDShared.Models;assembly=RIPDShared"
+             xmlns:v="clr-namespace:RIPDApp.Views"
              x:Class="RIPDApp.Pages.FoodDetailsPage"
              x:DataType="vm:FoodDetailsVM">
   <Grid RowDefinitions="auto,*,auto">
+
     <VerticalStackLayout Grid.Row="0">
-      <Label Text="{Binding Food.Name}"/>
-      <Label Text="{Binding Food.Manufacturer}"/>
-      <DatePicker/>
-      <Entry Placeholder="Ammount"/>
+      <Image Source="{Binding Food.Image}"/>
+      <Label Text="{Binding Food.Name}"
+             FontSize="Header"/>
+      <Label Text="{Binding Food.Manufacturer}"
+             FontSize="Subtitle"/>
+      <FlexLayout>
+        <DatePicker/>
+        <Entry Placeholder="Amount"
+               IsVisible="{Binding AddEntryMode}"
+               FlexLayout.Grow="1"/>
+      </FlexLayout>
+
     </VerticalStackLayout>
     <ScrollView Grid.Row="1">
-      <CollectionView ItemsSource="{Binding FoodProperties}">
+      <CollectionView ItemsSource="{Binding FoodProperties.Members}">
         <CollectionView.ItemTemplate>
-          <DataTemplate x:DataType="vm:FoodProps">
+          <DataTemplate>
             <SwipeView>
-              <VerticalStackLayout>
-                <Label Text="{Binding Name}"/>
-                <Label Text="{Binding Value}"/>
-              </VerticalStackLayout>
+              <v:ListPropV/>
             </SwipeView>
           </DataTemplate>
         </CollectionView.ItemTemplate>
       </CollectionView>
     </ScrollView>
-    <Button Grid.Row="2" Text="Add" Command="{Binding AddFoodToDiaryCommand}"/>
+
+    <Button Grid.Row="2" 
+            Text="Add to Diary"
+            Command="{Binding AddFoodToDiaryCommand}"
+            IsVisible="{Binding AddEntryMode}"/>
+
   </Grid>
 </ContentPage>
