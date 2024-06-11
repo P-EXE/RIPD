@@ -6,41 +6,80 @@ namespace RIPDApp.Tools;
 #region Prop
 
 /// <summary>
-/// Deconstructs an object of the specified typ into a List of the type Prop.
+/// Deconstructs an object of the specified typ into a List of the target Prop.
 /// Helps with dynamic creation of XAML CollectionView ItemsSources.
 /// </summary>
-/// <typeparam name="T"></typeparam>
-public class Props<T>
+public class Props
 {
   // Type the Properties belong to.
-  public T Type { get; private set; }
+  public Type objT { get; private set; }
   // List of all Property members of the Type.
   public List<Prop> Members { get; private set; } = [];
 
-  public Props(T obj, bool allowNull, List<string> skipProps = null)
+  // Get all Props of a Type
+  public Props(Type type)
   {
-    Deconstruct(obj, allowNull, skipProps);
+    objT = type;
+    foreach (PropertyInfo propInfo in type.GetProperties())
+    {
+      Members.Add(new(propInfo.Name, ""));
+    }
   }
 
-  // Deconstructs the Object and only adds it's member Properties to the Members list if their Value is not null.
-  public async Task Deconstruct(T obj, bool allowNull, List<string>? skipProps = null, [CallerMemberName] string caller = "")
+  // Get all Props of a Type with a String mask
+  public Props(Type type, List<string> omitt)
   {
-    if (obj == null)
-      return;
-    foreach (PropertyInfo prop in obj.GetType().GetProperties())
+    objT = type;
+    foreach (PropertyInfo propInfo in type.GetProperties())
     {
-      if (!allowNull)
-      {
-        if (prop.GetValue(obj) == null)
-          continue;
-      }
-      if (skipProps != null)
-      {
-        if (skipProps.Contains(prop.Name))
-          continue;
-      }
-      Members.Add(new(prop.Name, prop.GetValue(obj)?.ToString() ?? ""));
+      if (omitt.Contains(propInfo.Name))
+        continue;
+      Members.Add(new(propInfo.Name, ""));
     }
+  }
+
+  // Get all Props of a Type with a null selector
+  public Props(object target, bool allowNullValues = true)
+  {
+    objT = target.GetType();
+    foreach (PropertyInfo propInfo in objT.GetProperties())
+    {
+      if (!allowNullValues)
+      {
+        if (propInfo.GetValue(target) == null)
+          continue;
+      }
+      Members.Add(new(propInfo.Name, propInfo.GetValue(target)?.ToString()));
+    }
+  }
+
+  // Get all Props of an Object with a Type as a mask with a null selector
+  public Props(object target, Type maskType, bool allowNullValues = true)
+  {
+    objT = target.GetType();
+    List<PropertyInfo> maskList = maskType.GetProperties().ToList();
+    foreach (PropertyInfo propInfo in objT.GetProperties())
+    {
+      if (maskList.Contains(propInfo))
+        continue;
+      if (!allowNullValues)
+      {
+        if (propInfo.GetValue(target) == null)
+          continue;
+      }
+      Members.Add(new(propInfo.Name, propInfo.GetValue(target)?.ToString()));
+    }
+  }
+
+  public T Recombine<T>()
+  {
+    Dictionary<string, object> props = [];
+    foreach (Prop prop in Members)
+    {
+      props.Add(prop.Name, prop.Value);
+    }
+    dynamic? combined = Activator.CreateInstance(objT, [props]);
+    return (T)combined;
   }
 }
 
@@ -50,8 +89,8 @@ public class Props<T>
 public class Prop
 {
   public string Name { get; private set; }
-  public string Value { get; private set; }
-  public Prop(string name, string value)
+  public string? Value { get; private set; }
+  public Prop(string name, string? value)
   {
     Name = name;
     Value = value;

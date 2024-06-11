@@ -21,9 +21,11 @@ public partial class FoodDetailsVM : ObservableObject
   [ObservableProperty]
   private int _activePageMode;
   [ObservableProperty]
-  [NotifyPropertyChangedFor(nameof(PageModeView))]
-  private bool _pageModeEdit;
-  public bool PageModeView => !PageModeEdit;
+  private bool _pageModeView = true;
+  [ObservableProperty]
+  private bool _pageModeEdit = false;
+  [ObservableProperty]
+  private bool _pageModeCreate = false;
 
   // Availability
   [ObservableProperty]
@@ -32,8 +34,13 @@ public partial class FoodDetailsVM : ObservableObject
   // Displayed Fields
   [ObservableProperty]
   private Food _food = new();
+
   [ObservableProperty]
-  private Props<Food>? _foodProperties;
+  private Props _viewProperties;
+  [ObservableProperty]
+  private Props _updateProperties;
+  [ObservableProperty]
+  private Props _createProperties;
 
   [ObservableProperty]
   private double _amount;
@@ -42,37 +49,91 @@ public partial class FoodDetailsVM : ObservableObject
 
   async partial void OnActivePageModeChanged(int value)
   {
-    FoodProperties = null;
     switch ((PageMode)value)
     {
       case PageMode.View:
         {
+          PageModeView = true;
           PageModeEdit = false;
-          FoodProperties = new(Food, false, new()
-          {
-            // Beauty
-            nameof(Food.Name),
-            nameof(Food.Manufacturer),
-            nameof(Food.Description),
-            // Ids
-            nameof(Food.Id),
-            nameof(Food.ManufacturerId),
-            nameof(Food.ContributerId),
-            nameof(Food.CreationDateTime),
-            nameof(Food.UpdateDateTime),
-          });
+          PageModeCreate = false;
+          ViewProperties = new(Food, false);
           break;
         }
       case PageMode.Edit:
         {
+          PageModeView = false;
           PageModeEdit = true;
-          FoodProperties = new(Food, true);
+          PageModeCreate = false;
+          UpdateProperties = new(Food, typeof(Food_Update));
+          break;
+        }
+      case PageMode.Create:
+        {
+          PageModeView = false;
+          PageModeEdit = false;
+          PageModeCreate = true;
+          CreateProperties = new(typeof(Food_Create), new()
+          {
+            nameof(Food_Create.Image),
+            nameof(Food_Create.Name),
+            nameof(Food_Create.Barcode),
+            nameof(Food_Create.Description),
+
+            nameof(Food_Create.ManufacturerId),
+            nameof(Food_Create.ContributerId),
+          });
           break;
         }
     }
   }
 
   [RelayCommand]
+  private async Task ScanBarcode()
+  {
+
+  }
+
+  [RelayCommand]
+  async Task GoBack() => await Shell.Current.GoToAsync("..");
+
+  #region Switch methods
+
+  [RelayCommand]
+  private async Task SwitchToViewMode()
+  {
+    ActivePageMode = (int)PageMode.View;
+  }
+
+  [RelayCommand]
+  private async Task SwitchToEditMode()
+  {
+    ActivePageMode = (int)PageMode.Edit;
+  }
+
+  [RelayCommand]
+  private async Task SwitchToCreateMode()
+  {
+    ActivePageMode = (int)PageMode.Create;
+  }
+
+  #endregion Switch methods
+
+  [RelayCommand]
+  private async Task CreateFood()
+  {
+    Food_Create createFood = CreateProperties.Recombine<Food_Create>();
+    ActivePageMode = (int)PageMode.View;
+  }
+
+  public enum PageMode
+  {
+    Default = 0,
+    View = 1,
+    Edit = 2,
+    Create = 3,
+  }
+
+  /*  [RelayCommand]
   private async Task AddFoodToDiary()
   {
     bool success = false;
@@ -99,27 +160,5 @@ public partial class FoodDetailsVM : ObservableObject
     if (success)
       await GoBack();
     Available = true;
-  }
-
-  [RelayCommand]
-  async Task GoBack() => await Shell.Current.GoToAsync("..");
-
-  [RelayCommand]
-  private async Task SwitchToEditMode()
-  {
-    ActivePageMode = (int)PageMode.Edit;
-  }
-
-  [RelayCommand]
-  private async Task SwitchToViewMode()
-  {
-    ActivePageMode = (int)PageMode.View;
-  }
-
-  public enum PageMode
-  {
-    Default = 0,
-    View = 1,
-    Edit = 2
-  }
+  }*/
 }

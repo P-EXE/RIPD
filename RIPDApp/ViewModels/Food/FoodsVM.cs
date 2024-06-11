@@ -63,7 +63,7 @@ public partial class FoodsVM : ObservableObject
   {
     await Shell.Current.GoToAsync($"{nameof(FoodDetailsPage)}", true, new()
     {
-      { "PageMode", FoodDetailsVM.PageMode.Edit }
+      { "PageMode", FoodDetailsVM.PageMode.Create }
     });
   }
 }

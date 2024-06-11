@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:RIPDApp.ViewModels"
+             xmlns:t="clr-namespace:RIPDApp.Tools"
+             x:DataType="vm:FoodDetailsVM"
+             x:Class="RIPDApp.Views.FoodCreateV">
+  <Grid RowDefinitions="auto,*">
+    <VerticalStackLayout Grid.Row="0">
+      <Entry Text="{Binding Food.Name}" Placeholder="Name" FontSize="Header"/>
+      <Button Text="{Binding Food.Manufacturer.UserName}" FontSize="Subtitle"/>
+      <Label Text="{Binding Food.Contributer.UserName}" FontSize="Micro"/>
+      <FlexLayout>
+        <Entry Text="{Binding Food.Barcode}" Placeholder="Barcode" FlexLayout.Grow="1" FontSize="Micro"/>
+        <Button Text="Scan" Command="{Binding ScanBarcodeCommand}" FlexLayout.Grow="0"/>
+      </FlexLayout>
+      <Entry Text="{Binding Food.Description}" Placeholder="Description" FontSize="Body"/>
+      <Rectangle HeightRequest="2" Background="#20FFFFFF"/>
+    </VerticalStackLayout>
+    <ScrollView Grid.Row="1" Margin="10">
+      <CollectionView ItemsSource="{Binding CreateProperties.Members}">
+        <CollectionView.ItemTemplate>
+          <DataTemplate x:DataType="t:Prop">
+            <VerticalStackLayout>
+              <Label Text="{Binding Name}"
+                       FontSize="Caption"/>
+              <Entry Text="{Binding Value}"
+                       FontSize="Default"/>
+            </VerticalStackLayout>
+          </DataTemplate>
+        </CollectionView.ItemTemplate>
+      </CollectionView>
+    </ScrollView>
+  </Grid>
+</ContentView>
