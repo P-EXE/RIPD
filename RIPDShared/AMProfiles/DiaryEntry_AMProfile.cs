@@ -18,7 +18,8 @@ namespace RIPDShared.AMProfiles
       CreateMap<DiaryEntry_Run_Update, DiaryEntry_Run>();
 
       // Rest -> Transit
-      // No Read DTO Intended as of now.
+      // Create
+      CreateMap<DiaryEntry_Food, DiaryEntry_Food_Create>();
     }
   }
 }

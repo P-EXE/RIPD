@@ -17,19 +17,29 @@ public class Props<T>
   // List of all Property members of the Type.
   public List<Prop> Members { get; private set; } = [];
 
-  public Props(T obj)
+  public Props(T obj, bool allowNull, List<string> skipProps = null)
   {
-    Deconstruct(obj);
+    Deconstruct(obj, allowNull, skipProps);
   }
 
   // Deconstructs the Object and only adds it's member Properties to the Members list if their Value is not null.
-  public async Task Deconstruct(T obj, [CallerMemberName] string caller = "")
+  public async Task Deconstruct(T obj, bool allowNull, List<string>? skipProps = null, [CallerMemberName] string caller = "")
   {
-    if (obj == null) return;
+    if (obj == null)
+      return;
     foreach (PropertyInfo prop in obj.GetType().GetProperties())
     {
-      if (prop.GetValue(obj) == null) break;
-      Members.Add(new(prop.Name, prop.GetValue(obj).ToString()));
+      if (!allowNull)
+      {
+        if (prop.GetValue(obj) == null)
+          continue;
+      }
+      if (skipProps != null)
+      {
+        if (skipProps.Contains(prop.Name))
+          continue;
+      }
+      Members.Add(new(prop.Name, prop.GetValue(obj)?.ToString() ?? ""));
     }
   }
 }

@@ -6,10 +6,11 @@
     xmlns:local="clr-namespace:RIPDApp"
     xmlns:pages="clr-namespace:RIPDApp.Pages"
     xmlns:views="clr-namespace:RIPDApp.Views"
+    xmlns:statics="clr-namespace:RIPDApp.Statics"
     Shell.FlyoutBehavior="Disabled"
     Title="RIPD">
 
-  <FlyoutItem Title="Register" FlyoutItemIsVisible="True">
+  <FlyoutItem Title="Register" FlyoutItemIsVisible="False">
     <Tab Title="Register">
       <ShellContent
         ContentTemplate="{DataTemplate pages:RegisterPage}"
@@ -28,15 +29,21 @@
         ContentTemplate="{DataTemplate pages:HomePage}"
         Route="HomePage" />
     </Tab>
-    <Tab Title="Feed">
+    <Tab Title="Diary">
       <ShellContent
-        ContentTemplate="{DataTemplate pages:FeedPage}"
-        Route="FeedPage" />
+        ContentTemplate="{DataTemplate pages:DiaryTodayPage}"
+        Route="DiaryTodayPage" />
+      <ShellContent
+        ContentTemplate="{DataTemplate pages:DiaryWeekPage}"
+        Route="DiaryWeekPage" />
+      <ShellContent
+        ContentTemplate="{DataTemplate pages:DiaryMonthPage}"
+        Route="DiaryMonthPage" />
     </Tab>
-    <Tab Title="Add Food">
+    <Tab Title="+">
       <ShellContent
-        ContentTemplate="{DataTemplate pages:AddFoodPage}"
-        Route="AddFoodPage" />
+        ContentTemplate="{DataTemplate pages:FoodsPage}"
+        Route="FoodsPage" />
     </Tab>
     <Tab Title="Profile">
       <ShellContent

@@ -4,40 +4,62 @@
              xmlns:vm="clr-namespace:RIPDApp.ViewModels"
              xmlns:m="clr-namespace:RIPDShared.Models;assembly=RIPDShared"
              xmlns:v="clr-namespace:RIPDApp.Views"
+             xmlns:t="clr-namespace:RIPDApp.Tools"
              x:Class="RIPDApp.Pages.FoodDetailsPage"
              x:DataType="vm:FoodDetailsVM">
   <Grid RowDefinitions="auto,*,auto">
 
-    <VerticalStackLayout Grid.Row="0">
-      <Image Source="{Binding Food.Image}"/>
-      <Label Text="{Binding Food.Name}"
-             FontSize="Header"/>
-      <Label Text="{Binding Food.Manufacturer}"
-             FontSize="Subtitle"/>
-      <FlexLayout>
-        <DatePicker/>
-        <Entry Placeholder="Amount"
-               IsVisible="{Binding AddEntryMode}"
-               FlexLayout.Grow="1"/>
-      </FlexLayout>
-
+    <VerticalStackLayout Grid.Row="0" IsVisible="{Binding PageModeView}">
+      <Label Text="{Binding Food.Name}" FontSize="Header"/>
+      <Label Text="{Binding Food.Manufacturer}" FontSize="Subtitle"/>
+      <Label Text="{Binding Food.Contributer}" FontSize="Micro"/>
+      <Label Text="{Binding Food.Description}" FontSize="Body"/>
     </VerticalStackLayout>
-    <ScrollView Grid.Row="1">
+
+    <VerticalStackLayout Grid.Row="0" IsVisible="{Binding PageModeEdit}">
+      <Entry Text="{Binding Food.Name}" FontSize="Header"/>
+      <Button Text="{Binding Food.Manufacturer}" FontSize="Subtitle"/>
+      <Label Text="{Binding Food.Contributer}" FontSize="Micro"/>
+      <Entry Text="{Binding Food.Description}" FontSize="Body"/>
+      <Rectangle HeightRequest="2" Background="#20FFFFFF"/>
+    </VerticalStackLayout>
+
+    <ScrollView Grid.Row="1" IsVisible="{Binding PageModeView}" Margin="10">
       <CollectionView ItemsSource="{Binding FoodProperties.Members}">
         <CollectionView.ItemTemplate>
-          <DataTemplate>
-            <SwipeView>
-              <v:ListPropV/>
-            </SwipeView>
+          <DataTemplate x:DataType="t:Prop">
+            <FlexLayout Direction="Row">
+              <VerticalStackLayout>
+                <Label Text="{Binding Name}"
+                         FontSize="Caption"/>
+                <Label Text="{Binding Value}"
+                         FontAttributes="Bold"
+                         FontSize="Default"/>
+              </VerticalStackLayout>
+            </FlexLayout>
           </DataTemplate>
         </CollectionView.ItemTemplate>
       </CollectionView>
     </ScrollView>
 
-    <Button Grid.Row="2" 
-            Text="Add to Diary"
-            Command="{Binding AddFoodToDiaryCommand}"
-            IsVisible="{Binding AddEntryMode}"/>
+    <ScrollView Grid.Row="1" IsVisible="{Binding PageModeEdit}" Margin="10">
+      <CollectionView ItemsSource="{Binding FoodProperties.Members}">
+        <CollectionView.ItemTemplate>
+          <DataTemplate x:DataType="t:Prop">
+            <VerticalStackLayout>
+              <Label Text="{Binding Name}"
+                       FontSize="Caption"/>
+              <Entry Text="{Binding Value}"
+                       FontSize="Default"/>
+            </VerticalStackLayout>
+          </DataTemplate>
+        </CollectionView.ItemTemplate>
+      </CollectionView>
+    </ScrollView>
 
+    <Grid Grid.Row="2">
+      <Button Text="Edit" Command="{Binding SwitchToEditModeCommand}" IsVisible="{Binding PageModeView}"/>
+      <Button Text="Save" Command="{Binding SwitchToViewModeCommand}" IsVisible="{Binding PageModeEdit}"/>
+    </Grid>
   </Grid>
 </ContentPage>

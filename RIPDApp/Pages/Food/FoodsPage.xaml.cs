@@ -2,10 +2,10 @@ using RIPDApp.ViewModels;
 
 namespace RIPDApp.Pages;
 
-public partial class AddFoodPage : ContentPage
+public partial class FoodsPage : ContentPage
 {
-	private AddFoodVM _vm;
-	public AddFoodPage(AddFoodVM vm)
+	private FoodsVM _vm;
+	public FoodsPage(FoodsVM vm)
 	{ 
 		InitializeComponent();
 		_vm = vm;

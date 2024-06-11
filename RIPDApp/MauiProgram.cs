@@ -80,7 +80,9 @@ public static class MauiProgram
     builder.Services.AddTransient<HomePage>();
     builder.Services.AddTransient<HomeVM>();
 
-    builder.Services.AddTransient<DiaryPage>();
+    builder.Services.AddTransient<DiaryTodayPage>();
+    builder.Services.AddTransient<DiaryWeekPage>();
+    builder.Services.AddTransient<DiaryMonthPage>();
     builder.Services.AddTransient<DiaryVM>();
 
     #endregion Home
@@ -94,8 +96,8 @@ public static class MauiProgram
 
     #region food
 
-    builder.Services.AddTransient<AddFoodPage>();
-    builder.Services.AddTransient<AddFoodVM>();
+    builder.Services.AddTransient<FoodsPage>();
+    builder.Services.AddTransient<FoodsVM>();
 
     builder.Services.AddTransient<FoodListFoodV>();
     builder.Services.AddTransient<FoodListFoodVM>();

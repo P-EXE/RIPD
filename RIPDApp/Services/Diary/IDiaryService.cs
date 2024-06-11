@@ -4,5 +4,6 @@ namespace RIPDApp.Services;
 
 public interface IDiaryService
 {
-  Task<bool> AddFoodToDiaryAsync(DiaryEntry_Food entry);
+  Task<bool> AddFoodEntryToDiaryAsync(DiaryEntry_Food entry);
+  Task<IEnumerable<DiaryEntry_Food>?> GetFoodEntriesInDateRange(Diary diary, DateTime startDate, DateTime endDate);
 }

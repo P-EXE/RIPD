@@ -9,6 +9,6 @@ public partial class HomeVM : ObservableObject
   [RelayCommand]
   async Task GoToDiary()
   {
-    await Shell.Current.GoToAsync(nameof(DiaryPage));
+    await Shell.Current.GoToAsync(nameof(DiaryTodayPage));
   }
 }

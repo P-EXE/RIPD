@@ -4,7 +4,7 @@ namespace RIPDShared.Models;
 
 public class Diary
 {
-  public Guid? OwnerId { get; set; }
+  public Guid OwnerId { get; set; }
   public AppUser? Owner { get; set; }
   public ICollection<DiaryEntry_Food> FoodEntries = [];
   public ICollection<DiaryEntry_Workout> WorkoutEntries = [];

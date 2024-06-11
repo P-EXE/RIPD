@@ -6,14 +6,13 @@ using RIPDApp.Services;
 using RIPDShared.Models;
 using System.Collections.ObjectModel;
 
-
 namespace RIPDApp.ViewModels;
 
-public partial class AddFoodVM : ObservableObject
+public partial class FoodsVM : ObservableObject
 {
   private readonly IFoodService _foodService;
 
-  public AddFoodVM(IFoodService foodService)
+  public FoodsVM(IFoodService foodService)
   {
     _foodService = foodService;
   }
@@ -40,16 +39,7 @@ public partial class AddFoodVM : ObservableObject
   {
   }
 
-  [RelayCommand]
-  async Task ShowDetails()
-  {
-    await Shell.Current.GoToAsync($"{nameof(FoodDetailsPage)}", true, new Dictionary<string, object>
-    {
-      {"Food", SelectedFood},
-      {"PageMode", FoodDetailsVM.PageMode.AddEntry}
-    });
-    SelectedFood = null;
-  }
+
 
   [RelayCommand]
   private async void QuickAddFood()
@@ -58,8 +48,22 @@ public partial class AddFoodVM : ObservableObject
   }
 
   [RelayCommand]
+  async Task ShowDetails()
+  {
+    await Shell.Current.GoToAsync($"{nameof(FoodDetailsPage)}", true, new Dictionary<string, object>
+    {
+      {"Food", SelectedFood},
+      {"PageMode", FoodDetailsVM.PageMode.View}
+    });
+    SelectedFood = null;
+  }
+
+  [RelayCommand]
   private async void NewFood()
   {
-    await Shell.Current.GoToAsync($"{nameof(NewFoodPage)}", true);
+    await Shell.Current.GoToAsync($"{nameof(FoodDetailsPage)}", true, new()
+    {
+      { "PageMode", FoodDetailsVM.PageMode.Edit }
+    });
   }
 }

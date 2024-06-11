@@ -58,6 +58,11 @@
 
 	<ItemGroup>
 	  <None Remove="Platforms\Android\Resources\xml\network_security_config.xml" />
+	  <None Remove="Resources\Styles\Styles.xaml.bak" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Include="Resources\Styles\Styles.xaml.bak" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -77,6 +82,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Pages\Diary\DiaryMonthPage.xaml.cs">
+	    <DependentUpon>DiaryMonthPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\Diary\DiaryTodayPage.xaml.cs">
+	    <DependentUpon>DiaryTodayPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\Food\FoodsPage.xaml.cs">
+	    <DependentUpon>FoodsPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\Food\ListPropV.xaml.cs">
 	    <DependentUpon>ListPropV.xaml</DependentUpon>
 	  </Compile>
@@ -89,10 +103,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Pages\Diary\DiaryPage.xaml">
+	  <MauiXaml Update="Pages\Diary\DiaryTodayPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\Food\AddFoodPage.xaml">
+	  <MauiXaml Update="Pages\Diary\DiaryMonthPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Diary\DiaryWeekPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Food\FoodsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Feed\FeedPage.xaml">
@@ -126,6 +146,15 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\User\UserSearchPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\Styles.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Diary\BarChartV.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Food\ListFoodEntryV.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Food\ListPropV.xaml">

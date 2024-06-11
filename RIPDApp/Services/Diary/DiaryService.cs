@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using RIPDShared.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace RIPDApp.Services;
 
@@ -13,7 +14,7 @@ public class DiaryService : IDiaryService
     _mapper = mapper;
   }
 
-  public async Task<bool> AddFoodToDiaryAsync(DiaryEntry_Food entry)
+  public async Task<bool> AddFoodEntryToDiaryAsync(DiaryEntry_Food entry)
   {
     // Mapping
     DiaryEntry_Food_Create createEntry = _mapper.Map<DiaryEntry_Food_Create>(entry);
@@ -22,5 +23,15 @@ public class DiaryService : IDiaryService
     return await _httpService.PostAsync("diary/foods", createEntry);
 
     // Return
+  }
+
+  public async Task<IEnumerable<DiaryEntry_Food>?> GetFoodEntriesInDateRange(Diary diary, DateTime startDate, DateTime endDate)
+  {
+    Dictionary<string, string> queries = new()
+    {
+      ["startDate"] = startDate.ToString(),
+      ["endDate"] = endDate.ToString(),
+    };
+    return await _httpService.GetAsync<IEnumerable<DiaryEntry_Food>?>($"diary/{diary.OwnerId}/foods", queries);
   }
 }
