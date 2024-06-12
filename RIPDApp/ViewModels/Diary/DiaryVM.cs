@@ -22,6 +22,7 @@ public partial class DiaryVM : ObservableObject
 
   [ObservableProperty]
   private DateTime _startDate;
+  // Maybe add 23h59m59s
   [ObservableProperty]
   private DateTime _endDate = DateTime.Today;
 
@@ -39,16 +40,22 @@ public partial class DiaryVM : ObservableObject
       case PageMode.Today:
         {
           StartDate = DateTime.Today;
+          // Maybe add 23h59m59s
+          EndDate = DateTime.Today;
           break;
         }
       case PageMode.Week:
         {
           StartDate = DateTime.Today.AddDays(-7);
+          // Maybe add 23h59m59s
+          EndDate = DateTime.Today;
           break;
         }
       case PageMode.Month:
         {
           StartDate = DateTime.Today.AddMonths(-1);
+          // Maybe add 23h59m59s
+          EndDate = DateTime.Today;
           break;
         }
     }
@@ -56,11 +63,11 @@ public partial class DiaryVM : ObservableObject
 
   private async Task GetFoodEntriesInDateRange()
   {
-    IEnumerable<DiaryEntry_Food>? foodEntries = await _diaryService.GetFoodEntriesInDateRange(Statics.Auth.Owner.Diary ,StartDate, EndDate);
+    IEnumerable<DiaryEntry_Food>? foodEntries = await _diaryService.GetFoodEntriesInDateRange(Statics.Auth.Owner.Diary, StartDate, EndDate);
     FoodEntries = foodEntries?.ToObservableCollection();
   }
 
-  // Needs to be adjusted to FoodEntry
+  // Needs to be adjusted to FoodEntryPage
   [RelayCommand]
   private async Task ShowFoodDetails()
   {

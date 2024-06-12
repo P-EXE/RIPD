@@ -120,6 +120,9 @@
 	  <MauiXaml Update="Pages\Diary\DiaryWeekPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\Food\FoodDetailsViewPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\Food\FoodsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
