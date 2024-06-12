@@ -5,7 +5,7 @@
              xmlns:vm="clr-namespace:RIPDApp.ViewModels"
              xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI.Controls"
              x:Class="RIPD.Pages.BarcodeScannerPage"
-             x:DataType="vm:BarcodeScannerZXingVM"
+             x:DataType="vm:ScannerVM"
              Title="BarcodeScannerPage">
   <Grid>
     <Grid.RowDefinitions>
