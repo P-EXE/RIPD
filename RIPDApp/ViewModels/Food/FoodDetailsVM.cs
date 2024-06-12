@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using RIPDApp.Pages;
 using RIPDApp.Services;
 using RIPDApp.Tools;
 using RIPDShared.Models;
-using System.Reflection;
 
 namespace RIPDApp.ViewModels;
 
@@ -90,7 +90,7 @@ public partial class FoodDetailsVM : ObservableObject
   [RelayCommand]
   private async Task ScanBarcode()
   {
-    await Shell.Current.GoToAsync(nameof());
+    await Shell.Current.GoToAsync(nameof(BarcodeScannerPage));
   }
 
   [RelayCommand]

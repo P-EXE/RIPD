@@ -9,6 +9,7 @@ using RIPDApp.Services;
 using RIPDApp.ViewModels;
 using RIPDApp.Views;
 using System.Net.Http.Headers;
+using ZXing.Net.Maui.Controls;
 
 namespace RIPDApp;
 
@@ -19,12 +20,13 @@ public static class MauiProgram
     var builder = MauiApp.CreateBuilder();
     builder
       .UseMauiApp<App>()
-      .UseMauiCommunityToolkit()
       .ConfigureFonts(fonts =>
       {
         fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
         fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-      });
+      })
+      .UseMauiCommunityToolkit()
+      .UseBarcodeReader();
 
     #region SQLite
 
@@ -94,7 +96,7 @@ public static class MauiProgram
 
     #endregion Feed
 
-    #region food
+    #region Food
 
     builder.Services.AddTransient<FoodsPage>();
     builder.Services.AddTransient<FoodsVM>();
@@ -108,7 +110,7 @@ public static class MauiProgram
     builder.Services.AddTransient<NewFoodPage>();
     builder.Services.AddTransient<NewFoodVM>();
 
-    #endregion food
+    #endregion Food
 
     #region user
 
