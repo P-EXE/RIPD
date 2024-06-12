@@ -8,11 +8,11 @@ using System.Collections.ObjectModel;
 
 namespace RIPDApp.ViewModels;
 
-public partial class FoodsVM : ObservableObject
+public partial class FoodListVM : ObservableObject
 {
   private readonly IFoodService _foodService;
 
-  public FoodsVM(IFoodService foodService)
+  public FoodListVM(IFoodService foodService)
   {
     _foodService = foodService;
   }

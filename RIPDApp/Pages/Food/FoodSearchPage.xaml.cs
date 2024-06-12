@@ -4,8 +4,8 @@ namespace RIPDApp.Pages;
 
 public partial class FoodSearchPage : ContentPage
 {
-	private FoodsVM _vm;
-	public FoodSearchPage(FoodsVM vm)
+	private FoodListVM _vm;
+	public FoodSearchPage(FoodListVM vm)
 	{ 
 		InitializeComponent();
 		_vm = vm;

@@ -96,8 +96,8 @@
 	  <Compile Update="Pages\Food\FoodDetailsCreatePage.xaml.cs">
 	    <DependentUpon>FoodDetailsCreatePage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Pages\Food\FoodsPage.xaml.cs">
-	    <DependentUpon>FoodsPage.xaml</DependentUpon>
+	  <Compile Update="Pages\Food\FoodSearchPage.xaml.cs">
+	    <DependentUpon>FoodSearchPage.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Views\Food\FoodCreateV.xaml.cs">
 	    <DependentUpon>FoodCreateV.xaml</DependentUpon>
@@ -135,7 +135,7 @@
 	  <MauiXaml Update="Pages\Food\FoodDetailsViewPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\Food\FoodsPage.xaml">
+	  <MauiXaml Update="Pages\Food\FoodSearchPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Feed\FeedPage.xaml">
