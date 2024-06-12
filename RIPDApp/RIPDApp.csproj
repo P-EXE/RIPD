@@ -90,6 +90,12 @@
 	  <Compile Update="Pages\Diary\DiaryTodayPage.xaml.cs">
 	    <DependentUpon>DiaryTodayPage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Pages\Food\FoodDetailsUpdatePage.xaml.cs">
+	    <DependentUpon>FoodDetailsUpdatePage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\Food\FoodDetailsCreatePage.xaml.cs">
+	    <DependentUpon>FoodDetailsCreatePage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Pages\Food\FoodsPage.xaml.cs">
 	    <DependentUpon>FoodsPage.xaml</DependentUpon>
 	  </Compile>
@@ -118,6 +124,12 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Diary\DiaryWeekPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Food\FoodDetailsCreatePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Food\FoodDetailsUpdatePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Food\FoodDetailsViewPage.xaml">

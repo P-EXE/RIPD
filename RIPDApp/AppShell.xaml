@@ -42,8 +42,8 @@
     </Tab>
     <Tab Title="+">
       <ShellContent
-        ContentTemplate="{DataTemplate pages:FoodsPage}"
-        Route="FoodsPage" />
+        ContentTemplate="{DataTemplate pages:FoodSearchPage}"
+        Route="FoodSearchPage" />
     </Tab>
     <Tab Title="Profile">
       <ShellContent
