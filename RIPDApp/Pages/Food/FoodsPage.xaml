@@ -4,7 +4,7 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:v="clr-namespace:RIPDApp.Views"
              xmlns:vm="clr-namespace:RIPDApp.ViewModels"
-             x:Class="RIPDApp.Pages.FoodsPage"
+             x:Class="RIPDApp.Pages.FoodSearchPage"
              x:DataType="vm:FoodsVM">
   <Grid RowDefinitions="auto, *,auto">
     <SearchBar Grid.Row="0"

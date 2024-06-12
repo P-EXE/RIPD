@@ -98,13 +98,15 @@ public static class MauiProgram
 
     #region Food
 
-    builder.Services.AddTransient<FoodsPage>();
+    builder.Services.AddTransient<FoodSearchPage>();
     builder.Services.AddTransient<FoodsVM>();
 
     builder.Services.AddTransient<FoodListFoodV>();
     builder.Services.AddTransient<FoodListFoodVM>();
 
     builder.Services.AddTransient<FoodDetailsPage>();
+    builder.Services.AddTransient<FoodDetailsCreatePage>();
+    builder.Services.AddTransient<FoodDetailsUpdatePage>();
     builder.Services.AddTransient<FoodDetailsViewPage>();
     builder.Services.AddTransient<FoodDetailsVM>();
 

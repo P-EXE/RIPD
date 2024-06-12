@@ -13,14 +13,31 @@ public partial class AppShell : Shell
     Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
 
     Routing.RegisterRoute(nameof(HomePage), typeof(HomePage));
-    
+
     Routing.RegisterRoute(nameof(DiaryTodayPage), typeof(DiaryTodayPage));
     Routing.RegisterRoute(nameof(DiaryWeekPage), typeof(DiaryWeekPage));
     Routing.RegisterRoute(nameof(DiaryMonthPage), typeof(DiaryMonthPage));
 
-    Routing.RegisterRoute($"{nameof(FoodsPage)}/{nameof(FoodDetailsPage)}", typeof(FoodDetailsPage));
-    Routing.RegisterRoute($"{nameof(FoodDetailsPage)}/{nameof(UserSearchPage)}", typeof(UserSearchPage));
-    Routing.RegisterRoute($"{nameof(FoodDetailsPage)}/{nameof(BarcodeScannerPage)}", typeof(BarcodeScannerPage));
+    // Food Related Routes
+    // Food Search -> Food Details
+    Routing.RegisterRoute(
+      $"{nameof(FoodSearchPage)}" +
+      $"/{nameof(FoodDetailsViewPage)}",
+      typeof(FoodDetailsViewPage)
+      );
+    // Food Details -> Food Update
+    Routing.RegisterRoute(
+      $"{nameof(FoodSearchPage)}" +
+      $"/{nameof(FoodDetailsViewPage)}" +
+      $"/{nameof(FoodDetailsUpdatePage)}",
+      typeof(FoodDetailsUpdatePage)
+      );
+    // Food Search -> Food Create
+    Routing.RegisterRoute(
+      $"{nameof(FoodSearchPage)}" +
+      $"/{nameof(FoodDetailsCreatePage)}", 
+      typeof(FoodDetailsCreatePage)
+      );
 
     Routing.RegisterRoute(nameof(ProfilePage), typeof(ProfilePage));
     Routing.RegisterRoute(nameof(OwnerProfilePage), typeof(OwnerProfilePage));
