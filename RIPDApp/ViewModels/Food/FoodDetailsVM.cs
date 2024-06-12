@@ -21,11 +21,11 @@ public partial class FoodDetailsVM : ObservableObject
   [ObservableProperty]
   private int _activePageMode;
   [ObservableProperty]
-  private bool _pageModeView = true;
+  private bool _pageModeView;
   [ObservableProperty]
-  private bool _pageModeEdit = false;
+  private bool _pageModeEdit;
   [ObservableProperty]
-  private bool _pageModeCreate = false;
+  private bool _pageModeCreate;
 
   // Availability
   [ObservableProperty]
@@ -90,11 +90,18 @@ public partial class FoodDetailsVM : ObservableObject
   [RelayCommand]
   private async Task ScanBarcode()
   {
-
+    await Shell.Current.GoToAsync(nameof());
   }
 
   [RelayCommand]
   async Task GoBack() => await Shell.Current.GoToAsync("..");
+
+  [RelayCommand]
+  private async Task CreateFood()
+  {
+    Food_Create createFood = CreateProperties.Recombine<Food_Create>();
+    ActivePageMode = (int)PageMode.View;
+  }
 
   #region Switch methods
 
@@ -117,13 +124,6 @@ public partial class FoodDetailsVM : ObservableObject
   }
 
   #endregion Switch methods
-
-  [RelayCommand]
-  private async Task CreateFood()
-  {
-    Food_Create createFood = CreateProperties.Recombine<Food_Create>();
-    ActivePageMode = (int)PageMode.View;
-  }
 
   public enum PageMode
   {
