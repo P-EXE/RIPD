@@ -1,11 +1,85 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:RIPDApp.ViewModels"
+             x:DataType="vm:FoodDetailsVM"
              x:Class="RIPDApp.Pages.FoodDetailsViewPage">
-  <VerticalStackLayout>
-    <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-  </VerticalStackLayout>
+  <Grid RowDefinitions="auto,*,auto">
+    
+    <VerticalStackLayout Grid.Row="0">
+      <!-- #region Meta -->
+      <Image Source="{Binding Food.Image}"/>
+      <Label Text="{Binding Food.Name}"/>
+      <Label Text="{Binding Food.Manufacturer.UserName}"/>
+      <Label Text="{Binding Food.Contributer.UserName}"/>
+      <Label Text="{Binding Food.Description}"/>
+      <Label Text="{Binding Food.Barcode}"/>
+      <!-- #rendegion Meta -->
+    </VerticalStackLayout>
+    
+    <ScrollView Grid.Row="1">
+      <VerticalStackLayout>
+        
+        <!-- #region Macros -->
+        <Label Text="{Binding Food.Energy}"/>
+        <Label Text="{Binding Food.Water}"/>
+        <Label Text="{Binding Food.Protein}"/>
+        <Label Text="{Binding Food.Fat}"/>
+        <Label Text="{Binding Food.Carbohydrates}"/>
+        <Label Text="{Binding Food.Fiber}"/>
+        <Label Text="{Binding Food.Sugar}"/>
+        <!-- #endregion Macros -->
+
+        <!-- #region Minerals -->
+        <Label Text="{Binding Food.Calcium}"/>
+        <Label Text="{Binding Food.Iron}"/>
+        <Label Text="{Binding Food.Magnesium}"/>
+        <Label Text="{Binding Food.Phosphorus}"/>
+        <Label Text="{Binding Food.Potassium}"/>
+        <Label Text="{Binding Food.Sodium}"/>
+        <Label Text="{Binding Food.Zinc}"/>
+        <Label Text="{Binding Food.Copper}"/>
+        <Label Text="{Binding Food.Manganese}"/>
+        <Label Text="{Binding Food.Selenium}"/>
+        <!-- #endregion Minerals -->
+
+        <!-- #region Vitamins -->
+        <Label Text="{Binding Food.VitaminC}"/>
+        <Label Text="{Binding Food.VitaminB1}"/>
+        <Label Text="{Binding Food.VitaminB2}"/>
+        <Label Text="{Binding Food.VitaminB3}"/>
+        <Label Text="{Binding Food.VitaminB5}"/>
+        <Label Text="{Binding Food.VitaminB6}"/>
+        <Label Text="{Binding Food.VitaminB9}"/>
+        <Label Text="{Binding Food.VitaminB12}"/>
+        <Label Text="{Binding Food.VitaminA1}"/>
+        <Label Text="{Binding Food.Retinol}"/>
+        <Label Text="{Binding Food.AlphaCarotin}"/>
+        <Label Text="{Binding Food.BetaCarotin}"/>
+        <Label Text="{Binding Food.BetaCryptoxanthin}"/>
+        <Label Text="{Binding Food.Lycopene}"/>
+        <Label Text="{Binding Food.LutZea}"/>
+        <Label Text="{Binding Food.VitaminE}"/>
+        <Label Text="{Binding Food.VitaminD}"/>
+        <Label Text="{Binding Food.VitaminK}"/>
+        <Label Text="{Binding Food.Choline}"/>
+        <!-- #endregion Vitamins -->
+
+        <!-- #region Alcohols -->
+        <Label Text="{Binding Food.Alcohol}"/>
+        <!-- #endregion Alcohols -->
+
+        <!-- #region Fats -->
+        <Label Text="{Binding Food.FattyAcidsSaturated}"/>
+        <Label Text="{Binding Food.FattyAcidsMono}"/>
+        <Label Text="{Binding Food.FattyAcidsPoly}"/>
+        <Label Text="{Binding Food.Cholesterol}"/>
+        <!-- #endregion Fats -->
+        
+      </VerticalStackLayout>
+    </ScrollView>
+    
+    <Button Grid.Row="2" Text="Edit" Command="{Binding }"/>
+    
+  </Grid>
 </ContentPage>

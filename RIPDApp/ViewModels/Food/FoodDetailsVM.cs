@@ -11,10 +11,10 @@ namespace RIPDApp.ViewModels;
 [QueryProperty(nameof(ActivePageMode), nameof(PageMode))]
 public partial class FoodDetailsVM : ObservableObject
 {
-  private readonly IDiaryService _diaryService;
-  public FoodDetailsVM(IDiaryService diaryService)
+  private readonly IFoodService _foodService;
+  public FoodDetailsVM(IFoodService foodService)
   {
-    _diaryService = diaryService;
+    _foodService = foodService;
   }
 
   // Page State Fields
@@ -33,7 +33,7 @@ public partial class FoodDetailsVM : ObservableObject
 
   // Displayed Fields
   [ObservableProperty]
-  private Food _food = new();
+  private Food _food;
 
   [ObservableProperty]
   private Props _viewProperties;
@@ -56,7 +56,6 @@ public partial class FoodDetailsVM : ObservableObject
           PageModeView = true;
           PageModeEdit = false;
           PageModeCreate = false;
-          ViewProperties = new(Food, false);
           break;
         }
       case PageMode.Edit:
@@ -64,7 +63,6 @@ public partial class FoodDetailsVM : ObservableObject
           PageModeView = false;
           PageModeEdit = true;
           PageModeCreate = false;
-          UpdateProperties = new(Food, typeof(Food_Update));
           break;
         }
       case PageMode.Create:
@@ -72,16 +70,6 @@ public partial class FoodDetailsVM : ObservableObject
           PageModeView = false;
           PageModeEdit = false;
           PageModeCreate = true;
-          CreateProperties = new(typeof(Food_Create), new()
-          {
-            nameof(Food_Create.Image),
-            nameof(Food_Create.Name),
-            nameof(Food_Create.Barcode),
-            nameof(Food_Create.Description),
-
-            nameof(Food_Create.ManufacturerId),
-            nameof(Food_Create.ContributerId),
-          });
           break;
         }
     }
@@ -99,8 +87,7 @@ public partial class FoodDetailsVM : ObservableObject
   [RelayCommand]
   private async Task CreateFood()
   {
-    Food_Create createFood = CreateProperties.Recombine<Food_Create>();
-    ActivePageMode = (int)PageMode.View;
+    await _foodService.CreateFoodAsync(Food);
   }
 
   #region Switch methods
@@ -151,7 +138,7 @@ public partial class FoodDetailsVM : ObservableObject
         Food = Food,
         FoodId = Food.Id
       };
-      success = await _diaryService.AddFoodEntryToDiaryAsync(entry);
+      success = await _foodService.AddFoodEntryToDiaryAsync(entry);
     }
     catch (Exception ex)
     {

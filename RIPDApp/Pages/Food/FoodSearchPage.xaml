@@ -5,7 +5,7 @@
              xmlns:v="clr-namespace:RIPDApp.Views"
              xmlns:vm="clr-namespace:RIPDApp.ViewModels"
              x:Class="RIPDApp.Pages.FoodSearchPage"
-             x:DataType="vm:FoodsVM">
+             x:DataType="vm:FoodSearchVM">
   <Grid RowDefinitions="auto, *,auto">
     <SearchBar Grid.Row="0"
                Text="{Binding SearchText}">
