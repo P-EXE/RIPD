@@ -22,6 +22,12 @@ public partial class AppShell : Shell
     // Food Search -> Food Details
     Routing.RegisterRoute(
       $"{nameof(FoodSearchPage)}" +
+      $"/{nameof(FoodDetailsPage)}",
+      typeof(FoodDetailsPage)
+      );
+    // Food Search -> Food View
+    Routing.RegisterRoute(
+      $"{nameof(FoodSearchPage)}" +
       $"/{nameof(FoodDetailsViewPage)}",
       typeof(FoodDetailsViewPage)
       );

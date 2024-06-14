@@ -27,14 +27,6 @@
           <DataTemplate>
             <SwipeView>
               <v:FoodListFoodV/>
-              <!--<SwipeView.RightItems>
-                <SwipeItems Mode="Execute">
-                  <SwipeItemView BackgroundColor="#00ff00" 
-                                 Command="{Binding QuickAddFoodCommand}">
-                    <Label Text="Add" HorizontalOptions="Center" VerticalOptions="Center" Padding="10,0"/>
-                  </SwipeItemView>
-                </SwipeItems>
-              </SwipeView.RightItems>-->
             </SwipeView>
           </DataTemplate>
         </CollectionView.ItemTemplate>

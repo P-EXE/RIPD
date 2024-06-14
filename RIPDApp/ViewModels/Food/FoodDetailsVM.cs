@@ -2,8 +2,10 @@
 using CommunityToolkit.Mvvm.Input;
 using RIPDApp.Pages;
 using RIPDApp.Services;
-using RIPDApp.Tools;
+using RIPDApp.Collections;
 using RIPDShared.Models;
+using System.Reflection;
+using System.Diagnostics;
 
 namespace RIPDApp.ViewModels;
 
@@ -33,14 +35,10 @@ public partial class FoodDetailsVM : ObservableObject
 
   // Displayed Fields
   [ObservableProperty]
-  private Food _food;
+  private Food _food = new();
 
   [ObservableProperty]
-  private Props _viewProperties;
-  [ObservableProperty]
-  private Props _updateProperties;
-  [ObservableProperty]
-  private Props _createProperties;
+  ObservablePropertyCollection<Food> _foodProperties = [];
 
   [ObservableProperty]
   private double _amount;
@@ -70,6 +68,7 @@ public partial class FoodDetailsVM : ObservableObject
           PageModeView = false;
           PageModeEdit = false;
           PageModeCreate = true;
+          FoodProperties.Disassemble(Food);
           break;
         }
     }
@@ -87,7 +86,11 @@ public partial class FoodDetailsVM : ObservableObject
   [RelayCommand]
   private async Task CreateFood()
   {
-    await _foodService.CreateFoodAsync(Food);
+    Food? createFood = FoodProperties.Assemble();
+    foreach(PropertyInfo propInfo in typeof(Food).GetProperties())
+    {
+      Debug.WriteLine($"{propInfo.Name} : {propInfo.GetValue(createFood) ?? "Was Null"}");
+    }
   }
 
   #region Switch methods

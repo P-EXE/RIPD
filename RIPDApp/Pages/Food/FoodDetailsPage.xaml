@@ -4,7 +4,6 @@
              xmlns:vm="clr-namespace:RIPDApp.ViewModels"
              xmlns:m="clr-namespace:RIPDShared.Models;assembly=RIPDShared"
              xmlns:v="clr-namespace:RIPDApp.Views"
-             xmlns:t="clr-namespace:RIPDApp.Tools"
              x:Class="RIPDApp.Pages.FoodDetailsPage"
              x:DataType="vm:FoodDetailsVM">
   <Grid RowDefinitions="*,auto">
