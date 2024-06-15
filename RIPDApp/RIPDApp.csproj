@@ -90,11 +90,14 @@
 	  <Compile Update="Pages\Diary\DiaryTodayPage.xaml.cs">
 	    <DependentUpon>DiaryTodayPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Pages\Food\FoodDetailsUpdatePage.xaml.cs">
-	    <DependentUpon>FoodDetailsUpdatePage.xaml</DependentUpon>
+	  <Compile Update="Pages\Food\FoodViewPage.xaml.cs">
+	    <DependentUpon>FoodViewPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Pages\Food\FoodDetailsCreatePage.xaml.cs">
-	    <DependentUpon>FoodDetailsCreatePage.xaml</DependentUpon>
+	  <Compile Update="Pages\Food\FoodUpdatePage.xaml.cs">
+	    <DependentUpon>FoodUpdatePage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\Food\FoodCreatePage.xaml.cs">
+	    <DependentUpon>FoodCreatePage.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Pages\Food\FoodSearchPage.xaml.cs">
 	    <DependentUpon>FoodSearchPage.xaml</DependentUpon>
@@ -123,13 +126,13 @@
 	  <MauiXaml Update="Pages\Diary\DiaryWeekPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\Food\FoodDetailsCreatePage.xaml">
+	  <MauiXaml Update="Pages\Food\FoodCreatePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\Food\FoodDetailsUpdatePage.xaml">
+	  <MauiXaml Update="Pages\Food\FoodUpdatePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\Food\FoodDetailsViewPage.xaml">
+	  <MauiXaml Update="Pages\Food\FoodViewPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Food\FoodSearchPage.xaml">

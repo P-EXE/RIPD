@@ -61,7 +61,7 @@ public partial class FoodSearchVM : ObservableObject
   [RelayCommand]
   private async void NewFood()
   {
-    await Shell.Current.GoToAsync($"{nameof(FoodDetailsPage)}", true, new()
+    await Shell.Current.GoToAsync($"{nameof(FoodCreatePage)}", true, new()
     {
       { "PageMode", FoodDetailsVM.PageMode.Create }
     });

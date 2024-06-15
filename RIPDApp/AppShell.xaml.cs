@@ -28,21 +28,34 @@ public partial class AppShell : Shell
     // Food Search -> Food View
     Routing.RegisterRoute(
       $"{nameof(FoodSearchPage)}" +
-      $"/{nameof(FoodDetailsViewPage)}",
-      typeof(FoodDetailsViewPage)
+      $"/{nameof(FoodViewPage)}",
+      typeof(FoodViewPage)
       );
     // Food Details -> Food Update
     Routing.RegisterRoute(
       $"{nameof(FoodSearchPage)}" +
-      $"/{nameof(FoodDetailsViewPage)}" +
-      $"/{nameof(FoodDetailsUpdatePage)}",
-      typeof(FoodDetailsUpdatePage)
+      $"/{nameof(FoodViewPage)}" +
+      $"/{nameof(FoodUpdatePage)}",
+      typeof(FoodUpdatePage)
       );
     // Food Search -> Food Create
     Routing.RegisterRoute(
       $"{nameof(FoodSearchPage)}" +
-      $"/{nameof(FoodDetailsCreatePage)}", 
-      typeof(FoodDetailsCreatePage)
+      $"/{nameof(FoodCreatePage)}", 
+      typeof(FoodCreatePage)
+      );
+
+    // Food Create -> User Search
+    Routing.RegisterRoute(
+      $"{nameof(FoodCreatePage)}" +
+      $"/{nameof(UserSearchPage)}",
+      typeof(UserSearchPage)
+      );
+    // Food Create -> Scan Barcode
+    Routing.RegisterRoute(
+      $"{nameof(FoodCreatePage)}" +
+      $"/{nameof(BarcodeScannerPage)}",
+      typeof(BarcodeScannerPage)
       );
 
     Routing.RegisterRoute(nameof(ProfilePage), typeof(ProfilePage));

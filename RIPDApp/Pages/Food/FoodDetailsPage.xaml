@@ -10,16 +10,16 @@
 
     <Grid Grid.Row="0">
       <v:FoodDetailsV x:DataType="vm:FoodDetailsVM" IsVisible="{Binding PageModeView}"/>
-      <v:FoodUpdateV x:DataType="vm:FoodDetailsVM" IsVisible="{Binding PageModeEdit}"/>
+      <v:FoodUpdateV x:DataType="vm:FoodDetailsVM" IsVisible="{Binding PageModeUpdate}"/>
       <v:FoodCreateV x:DataType="vm:FoodDetailsVM" IsVisible="{Binding PageModeCreate}"/>
     </Grid>
 
-    <Grid Grid.Row="1">
+    <!--<Grid Grid.Row="1">
       <Label Text="Buttons"/>
-      <Button Text="Edit" Command="{Binding SwitchToEditModeCommand}" IsVisible="{Binding PageModeView}"/>
+      <Button Text="Edit" Command="{Binding SwitchToUpdateModeCommand}" IsVisible="{Binding PageModeView}"/>
       <Button Text="Save" Command="{Binding SwitchToViewModeCommand}" IsVisible="{Binding PageModeEdit}"/>
       <Button Text="Create" Command="{Binding CreateFoodCommand}" IsVisible="{Binding PageModeCreate}"/>
-    </Grid>
+    </Grid>-->
       
   </Grid>
 </ContentPage>

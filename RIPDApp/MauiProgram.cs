@@ -105,9 +105,9 @@ public static class MauiProgram
     builder.Services.AddTransient<FoodListFoodVM>();
 
     builder.Services.AddTransient<FoodDetailsPage>();
-    builder.Services.AddTransient<FoodDetailsCreatePage>();
-    builder.Services.AddTransient<FoodDetailsUpdatePage>();
-    builder.Services.AddTransient<FoodDetailsViewPage>();
+    builder.Services.AddTransient<FoodCreatePage>();
+    builder.Services.AddTransient<FoodUpdatePage>();
+    builder.Services.AddTransient<FoodViewPage>();
     builder.Services.AddTransient<FoodDetailsVM>();
 
     builder.Services.AddTransient<BarcodeScannerPage>();

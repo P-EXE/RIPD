@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:RIPDApp.ViewModels"
              x:DataType="vm:FoodDetailsVM"
-             x:Class="RIPDApp.Pages.FoodDetailsViewPage">
+             x:Class="RIPDApp.Pages.FoodViewPage">
   <Grid RowDefinitions="auto,*,auto">
     
     <VerticalStackLayout Grid.Row="0">
