@@ -5,7 +5,7 @@
              xmlns:v="clr-namespace:RIPDApp.Views"
              xmlns:vm="clr-namespace:RIPDApp.ViewModels"
              x:Class="RIPDApp.Pages.FoodSearchPage"
-             x:DataType="vm:FoodsVM">
+             x:DataType="vm:FoodSearchVM">
   <Grid RowDefinitions="auto, *,auto">
     <SearchBar Grid.Row="0"
                Text="{Binding SearchText}">
@@ -27,14 +27,6 @@
           <DataTemplate>
             <SwipeView>
               <v:FoodListFoodV/>
-              <!--<SwipeView.RightItems>
-                <SwipeItems Mode="Execute">
-                  <SwipeItemView BackgroundColor="#00ff00" 
-                                 Command="{Binding QuickAddFoodCommand}">
-                    <Label Text="Add" HorizontalOptions="Center" VerticalOptions="Center" Padding="10,0"/>
-                  </SwipeItemView>
-                </SwipeItems>
-              </SwipeView.RightItems>-->
             </SwipeView>
           </DataTemplate>
         </CollectionView.ItemTemplate>

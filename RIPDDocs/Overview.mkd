@@ -1,0 +1,202 @@
+# Übersicht
+
+## Komponentenübersicht
+
+@startuml
+allowmixing
+
+component API
+component App
+component SQLServer
+component MongoDB
+component SQLite
+
+App <..> API : HTTP
+App <-> SQLite : EFCore
+API <-> MongoDB : MongoDBService
+API <-> SQLServer : EFCore
+
+@enduml
+
+<div style="page-break-after: always;"></div>
+
+## API
+
+@startuml
+allowmixing
+
+component API
+component [SQL Server] as SQLServer
+component [SQLite In Memory] as SQLiteInMemory
+component [Mongo DB] as MongoDB
+
+note "Ist die API in Development?\nJA = SQLite In Memory\nNein = SQL Server" as DevMode
+
+class UserController { 
+}
+
+class DiaryController { 
+}
+
+class FoodController { 
+}
+
+class WorkoutController { 
+}
+
+interface IUserRepo {}
+class UserRepo {}
+interface IDiaryRepo {}
+class DiaryRepo {}
+interface IFoodRepo {}
+class FoodRepo {}
+interface IWorkoutRepo {}
+class WorkoutRepo {}
+
+interface IMapper {}
+class SQLDBContext {}
+
+class MongoDBService {}
+
+() EFCore
+
+API -- UserController
+API -- DiaryController
+API -- FoodController
+API -- WorkoutController
+
+IMapper <.> UserRepo
+IMapper <.> DiaryRepo
+IMapper <.> FoodRepo
+IMapper <.> WorkoutRepo
+
+UserController <..> IUserRepo
+IUserRepo -- UserRepo
+DiaryController <..> IDiaryRepo
+IDiaryRepo -- DiaryRepo
+FoodController <..> IFoodRepo
+IFoodRepo -- FoodRepo
+WorkoutController <..> IWorkoutRepo
+IWorkoutRepo -- WorkoutRepo
+
+UserRepo --> SQLDBContext
+DiaryRepo --> SQLDBContext
+FoodRepo --> SQLDBContext
+WorkoutRepo --> SQLDBContext
+WorkoutRepo --> MongoDBService
+
+SQLDBContext <..> EFCore
+EFCore <- DevMode
+EFCore <..> SQLServer
+EFCore <..> SQLiteInMemory
+
+MongoDBService <..> MongoDB
+
+@enduml
+
+<div style="page-break-after: always;"></div>
+
+## App
+
+@startuml
+allowmixing
+
+component App
+
+/' Pages '/
+package Owner {
+  component RegisterPage
+  component LoginPage
+}
+
+component UserSearchPage
+
+package Diary {
+  component DiaryTodayPage
+  component DiaryWeekPage
+  component DiaryMonthPage
+}
+
+package Food {
+  component FoodCreatePage
+  component FoodUpdatePage
+  component FoodViewPage
+}
+
+/' ViewModels '/
+package Owner {
+  class RegisterLoginVM
+}
+
+class UserSearchVM
+
+package Diary {
+  class DiaryVM
+}
+
+package Food {
+  class FoodDetailsVM
+}
+
+/' Services '/
+interface IHTTPService {}
+class HTTPService {}
+class LocalDBService {}
+
+package Owner {
+  interface IOwnerService {}
+  class OwnerService {}
+}
+interface IUserService {}
+class UserService {}
+package Diary {
+  interface IDiaryService {}
+  class DiaryService {}
+}
+package Food {
+  interface IFoodService {}
+  class FoodService {}
+}
+interface IWorkoutService {}
+class WorkoutService {}
+
+() OnlineSwitch
+
+/' Relations '/
+IHTTPService -- HTTPService
+IOwnerService -- OwnerService
+IUserService -- UserService
+IDiaryService -- DiaryService
+IFoodService -- FoodService
+IWorkoutService -- WorkoutService
+
+App -> Owner
+App -> Diary
+App -> Food
+App -> UserSearchPage
+
+RegisterPage <..> RegisterLoginVM : Binding
+LoginPage <..> RegisterLoginVM : Binding
+UserSearchPage <..> UserSearchVM : Binding
+DiaryTodayPage <..> DiaryVM : Binding
+DiaryWeekPage <..> DiaryVM : Binding
+DiaryMonthPage <..> DiaryVM : Binding
+FoodCreatePage <..> FoodDetailsVM : Binding
+FoodUpdatePage <..> FoodDetailsVM : Binding
+FoodViewPage <..> FoodDetailsVM : Binding
+
+RegisterLoginVM --> IOwnerService : Uses
+UserSearchVM --> IUserService : Uses
+DiaryVM --> IDiaryService : Uses
+FoodDetailsVM --> IFoodService : Uses
+
+OwnerService <--> OnlineSwitch
+UserService <--> OnlineSwitch
+DiaryService <--> OnlineSwitch
+FoodService <--> OnlineSwitch
+WorkoutService <--> OnlineSwitch
+
+OnlineSwitch <--> IHTTPService
+OnlineSwitch <--> LocalDBService
+
+@enduml

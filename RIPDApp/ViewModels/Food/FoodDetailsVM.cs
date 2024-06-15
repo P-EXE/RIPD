@@ -2,19 +2,30 @@
 using CommunityToolkit.Mvvm.Input;
 using RIPDApp.Pages;
 using RIPDApp.Services;
-using RIPDApp.Tools;
+using RIPDApp.Collections;
 using RIPDShared.Models;
+using CommunityToolkit.Mvvm.Messaging;
+using RIPDApp.Messaging;
 
 namespace RIPDApp.ViewModels;
 
-[QueryProperty("Food", "Food")]
+[QueryProperty(nameof(Food), nameof(Food))]
 [QueryProperty(nameof(ActivePageMode), nameof(PageMode))]
 public partial class FoodDetailsVM : ObservableObject
 {
-  private readonly IDiaryService _diaryService;
-  public FoodDetailsVM(IDiaryService diaryService)
+  private readonly IFoodService _foodService;
+  public FoodDetailsVM(IFoodService foodService)
   {
-    _diaryService = diaryService;
+    _foodService = foodService;
+
+    WeakReferenceMessenger.Default.Register<PageReturnObjectMessage<AppUser>>(this, (r, m) =>
+    {
+      SetManufacturer(m.Value);
+    });
+    WeakReferenceMessenger.Default.Register<PageReturnObjectMessage<string>>(this, (r, m) =>
+    {
+      SetBarcode(m.Value);
+    });
   }
 
   // Page State Fields
@@ -23,7 +34,7 @@ public partial class FoodDetailsVM : ObservableObject
   [ObservableProperty]
   private bool _pageModeView;
   [ObservableProperty]
-  private bool _pageModeEdit;
+  private bool _pageModeUpdate;
   [ObservableProperty]
   private bool _pageModeCreate;
 
@@ -33,17 +44,16 @@ public partial class FoodDetailsVM : ObservableObject
 
   // Displayed Fields
   [ObservableProperty]
-  private Food _food = new();
+  private Food? _food = new();
+  [ObservableProperty]
+  private string _manufacturerUserName = "Search Manufacturer";
+  [ObservableProperty]
+  private string _barcode = "Scan Barcode";
 
+  // Experimental
   [ObservableProperty]
-  private Props _viewProperties;
-  [ObservableProperty]
-  private Props _updateProperties;
-  [ObservableProperty]
-  private Props _createProperties;
+  ObservablePropertyCollection<Food> _foodProperties = [];
 
-  [ObservableProperty]
-  private double _amount;
   [ObservableProperty]
   private DateTime _acted = DateTime.Now;
 
@@ -54,37 +64,39 @@ public partial class FoodDetailsVM : ObservableObject
       case PageMode.View:
         {
           PageModeView = true;
-          PageModeEdit = false;
+          PageModeUpdate = false;
           PageModeCreate = false;
-          ViewProperties = new(Food, false);
           break;
         }
-      case PageMode.Edit:
+      case PageMode.Update:
         {
           PageModeView = false;
-          PageModeEdit = true;
+          PageModeUpdate = true;
           PageModeCreate = false;
-          UpdateProperties = new(Food, typeof(Food_Update));
           break;
         }
       case PageMode.Create:
         {
           PageModeView = false;
-          PageModeEdit = false;
+          PageModeUpdate = false;
           PageModeCreate = true;
-          CreateProperties = new(typeof(Food_Create), new()
-          {
-            nameof(Food_Create.Image),
-            nameof(Food_Create.Name),
-            nameof(Food_Create.Barcode),
-            nameof(Food_Create.Description),
-
-            nameof(Food_Create.ManufacturerId),
-            nameof(Food_Create.ContributerId),
-          });
           break;
         }
     }
+  }
+
+  // Sets the Manufacturer field
+  private void SetManufacturer(AppUser manufacturer)
+  {
+    Food.Manufacturer = manufacturer;
+    ManufacturerUserName = manufacturer.UserName ?? "Search Manufacturer";
+  }
+
+  // Sets the Barcode field
+  private void SetBarcode(string barcode)
+  {
+    Food.Barcode = barcode;
+    Barcode = barcode ?? "Scan Barcode";
   }
 
   [RelayCommand]
@@ -94,13 +106,26 @@ public partial class FoodDetailsVM : ObservableObject
   }
 
   [RelayCommand]
+  private async Task GetUser()
+  {
+    await Shell.Current.GoToAsync($"{nameof(UserSearchPage)}", true, new Dictionary<string, object>()
+    {
+      { "PageMode", UserSearchVM.PageMode.Return }
+    });
+  }
+
+  [RelayCommand]
   async Task GoBack() => await Shell.Current.GoToAsync("..");
 
   [RelayCommand]
   private async Task CreateFood()
   {
-    Food_Create createFood = CreateProperties.Recombine<Food_Create>();
-    ActivePageMode = (int)PageMode.View;
+    Food = await _foodService.CreateFoodAsync(Food);
+  }
+
+  [RelayCommand]
+  private async Task UpdateFood()
+  {
   }
 
   #region Switch methods
@@ -109,12 +134,15 @@ public partial class FoodDetailsVM : ObservableObject
   private async Task SwitchToViewMode()
   {
     ActivePageMode = (int)PageMode.View;
+    await Shell.Current.GoToAsync($"{nameof(FoodViewPage)}", false, new()
+    {
+    });
   }
 
   [RelayCommand]
-  private async Task SwitchToEditMode()
+  private async Task SwitchToUpdateMode()
   {
-    ActivePageMode = (int)PageMode.Edit;
+    ActivePageMode = (int)PageMode.Update;
   }
 
   [RelayCommand]
@@ -129,36 +157,7 @@ public partial class FoodDetailsVM : ObservableObject
   {
     Default = 0,
     View = 1,
-    Edit = 2,
+    Update = 2,
     Create = 3,
   }
-
-  /*  [RelayCommand]
-  private async Task AddFoodToDiary()
-  {
-    bool success = false;
-    Available = false;
-    try
-    {
-      DiaryEntry_Food entry = new()
-      {
-        Acted = Acted,
-        Added = DateTime.Now,
-        Amount = Amount,
-        Diary = Statics.Auth.Owner.Diary,
-        DiaryId = Statics.Auth.Owner.Diary.OwnerId,
-        EntryNr = Statics.Auth.Owner.Diary.FoodEntries.Count + 1,
-        Food = Food,
-        FoodId = Food.Id
-      };
-      success = await _diaryService.AddFoodEntryToDiaryAsync(entry);
-    }
-    catch (Exception ex)
-    {
-
-    }
-    if (success)
-      await GoBack();
-    Available = true;
-  }*/
 }

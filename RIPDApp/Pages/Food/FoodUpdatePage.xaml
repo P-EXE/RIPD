@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:RIPDApp.ViewModels"
+             x:DataType="vm:FoodDetailsVM"
+             x:Class="RIPDApp.Pages.FoodUpdatePage">
+  <Grid RowDefinitions="auto,*,auto">
+
+    <VerticalStackLayout Grid.Row="0">
+      <!-- #region Meta -->
+      <Image Source="{Binding Food.Image}"/>
+      <Entry Placeholder="Name"  Text="{Binding Food.Name}"/>
+      <Button Text="{Binding Food.Manufacturer.UserName}"/>
+      <Entry Placeholder="Description" Text="{Binding Food.Description}"/>
+      <Button Text="{Binding Food.Barcode}"/>
+      <!-- #rendegion Meta -->
+    </VerticalStackLayout>
+
+    <ScrollView Grid.Row="1" Margin="10">
+      <VerticalStackLayout Spacing="20">
+
+        <!-- #region Macros -->
+        <VerticalStackLayout>
+          <Label Text="Macros" FontSize="Title"/>
+          <Label Text="Energy" FontSize="Caption"/>
+          <Entry Text="{Binding Food.Energy}"/>
+          <Label Text="Water" FontSize="Caption"/>
+          <Entry Text="{Binding Food.Water}"/>
+          <Label Text="Protein" FontSize="Caption"/>
+          <Entry Text="{Binding Food.Protein}"/>
+          <Label Text="Fat" FontSize="Caption"/>
+          <Entry Text="{Binding Food.Fat}"/>
+          <Label Text="Carbohydrates" FontSize="Caption"/>
+          <Entry Text="{Binding Food.Carbohydrates}"/>
+          <Label Text="Fiber" FontSize="Caption"/>
+          <Entry Text="{Binding Food.Fiber}"/>
+          <Label Text="Sugar" FontSize="Caption"/>
+          <Entry Text="{Binding Food.Sugar}"/>
+        </VerticalStackLayout>
+        <!-- #endregion Macros -->
+
+        <!-- #region Minerals -->
+        <VerticalStackLayout>
+          <Label Text="Minerals" FontSize="Title"/>
+          <Label Text="Calcium" FontSize="Caption"/>
+          <Entry Text="{Binding Food.Calcium}"/>
+          <Label Text="Iron" FontSize="Caption"/>
+          <Entry Text="{Binding Food.Iron}"/>
+          <Label Text="Magnesium" FontSize="Caption"/>
+          <Entry Text="{Binding Food.Magnesium}"/>
+          <Label Text="Phosphorus" FontSize="Caption"/>
+          <Entry Text="{Binding Food.Phosphorus}"/>
+          <Label Text="Potassium" FontSize="Caption"/>
+          <Entry Text="{Binding Food.Potassium}"/>
+          <Label Text="Sodium" FontSize="Caption"/>
+          <Entry Text="{Binding Food.Sodium}"/>
+          <Label Text="Zinc" FontSize="Caption"/>
+          <Entry Text="{Binding Food.Zinc}"/>
+          <Label Text="Copper" FontSize="Caption"/>
+          <Entry Text="{Binding Food.Copper}"/>
+          <Label Text="Manganese" FontSize="Caption"/>
+          <Entry Text="{Binding Food.Manganese}"/>
+          <Label Text="Selenium" FontSize="Caption"/>
+          <Entry Text="{Binding Food.Selenium}"/>
+        </VerticalStackLayout>
+        <!-- #endregion Minerals -->
+
+        <!-- #region Vitamins -->
+        <VerticalStackLayout>
+          <Label Text="Vitamins" FontSize="Title"/>
+          <Label Text="Vitamin C" FontSize="Caption"/>
+          <Entry Text="{Binding Food.VitaminC}"/>
+          <Label Text="Vitamin B1" FontSize="Caption"/>
+          <Entry Text="{Binding Food.VitaminB1}"/>
+          <Label Text="Vitamin B2" FontSize="Caption"/>
+          <Entry Text="{Binding Food.VitaminB2}"/>
+          <Label Text="Vitamin B3" FontSize="Caption"/>
+          <Entry Text="{Binding Food.VitaminB3}"/>
+          <Label Text="Vitamin B5" FontSize="Caption"/>
+          <Entry Text="{Binding Food.VitaminB5}"/>
+          <Label Text="Vitamin B6" FontSize="Caption"/>
+          <Entry Text="{Binding Food.VitaminB6}"/>
+          <Label Text="Vitamin B9" FontSize="Caption"/>
+          <Entry Text="{Binding Food.VitaminB9}"/>
+          <Label Text="Vitamin B12" FontSize="Caption"/>
+          <Entry Text="{Binding Food.VitaminB12}"/>
+          <Label Text="Vitamin A1" FontSize="Caption"/>
+          <Entry Text="{Binding Food.VitaminA1}"/>
+          <Label Text="Retinol" FontSize="Caption"/>
+          <Entry Text="{Binding Food.Retinol}"/>
+          <Label Text="Alpha Carotin" FontSize="Caption"/>
+          <Entry Text="{Binding Food.AlphaCarotin}"/>
+          <Label Text="Beta Carotin" FontSize="Caption"/>
+          <Entry Text="{Binding Food.BetaCarotin}"/>
+          <Label Text="Beta Cryptoxanthin" FontSize="Caption"/>
+          <Entry Text="{Binding Food.BetaCryptoxanthin}"/>
+          <Label Text="Lycopene" FontSize="Caption"/>
+          <Entry Text="{Binding Food.Lycopene}"/>
+          <Label Text="Lut/Zea" FontSize="Caption"/>
+          <Entry Text="{Binding Food.LutZea}"/>
+          <Label Text="Vitamin E" FontSize="Caption"/>
+          <Entry Text="{Binding Food.VitaminE}"/>
+          <Label Text="Vitamin D" FontSize="Caption"/>
+          <Entry Text="{Binding Food.VitaminD}"/>
+          <Label Text="Vitamin K" FontSize="Caption"/>
+          <Entry Text="{Binding Food.VitaminK}"/>
+          <Label Text="Choline" FontSize="Caption"/>
+          <Entry Text="{Binding Food.Choline}"/>
+        </VerticalStackLayout>
+        <!-- #endregion Vitamins -->
+
+        <!-- #region Alcohols -->
+        <VerticalStackLayout>
+          <Label Text="Alcohols" FontSize="Title"/>
+          <Label Text="Alcohol" FontSize="Caption"/>
+          <Entry Text="{Binding Food.Alcohol}"/>
+        </VerticalStackLayout>
+        <!-- #endregion Alcohols -->
+
+        <!-- #region Fats -->
+        <VerticalStackLayout>
+          <Label Text="Fats" FontSize="Title"/>
+          <Label Text="Saturated Fatty Acids" FontSize="Caption"/>
+          <Entry Text="{Binding Food.FattyAcidsSaturated}"/>
+          <Label Text="Mono Fatty Acids" FontSize="Caption"/>
+          <Entry Text="{Binding Food.FattyAcidsMono}"/>
+          <Label Text="Poly Fatty Acids" FontSize="Caption"/>
+          <Entry Text="{Binding Food.FattyAcidsPoly}"/>
+          <Label Text="Cholesterol" FontSize="Caption"/>
+          <Entry Text="{Binding Food.Cholesterol}"/>
+        </VerticalStackLayout>
+        <!-- #endregion Fats -->
+
+      </VerticalStackLayout>
+    </ScrollView>
+
+    <Button Grid.Row="2" Text="Create" Command="{Binding }"/>
+
+  </Grid>
+</ContentPage>
