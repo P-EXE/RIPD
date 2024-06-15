@@ -121,6 +121,7 @@ public partial class FoodDetailsVM : ObservableObject
   private async Task CreateFood()
   {
     Food = await _foodService.CreateFoodAsync(Food);
+    GoBack();
   }
 
   [RelayCommand]
