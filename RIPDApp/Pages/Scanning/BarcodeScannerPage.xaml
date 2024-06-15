@@ -16,7 +16,7 @@
     <zxing:CameraBarcodeReaderView 
       x:Name="barcodeReaderZXing"
       Grid.Row="0"
-      BarcodesDetected="CameraBarcodeReaderView_BarcodesDetected"
+      BarcodesDetected="BarcodesDetected"
     />
   </Grid>
 </ContentPage>

@@ -121,6 +121,7 @@ public partial class FoodDetailsVM : ObservableObject
   private async Task CreateFood()
   {
     Food = await _foodService.CreateFoodAsync(Food);
+    GoBack();
   }
 
   [RelayCommand]
@@ -143,6 +144,11 @@ public partial class FoodDetailsVM : ObservableObject
   private async Task SwitchToUpdateMode()
   {
     ActivePageMode = (int)PageMode.Update;
+    await Shell.Current.GoToAsync($"{nameof(FoodUpdatePage)}", false, new()
+    {
+      { nameof(Food), Food },
+      { nameof(PageMode), PageModeUpdate }
+    });
   }
 
   [RelayCommand]

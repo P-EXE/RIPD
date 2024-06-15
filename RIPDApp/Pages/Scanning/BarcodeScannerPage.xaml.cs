@@ -14,7 +14,7 @@ public partial class BarcodeScannerPage : ContentPage
     _vm = vm;
     BindingContext = _vm;
 
-    barcodeReaderZXing.BindingContext = this;
+    barcodeReaderZXing.BindingContext = _vm;
     barcodeReaderZXing.Options = new BarcodeReaderOptions()
     {
       AutoRotate = true,
@@ -23,7 +23,7 @@ public partial class BarcodeScannerPage : ContentPage
     barcodeReaderZXing.CameraLocation = CameraLocation.Rear;
   }
 
-  private void CameraBarcodeReaderView_BarcodesDetected(object sender, BarcodeDetectionEventArgs e)
+  private void BarcodesDetected(object sender, BarcodeDetectionEventArgs e)
   {
     _vm.Barcode = e.Results?.FirstOrDefault().Value;
     ReturnToPreviousPage();

@@ -134,7 +134,7 @@
       </VerticalStackLayout>
     </ScrollView>
 
-    <Button Grid.Row="2" Text="Create" Command="{Binding }"/>
+    <Button Grid.Row="2" Text="Create" Command="{Binding UpdateFoodCommand}"/>
 
   </Grid>
 </ContentPage>
