@@ -39,8 +39,6 @@ public partial class FoodSearchVM : ObservableObject
   {
   }
 
-
-
   [RelayCommand]
   private async void QuickAddFood()
   {
@@ -50,7 +48,7 @@ public partial class FoodSearchVM : ObservableObject
   [RelayCommand]
   async Task ShowDetails()
   {
-    await Shell.Current.GoToAsync($"{nameof(FoodDetailsPage)}", true, new Dictionary<string, object>
+    await Shell.Current.GoToAsync($"{nameof(FoodViewPage)}", true, new Dictionary<string, object>
     {
       {"Food", SelectedFood},
       {"PageMode", FoodDetailsVM.PageMode.View}
