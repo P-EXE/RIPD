@@ -89,12 +89,12 @@ public static class MauiProgram
 
     #endregion Home
 
-    #region Feed
+    #region DiaryEntry
 
-    builder.Services.AddTransient<FeedPage>();
-    builder.Services.AddTransient<FeedVM>();
+    builder.Services.AddTransient<DiaryEntryFoodCreatePage>();
+    builder.Services.AddTransient<DiaryEntryVM>();
 
-    #endregion Feed
+    #endregion DiaryEntry
 
     #region Food
 
@@ -112,9 +112,6 @@ public static class MauiProgram
 
     builder.Services.AddTransient<BarcodeScannerPage>();
     builder.Services.AddTransient<ScannerVM>();
-
-    builder.Services.AddTransient<NewFoodPage>();
-    builder.Services.AddTransient<NewFoodVM>();
 
     #endregion Food
 

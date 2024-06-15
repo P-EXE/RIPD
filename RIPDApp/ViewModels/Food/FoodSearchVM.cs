@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using RIPDApp.Messaging;
 using RIPDApp.Pages;
 using RIPDApp.Services;
 using RIPDShared.Models;
@@ -15,6 +17,10 @@ public partial class FoodSearchVM : ObservableObject
   public FoodSearchVM(IFoodService foodService)
   {
     _foodService = foodService;
+    WeakReferenceMessenger.Default.Register<PageReturnObjectMessage<string>>(this, (r, m) =>
+    {
+      SearchText = m.Value;
+    });
   }
 
   [ObservableProperty]
@@ -33,6 +39,11 @@ public partial class FoodSearchVM : ObservableObject
     IEnumerable<Food>? foods = await _foodService.GetFoodsByNameAtPositionAsync(SearchText, 0);
     Foods = foods?.ToObservableCollection();
   }
+  [RelayCommand]
+  private async Task SearchViaBarcode()
+  {
+    await Shell.Current.GoToAsync($"{nameof(BarcodeScannerPage)}");
+  }
 
   [RelayCommand]
   async Task Refresh()
@@ -49,6 +60,17 @@ public partial class FoodSearchVM : ObservableObject
   async Task ShowDetails()
   {
     await Shell.Current.GoToAsync($"{nameof(FoodViewPage)}", true, new Dictionary<string, object>
+    {
+      {"Food", SelectedFood},
+      {"PageMode", FoodDetailsVM.PageMode.View}
+    });
+    SelectedFood = null;
+  }
+
+  [RelayCommand]
+  async Task GoToCreateDiaryEntry()
+  {
+    await Shell.Current.GoToAsync($"{nameof(DiaryEntryFoodCreatePage)}", true, new Dictionary<string, object>
     {
       {"Food", SelectedFood},
       {"PageMode", FoodDetailsVM.PageMode.View}

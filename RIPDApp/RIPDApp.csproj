@@ -90,9 +90,6 @@
 	  <Compile Update="Pages\Diary\DiaryTodayPage.xaml.cs">
 	    <DependentUpon>DiaryTodayPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Pages\Food\FoodViewPage.xaml.cs">
-	    <DependentUpon>FoodViewPage.xaml</DependentUpon>
-	  </Compile>
 	  <Compile Update="Pages\Food\FoodUpdatePage.xaml.cs">
 	    <DependentUpon>FoodUpdatePage.xaml</DependentUpon>
 	  </Compile>
@@ -117,6 +114,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Pages\DiaryEntry\DiaryEntryFoodCreatePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\Diary\DiaryTodayPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -132,9 +132,6 @@
 	  <MauiXaml Update="Pages\Food\FoodUpdatePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\Food\FoodViewPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Pages\Food\FoodSearchPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -148,9 +145,6 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Register Login\LoginPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\Food\NewFoodPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\User\OwnerProfilePage.xaml">

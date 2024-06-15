@@ -18,12 +18,18 @@ public partial class AppShell : Shell
     Routing.RegisterRoute(nameof(DiaryWeekPage), typeof(DiaryWeekPage));
     Routing.RegisterRoute(nameof(DiaryMonthPage), typeof(DiaryMonthPage));
 
-    // Food Related Routes
-    // Food Search -> Food Details
+    #region FoodSearch
+    // Food Search -> Barcode Scanner
     Routing.RegisterRoute(
       $"{nameof(FoodSearchPage)}" +
-      $"/{nameof(FoodDetailsPage)}",
-      typeof(FoodDetailsPage)
+      $"/{nameof(BarcodeScannerPage)}",
+      typeof(BarcodeScannerPage)
+      );
+    // Food Search -> Food Diary Entry
+    Routing.RegisterRoute(
+      $"{nameof(FoodSearchPage)}" +
+      $"/{nameof(DiaryEntryFoodCreatePage)}",
+      typeof(DiaryEntryFoodCreatePage)
       );
     // Food Search -> Food View
     Routing.RegisterRoute(
@@ -31,6 +37,9 @@ public partial class AppShell : Shell
       $"/{nameof(FoodViewPage)}",
       typeof(FoodViewPage)
       );
+    #endregion FoodSearch
+
+    #region FoodDetails
     // Food Details -> Food Update
     Routing.RegisterRoute(
       $"{nameof(FoodSearchPage)}" +
@@ -57,6 +66,7 @@ public partial class AppShell : Shell
       $"/{nameof(BarcodeScannerPage)}",
       typeof(BarcodeScannerPage)
       );
+    #endregion FoodDetails
 
     Routing.RegisterRoute(nameof(ProfilePage), typeof(ProfilePage));
     Routing.RegisterRoute(nameof(OwnerProfilePage), typeof(OwnerProfilePage));

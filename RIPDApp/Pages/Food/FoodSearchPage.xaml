@@ -7,22 +7,27 @@
              x:Class="RIPDApp.Pages.FoodSearchPage"
              x:DataType="vm:FoodSearchVM">
   <Grid RowDefinitions="auto, *,auto">
-    <SearchBar Grid.Row="0"
-               Text="{Binding SearchText}">
-      <SearchBar.Behaviors>
-        <toolkit:EventToCommandBehavior
-          EventName="TextChanged"
-          Command="{Binding SearchCommand}"
-          />
-      </SearchBar.Behaviors>
-    </SearchBar>
+
+    <Grid ColumnDefinitions="*, auto">
+      <SearchBar Grid.Column="0"
+                 Text="{Binding SearchText}">
+        <SearchBar.Behaviors>
+          <toolkit:EventToCommandBehavior EventName="TextChanged"
+                                          Command="{Binding SearchCommand}"/>
+        </SearchBar.Behaviors>
+      </SearchBar>
+      <Button Grid.Column="1"
+              Text="Scan"
+              Command="{Binding SearchViaBarcodeCommand}"/>
+    </Grid>
+
     <RefreshView Grid.Row="1"
                  Command="{Binding RefreshCommand}"
                  IsRefreshing="{Binding IsRefreshing}">
       <CollectionView SelectionMode="Single"
                       ItemsSource="{Binding Foods}"
                       SelectedItem="{Binding SelectedFood}"
-                      SelectionChangedCommand="{Binding ShowDetailsCommand}">
+                      SelectionChangedCommand="{Binding GoToCreateDiaryEntryCommand}">
         <CollectionView.ItemTemplate>
           <DataTemplate>
             <SwipeView>
@@ -32,6 +37,7 @@
         </CollectionView.ItemTemplate>
       </CollectionView>
     </RefreshView>
+
     <Button Grid.Row="2" Text="New Food" Command="{Binding NewFoodCommand}"/>
   </Grid>
 </ContentPage>

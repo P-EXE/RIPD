@@ -7,7 +7,7 @@ namespace RIPDShared.Models;
 [PrimaryKey(nameof(DiaryId), nameof(EntryNr))]
 public class DiaryEntry_Food : DiaryEntry
 {
-  public required Guid? FoodId { get; set; }
-  public required Food? Food { get; set; }
-  public required double Amount { get; set; }
+  public Guid? FoodId { get; set; }
+  public Food? Food { get; set; }
+  public double Amount { get; set; }
 }
