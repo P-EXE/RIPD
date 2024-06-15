@@ -33,7 +33,7 @@ public partial class BarcodeScannerPage : ContentPage
   {
     if (_barcodeDetected)
     {
-      await _vm.GoBack();
+      await _vm.ReturnScanResult();
     }
   }
 }

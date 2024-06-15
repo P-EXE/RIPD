@@ -1,12 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using RIPDApp.Pages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ZXing.Net.Maui;
+using CommunityToolkit.Mvvm.Messaging;
+using RIPDApp.Messaging;
 
 namespace RIPDApp.ViewModels
 {
@@ -16,9 +11,13 @@ namespace RIPDApp.ViewModels
     [NotifyPropertyChangedFor(nameof(ButtonBarcode))]
     private string? _barcode;
 
-    public string? ButtonBarcode => "Add " + Barcode;
+    public string? ButtonBarcode => "Return " + Barcode;
 
     [RelayCommand]
-    internal async Task GoBack() => await Shell.Current.GoToAsync($"..?Barcode={Barcode}", true);
+    internal async Task ReturnScanResult()
+    {
+      WeakReferenceMessenger.Default.Send(new PageReturnObjectMessage<string>(Barcode));
+      await Shell.Current.GoToAsync($"..?Barcode={Barcode}", true);
+    }
   }
 }

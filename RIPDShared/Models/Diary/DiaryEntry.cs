@@ -8,10 +8,10 @@ namespace RIPDShared.Models;
 public class DiaryEntry
 {
   [Key]
-  public required Guid DiaryId { get; set; }
-  public required Diary Diary { get; set; }
+  public Guid DiaryId { get; set; }
+  public Diary? Diary { get; set; }
   [Key]
-  public required int EntryNr { get; set; }
-  public required DateTime Acted {  get; set; }
-  public required DateTime Added {  get; set; }
+  public int EntryNr { get; set; }
+  public DateTime Acted {  get; set; }
+  public DateTime Added {  get; set; }
 }
