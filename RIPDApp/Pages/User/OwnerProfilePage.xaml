@@ -4,16 +4,46 @@
              xmlns:vm="clr-namespace:RIPDApp.ViewModels"
              x:Class="RIPDApp.Pages.OwnerProfilePage"
              x:DataType="vm:OwnerProfileVM">
-  <Grid RowDefinitions="auto,*">
-    <HorizontalStackLayout Grid.Row="0">
-      <VerticalStackLayout>
-        <Label Text="{Binding Owner.Id}"/>
-        <Label Text="{Binding Owner.UserName}"/>
-        <Label Text="{Binding Owner.Email}"/>
+  <Grid RowDefinitions="auto,*,auto">
+
+    <Grid Grid.Row="0"
+          ColumnDefinitions="auto,*"
+          Margin="20"
+          ColumnSpacing="20">
+
+      <Image Grid.Column="0"
+             WidthRequest="100"
+             Source="dotnet_bot.png"/>
+
+      <VerticalStackLayout Grid.Column="1" Spacing="10">
+
+        <VerticalStackLayout>
+          <Label Text="{Binding Owner.UserName}"
+               FontSize="Header"/>
+          <Label Text="{Binding Owner.Email}" 
+               FontSize="Caption"/>
+        </VerticalStackLayout>
+
+        <HorizontalStackLayout Spacing="10">
+          <HorizontalStackLayout Spacing="3">
+            <Label Text="Followers:"
+                   FontAttributes="Bold"/>
+            <Label Text="{Binding Followers}"/>
+          </HorizontalStackLayout>
+          <HorizontalStackLayout Spacing="3">
+            <Label Text="Following:"
+                   FontAttributes="Bold"/>
+            <Label Text="{Binding Following}"/>
+          </HorizontalStackLayout>
+        </HorizontalStackLayout>
+
+        <Button Text="Edit"
+                Grid.Row="2"
+                Command="{Binding SwitchToEditModeCommand}"
+                HorizontalOptions="Start"/>
       </VerticalStackLayout>
-    </HorizontalStackLayout>
-    <VerticalStackLayout Grid.Row="1">
-      <Button Text="Delete Account" Command="{Binding DeleteAccountCommand}"/>
-    </VerticalStackLayout>
+
+
+    </Grid>
   </Grid>
 </ContentPage>

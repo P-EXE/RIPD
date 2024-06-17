@@ -14,6 +14,21 @@ public partial class SettingsVM : ObservableObject
     _userDataService= userDataService;
   }
 
+  [ObservableProperty]
+  private bool _metric = true;
+
+  [RelayCommand]
+  private async Task LogOut()
+  {
+    
+  }
+
+  [RelayCommand]
+  private async Task DeleteAccount()
+  {
+
+  }
+
   [RelayCommand]
   private async Task GoToSettingsDev()
   {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RIPDShared.Models;
 
 namespace RIPDApi.Data;
@@ -102,8 +103,9 @@ public class SQLDataBaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>,
       .OnDelete(DeleteBehavior.NoAction);
     });
 
-    builder.Entity<DiaryEntry_Run>(r =>
+    builder.Entity<DiaryEntry_Run>(re =>
     {
+      re.HasKey(r => new { r.DiaryId, r.EntryNr });
     });
 
     builder.Entity<BodyMetric>(b =>
@@ -127,7 +129,6 @@ public class SQLDataBaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>,
     });
     #endregion Things in Diary
 
-    #region Food
     builder.Entity<Food>(f =>
     {
       f.HasOne(f => f.Manufacturer).WithMany(u => u.ManufacturedFoods)
@@ -137,15 +138,14 @@ public class SQLDataBaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>,
           .HasForeignKey(f => f.ContributerId)
           .OnDelete(DeleteBehavior.NoAction);
     });
-    #endregion Food
 
-    #region Workout
     builder.Entity<Workout>(w =>
     {
       w.HasOne(w => w.Contributer).WithMany(u => u.ContributedWorkouts)
       .HasForeignKey(w => w.ContributerId)
       .OnDelete(DeleteBehavior.NoAction);
     });
-    #endregion Workout
+
+    builder.Ignore<Run>();
   }
 }

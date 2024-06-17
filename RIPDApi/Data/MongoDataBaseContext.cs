@@ -14,6 +14,10 @@ public class MongoDataBaseContext : DbContext
   {
     base.OnModelCreating(builder);
 
-    builder.Entity<Run>();
+    builder.Entity<Run>(r =>
+    {
+      r.HasKey(r => r.Id);
+
+    });
   }
 }

@@ -56,13 +56,13 @@ builder.Services.AddTransient<Seeding>();
 
 #region MongoDB
 
-/*MongoDataBaseSettings mongoDataBaseSettings = builder.Configuration.GetSection("MongoDataBaseSettings").Get<MongoDataBaseSettings>();
+MongoDataBaseSettings mongoDataBaseSettings = builder.Configuration.GetSection("MongoDataBaseSettings").Get<MongoDataBaseSettings>();
 builder.Services.Configure<MongoDataBaseSettings>(builder.Configuration.GetSection("MongoDataBaseSettings"));
 builder.Services.AddDbContext<MongoDataBaseContext>(options =>
   options.UseMongoDB(
     mongoDataBaseSettings.ConnectionString, mongoDataBaseSettings.DatabaseName
   )
-);*/
+);
 
 builder.Services.AddSingleton<MongoDBService>();
 

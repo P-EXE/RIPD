@@ -7,8 +7,6 @@ namespace RIPDShared.Models;
 // DiaryEntry_Run is stored in the SQL DB.
 // DiaryEntry_Run holds the metadata to a Run.
 // DiaryEntry_Run should not exist without a Run.
-[PrimaryKey(nameof(DiaryId), nameof(EntryNr))]
-[Owned]
 public class DiaryEntry_Run : DiaryEntry
 {
   public string? MongoDBId { get; set; }

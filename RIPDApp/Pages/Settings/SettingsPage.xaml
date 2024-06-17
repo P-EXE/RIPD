@@ -4,7 +4,24 @@
              xmlns:viewmodels="clr-namespace:RIPDApp.ViewModels"
              x:Class="RIPDApp.Pages.SettingsPage"
              x:DataType="viewmodels:SettingsVM">
-  <VerticalStackLayout>
-    <Button Text="Dev Settings" Command="{Binding GoToSettingsDevCommand}"/>
-  </VerticalStackLayout>
+  <ScrollView>
+    <VerticalStackLayout Spacing="10"
+                         Margin="10">
+      
+      <Button Text="Dev Settings"
+              Command="{Binding GoToSettingsDevCommand}"/>
+
+      <FlexLayout AlignItems="Center">
+        <Label Text="Imperial / Metric"
+             FlexLayout.Grow="1"/>
+        <Switch IsToggled="{Binding Metric}"/>
+      </FlexLayout>
+      
+      <Button Text="Log Out"
+              Command="{Binding LogOutCommand}"/>
+      <Button Text="Delete Account"
+              Command="{Binding DeleteAccountCommand}"/>
+
+    </VerticalStackLayout>
+  </ScrollView>
 </ContentPage>

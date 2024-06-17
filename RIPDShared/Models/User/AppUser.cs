@@ -10,5 +10,5 @@ public class AppUser : IdentityUser<Guid>
   public ICollection<AppUser>? Following = new HashSet<AppUser>();
   public ICollection<AppUser>? Followers = new HashSet<AppUser>();
   public Guid DiaryId { get; set; }
-  public Diary? Diary {  get; set; } = new();
+  public Diary? Diary { get; set; } = new();
 }
