@@ -12,21 +12,28 @@
       <VerticalStackLayout>
         <Image Source="{Binding Food.Image}"/>
         <Label Text="{Binding Food.Name}"
-           FontSize="Header"/>
-        <Label Text="{Binding Food.Manufacturer.UserName}"/>
-        <Label Text="{Binding Food.Contributer.UserName}"/>
-        <Label Text="{Binding Food.Description}"/>
-        <Label Text="{Binding Food.Barcode}"/>
+               FontSize="Header"/>
+        <Label Text="{Binding Food.Manufacturer.UserName}"
+               FontSize="Subtitle"/>
+        <Label Text="{Binding Food.Contributer.UserName}"
+               FontSize="Caption"/>
+        <Label Text="{Binding Food.Barcode}"
+               FontSize="Caption"/>
+        <Label Text="{Binding Food.Description}"
+               FontSize="Default"/>
       </VerticalStackLayout>
       <!-- #rendegion Meta -->
 
       <!-- #region Entry -->
-      <HorizontalStackLayout>
-        <DatePicker Date="{Binding FoodEntry.Acted}"/>
+      <VerticalStackLayout>
+        <HorizontalStackLayout>
+          <DatePicker Date="{Binding FoodEntry.Acted.Date}"/>
+          <TimePicker Time="{Binding FoodEntry.Acted.TimeOfDay}"/>
+        </HorizontalStackLayout>
         <Entry Placeholder="Amount" Text="{Binding FoodEntry.Amount}"/>
-      </HorizontalStackLayout>
+      </VerticalStackLayout>
       <!-- #endregion Entry -->
-      
+
     </VerticalStackLayout>
 
     <ScrollView Grid.Row="1" Margin="10">

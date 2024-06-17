@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Maui;
+﻿using AutoMapper;
+using CommunityToolkit.Maui;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -9,6 +10,7 @@ using RIPDApp.Services;
 using RIPDApp.ViewModels;
 using RIPDApp.Views;
 using System.Net.Http.Headers;
+using System.Reflection;
 using ZXing.Net.Maui.Controls;
 
 namespace RIPDApp;
@@ -42,7 +44,12 @@ public static class MauiProgram
 
     #region Services
 
-    builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+    builder.Services.AddAutoMapper(options =>
+    {
+      options.AddMaps(AppDomain.CurrentDomain.GetAssemblies());
+      // Warning: could cause errors, disable when no longer needed.
+      options.AllowNullDestinationValues = true;
+    });
 
     builder.Services.AddTransient<IHttpService, HttpService>();
     builder.Services.AddHttpClient<IHttpService, HttpService>(options =>

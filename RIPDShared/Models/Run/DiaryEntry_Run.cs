@@ -16,4 +16,5 @@ public class DiaryEntry_Run : DiaryEntry
   // Can be filled at runtime to allow easier CRUD operations.
   // ↑ Previous statement needs to be tested.
 /*  public Run? Run { get; set; }*/
+  public Run Run { get; set; }
 }
