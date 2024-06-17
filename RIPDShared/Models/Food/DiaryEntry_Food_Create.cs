@@ -1,7 +1,7 @@
 ﻿namespace RIPDShared.Models;
 
-public class DiaryEntry_Food_Create : DiaryEntryDTO_Create
+public class DiaryEntry_Food_Create : DiaryEntry_Create
 {
-  public required Guid? FoodId { get; set; }
-  public required double Amount { get; set; }
+  public Guid? FoodId { get; set; }
+  public double Amount { get; set; }
 }

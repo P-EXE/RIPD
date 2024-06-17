@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RIPDApi.Repos;
 using RIPDShared.Models;
@@ -23,21 +24,21 @@ public class DiaryController : ControllerBase
   }
 
   #region Create
-  [HttpPost("food")]
+  [HttpPost("food"), Authorize]
   public async Task<DiaryEntry_Food?> AddFoodEntryAsync(DiaryEntry_Food_Create createEntry)
   {
     AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
     return await _diaryRepo.CreateFoodEntryAsync(createEntry);
   }
 
-  [HttpPost("workout")]
+  [HttpPost("workout"), Authorize]
   public async Task<DiaryEntry_Workout?> AddWorkoutEntryAsync(DiaryEntry_Workout_Create createEntry)
   {
     AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
     return await _diaryRepo.CreateWorkoutEntryAsync(createEntry);
   }
 
-  [HttpPost("run")]
+  [HttpPost("run"), Authorize]
   public async Task<DiaryEntry_Run?> AddRunEntryAsync(DiaryEntry_Run_Create createEntry)
   {
     AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
@@ -46,25 +47,40 @@ public class DiaryController : ControllerBase
   #endregion Create
 
   #region Read
-  [HttpGet("{diaryId}/food")]
-  public async Task<IEnumerable<DiaryEntry_Food>?> GetFoodEntriesFromToDate([FromRoute] Guid diaryId, [FromQuery] DateTime start, [FromQuery] DateTime end)
+  [HttpGet("food"), Authorize]
+  public async Task<IEnumerable<DiaryEntry_Food>?> GetFoodEntries([FromQuery] string? diary = null, [FromQuery] DateTime start = default, [FromQuery] DateTime end = default)
   {
     AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
-    return await _diaryRepo.ReadFoodEntriesFromToDateAsync(diaryId, start, end);
+
+    Guid diaryId = diary == null ? user.Id : new(diary);
+    DateTime startDate = start == default ? DateTime.MinValue : start;
+    DateTime endDate = end == default ? DateTime.Now : end;
+
+    return await _diaryRepo.ReadFoodEntriesFromToDateAsync(diaryId, startDate, endDate);
   }
 
-  [HttpGet("{diaryId}/workout")]
-  public async Task<IEnumerable<DiaryEntry_Workout>?> GetWorkoutEntriesFromToDate([FromRoute] Guid diaryId, [FromQuery] DateTime start, [FromQuery] DateTime end)
+  [HttpGet("workout"), Authorize]
+  public async Task<IEnumerable<DiaryEntry_Workout>?> GetWorkoutEntriesFromToDate([FromQuery] string? diary = null, [FromQuery] DateTime start = default, [FromQuery] DateTime end = default)
   {
     AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
-    return await _diaryRepo.ReadWorkoutEntriesFromToDateAsync(diaryId, start, end);
+
+    Guid diaryId = diary == null ? user.Id : new(diary);
+    DateTime startDate = start == default ? DateTime.MinValue : start;
+    DateTime endDate = end == default ? DateTime.Now : end;
+
+    return await _diaryRepo.ReadWorkoutEntriesFromToDateAsync(diaryId, startDate, endDate);
   }
 
-  [HttpGet("{diaryId}/run")]
-  public async Task<IEnumerable<DiaryEntry_Run>?> GetRunEntriesFromToDate([FromRoute] Guid diaryId, [FromQuery] DateTime start, [FromQuery] DateTime end)
+  [HttpGet("run"), Authorize]
+  public async Task<IEnumerable<DiaryEntry_Run>?> GetRunEntriesFromToDate([FromQuery] string? diary = null, [FromQuery] DateTime start = default, [FromQuery] DateTime end = default)
   {
     AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
-    return await _diaryRepo.ReadRunEntriesFromToDateAsync(diaryId, start, end);
+
+    Guid diaryId = diary == null ? user.Id : new(diary);
+    DateTime startDate = start == default ? DateTime.MinValue : start;
+    DateTime endDate = end == default ? DateTime.Now : end;
+
+    return await _diaryRepo.ReadRunEntriesFromToDateAsync(diaryId, startDate, endDate);
   }
   #endregion Read
 
@@ -90,23 +106,23 @@ public class DiaryController : ControllerBase
   #endregion Update
 
   #region Delete
-  [HttpDelete("{diaryId}/food/{entryId}")]
-  public async Task<bool> DeleteFoodEntryAsync([FromRoute] Guid diaryId, [FromRoute] int entryId)
+  [HttpDelete("food")]
+  public async Task<bool> DeleteFoodEntryAsync([FromQuery] Guid diary, [FromQuery] int entry)
   {
     AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
-    return await _diaryRepo.DeleteFoodEntryAsync(diaryId, entryId);
+    return await _diaryRepo.DeleteFoodEntryAsync(diary, entry);
   }
-  [HttpDelete("{diaryId}/workout/{entryId}")]
-  public async Task<bool> DeleteWorkoutEntryAsync([FromRoute] Guid diaryId, [FromRoute] int entryId)
+  [HttpDelete("workout")]
+  public async Task<bool> DeleteWorkoutEntryAsync([FromQuery] Guid diary, [FromQuery] int entry)
   {
     AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
-    return await _diaryRepo.DeleteWorkoutEntryAsync(diaryId, entryId);
+    return await _diaryRepo.DeleteWorkoutEntryAsync(diary, entry);
   }
-  [HttpDelete("{diaryId}/run/{entryId}")]
-  public async Task<bool> DeleteRunEntryAsync([FromRoute] Guid diaryId, [FromRoute] int entryId)
+  [HttpDelete("run")]
+  public async Task<bool> DeleteRunEntryAsync([FromQuery] Guid diary, [FromQuery] int entry)
   {
     AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
-    return await _diaryRepo.DeleteRunEntryAsync(diaryId, entryId);
+    return await _diaryRepo.DeleteRunEntryAsync(diary, entry);
   }
   #endregion Delete
 }

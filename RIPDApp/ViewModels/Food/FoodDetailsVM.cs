@@ -48,7 +48,7 @@ public partial class FoodDetailsVM : ObservableObject
   [ObservableProperty]
   private string _manufacturerUserName = "Search Manufacturer";
   [ObservableProperty]
-  private string _barcode = "Scan Barcode";
+  private string _barcode;
 
   // Experimental
   [ObservableProperty]
@@ -96,7 +96,7 @@ public partial class FoodDetailsVM : ObservableObject
   private void SetBarcode(string barcode)
   {
     Food.Barcode = barcode;
-    Barcode = barcode ?? "Scan Barcode";
+    Barcode = barcode;
   }
 
   [RelayCommand]

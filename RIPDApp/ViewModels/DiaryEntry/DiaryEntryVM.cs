@@ -23,8 +23,7 @@ public partial class DiaryEntryVM : ObservableObject
     Acted = DateTime.Now,
     Added = DateTime.Now,
     DiaryId = Statics.Auth.Owner.Diary.OwnerId,
-    Diary = Statics.Auth.Owner.Diary,
-    EntryNr = 0
+    Diary = Statics.Auth.Owner.Diary
   };
 
   [RelayCommand]

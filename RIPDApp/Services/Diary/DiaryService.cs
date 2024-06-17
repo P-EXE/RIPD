@@ -20,7 +20,7 @@ public class DiaryService : IDiaryService
     DiaryEntry_Food_Create createEntry = _mapper.Map<DiaryEntry_Food_Create>(entry);
 
     // Api
-    return await _httpService.PostAsync("diary/foods", createEntry);
+    return await _httpService.PostAsync("diary/food", createEntry);
 
     // Return
   }
