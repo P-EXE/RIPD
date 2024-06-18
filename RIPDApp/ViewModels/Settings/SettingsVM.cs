@@ -7,11 +7,11 @@ namespace RIPDApp.ViewModels;
 
 public partial class SettingsVM : ObservableObject
 {
-  private readonly IUserService _userDataService;
+  private readonly IOwnerService _ownerService;
 
-  public SettingsVM(IUserService userDataService)
+  public SettingsVM(IOwnerService ownerService)
   {
-    _userDataService= userDataService;
+    _ownerService = ownerService;
   }
 
   [ObservableProperty]
@@ -20,7 +20,9 @@ public partial class SettingsVM : ObservableObject
   [RelayCommand]
   private async Task LogOut()
   {
-    
+    bool success = await _ownerService.LogoutAsync();
+    if (!success) return;
+    await Shell.Current.GoToAsync($"///{nameof(RegisterPage)}");
   }
 
   [RelayCommand]

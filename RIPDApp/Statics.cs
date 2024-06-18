@@ -24,3 +24,13 @@ public static class Auth
   public static BearerToken? BearerToken { get; set; }
   public static AppUser? Owner { get; set; }
 }
+
+public static class Settings
+{
+  private static Units Unit { get; set; }
+  private enum Units
+  {
+    Metric = 0,
+    Imperial = 1
+  }
+}

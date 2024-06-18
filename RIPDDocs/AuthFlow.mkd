@@ -1,0 +1,16 @@
+# Auth Flow
+
+| AppUser | BearerToken | RefreshToken | Aktion    |
+| :---:   | :---:       | :---:        | :---      |
+| &cross; | &cross;     | &cross;      | Prompt    |
+| &cross; | &cross;     | &check;      | Refresh   |
+| &cross; | &check;     | &check;      | Get Owner |
+| &check; | &cross;     | &cross;      | Log in    |
+| &check; | &cross;     | &check;      | Refresh   |
+| &check; | &check;     | &check;      | Nichts    |
+
+Alle Aktionen Updaten die Info
+
+@startuml
+
+@enduml

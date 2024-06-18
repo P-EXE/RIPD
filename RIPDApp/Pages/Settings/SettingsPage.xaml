@@ -11,11 +11,11 @@
       <Button Text="Dev Settings"
               Command="{Binding GoToSettingsDevCommand}"/>
 
-      <FlexLayout AlignItems="Center">
+      <!--<FlexLayout AlignItems="Center">
         <Label Text="Imperial / Metric"
              FlexLayout.Grow="1"/>
         <Switch IsToggled="{Binding Metric}"/>
-      </FlexLayout>
+      </FlexLayout>-->
       
       <Button Text="Log Out"
               Command="{Binding LogOutCommand}"/>

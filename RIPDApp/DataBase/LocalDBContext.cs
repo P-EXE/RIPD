@@ -6,9 +6,9 @@ namespace RIPDApp.DataBase;
 
 public class LocalDBContext : DbContext
 {
-  public DbSet<ApiConnection> ApiConnections { get; set; }
-
   public DbSet<AppUser> Users { get; set; }
+  public DbSet<Diary> Diaries { get; set; }
+  public DbSet<BearerToken> BearerTokens { get; set; }
 
   public LocalDBContext(DbContextOptions<LocalDBContext> options) : base(options)
   {
@@ -19,20 +19,31 @@ public class LocalDBContext : DbContext
   {
   }
 
-  protected override void OnModelCreating(ModelBuilder modelBuilder)
+  protected override void OnModelCreating(ModelBuilder builder)
   {
-    base.OnModelCreating(modelBuilder);
+    base.OnModelCreating(builder);
 
     #region User Owner
-    modelBuilder.Entity<AppUser>()
-      .HasOne(e => e.Diary)
-      .WithOne(e => e.Owner);
-    modelBuilder.Entity<AppUser>()
-      .HasMany(e => e.Following)
-      .WithMany(e => e.Followers);
-    modelBuilder.Entity<AppUser>()
-      .HasMany(e => e.Followers)
-      .WithMany(e => e.Following);
+    builder.Entity<AppUser>(u =>
+    {
+      u.HasOne(u => u.Diary)
+      .WithOne(d => d.Owner)
+      .HasForeignKey<AppUser>(u => u.DiaryId);
+
+      u.HasMany(u => u.ManufacturedFoods).WithOne(f => f.Manufacturer)
+      .HasForeignKey(f => f.ManufacturerId)
+      .OnDelete(DeleteBehavior.NoAction);
+      u.HasMany(u => u.ContributedFoods).WithOne(f => f.Contributer)
+      .HasForeignKey(f => f.ContributerId)
+      .OnDelete(DeleteBehavior.NoAction);
+    });
+
+    builder.Entity<BearerToken>(b =>
+    {
+      b.HasKey(b => b.AccessToken);
+    });
     #endregion User Owner
+
+    builder.Ignore<Diary>();
   }
 }

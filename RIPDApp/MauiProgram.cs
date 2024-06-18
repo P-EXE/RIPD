@@ -70,10 +70,8 @@ public static class MauiProgram
     #region Register & Login
 
     builder.Services.AddTransient<RegisterPage>();
-    builder.Services.AddTransient<RegisterVM>();
-
     builder.Services.AddTransient<LoginPage>();
-    builder.Services.AddTransient<LoginVM>();
+    builder.Services.AddTransient<RegisterLoginVM>();
 
     #endregion Register & Login
 

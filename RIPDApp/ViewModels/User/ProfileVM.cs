@@ -23,6 +23,6 @@ public partial class ProfileVM : ObservableObject
   [RelayCommand]
   private async Task AddToContacts()
   {
-    /*await _userDataService.FollowUserAsync(User);*/
+    /*await _ownerService.FollowUserAsync(User);*/
   }
 }

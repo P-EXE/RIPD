@@ -22,8 +22,8 @@ public partial class OwnerProfileVM : ObservableObject
 
   public OwnerProfileVM(IOwnerService userDataService)
   {
-    /*    _userDataService = userDataService;
-        Owner = _userDataService.GetOwnerAsync().Result;*/
+    /*    _ownerService = userDataService;
+        Owner = _ownerService.GetOwnerAsync().Result;*/
   }
 
   [RelayCommand]

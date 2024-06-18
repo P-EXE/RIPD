@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:RIPDApp.ViewModels"
              x:Class="RIPDApp.Pages.RegisterPage"
-             x:DataType="vm:RegisterVM">
+             x:DataType="vm:RegisterLoginVM">
   <Grid RowDefinitions="*,auto">
     <Label Grid.Row="0" Text="Register" FontSize="70"/>
     <VerticalStackLayout Grid.Row="1">
