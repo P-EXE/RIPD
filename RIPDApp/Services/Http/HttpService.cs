@@ -13,8 +13,9 @@ namespace RIPDApp.Services;
 /// </summary>
 internal class HttpService : IHttpService
 {
-  private HttpClient _httpClient;
+  private readonly HttpClient _httpClient;
   private readonly JsonSerializerOptions _jsonSerializerOptions;
+  private readonly CancellationTokenSource _ctSource = new(TimeSpan.FromSeconds(50));
   public HttpService(HttpClient httpClient)
   {
     _httpClient = httpClient;
@@ -39,36 +40,38 @@ internal class HttpService : IHttpService
     return true;
   }
 
-  public async Task<T?> GetAsync<T>(string route, [CallerMemberName] string caller = "")
+  public async Task<T> GetAsync<T>(string route, [CallerMemberName] string caller = "")
   {
-    T? t = default(T);
+    // Request
+    HttpResponseMessage response = await _httpClient.GetAsync(route);
     try
     {
-      HttpResponseMessage response = await _httpClient.GetAsync(route);
-      if (response.IsSuccessStatusCode)
-      {
-        Debug.WriteLine($"==Success==> {caller} / {nameof(GetAsync)} : {response.StatusCode}");
-        string responseContent = await response.Content.ReadAsStringAsync();
-        t = JsonSerializer.Deserialize<T>(responseContent, _jsonSerializerOptions);
-        return t;
-      }
-      else
-      {
-        Debug.WriteLine($"==Error==> {caller} / {nameof(GetAsync)} : {response.StatusCode}");
-        Debug.WriteLine($"           {response}");
-      }
+      response = await _httpClient.GetAsync(route, _ctSource.Token);
     }
     catch (Exception ex)
     {
-      Debug.WriteLine($"==Exception==> {caller} / {nameof(GetAsync)} : exception occured while trying to get");
-      Debug.WriteLine($"               {ex}");
+      throw;
     }
-    return t;
+
+    response.EnsureSuccessStatusCode();
+
+    string responseContent = await response.Content.ReadAsStringAsync();
+
+    T? result;
+    try
+    {
+      result = JsonSerializer.Deserialize<T>(responseContent, _jsonSerializerOptions);
+    }
+    catch (Exception ex)
+    {
+      throw;
+    }
+
+    return result;
   }
 
-  public async Task<T?> GetAsync<T>(string route, Dictionary<string, string> queriesDict, [CallerMemberName] string caller = "")
+  public async Task<T> GetAsync<T>(string route, Dictionary<string, string> queriesDict, [CallerMemberName] string caller = "")
   {
-    T? t = default(T);
     string queries = "?";
     for (int i = 0; i < queriesDict.Count - 1; i++)
     {
@@ -76,107 +79,80 @@ internal class HttpService : IHttpService
     }
     queries += $"{queriesDict.Last().Key}={queriesDict.Last().Value}";
 
-    try
-    {
-      HttpResponseMessage response = await _httpClient.GetAsync(route + queries);
-      if (response.IsSuccessStatusCode)
-      {
-        Debug.WriteLine($"==Success==> {caller} / {nameof(GetAsync)} : {response.StatusCode}");
-        string responseContent = await response.Content.ReadAsStringAsync();
-        t = JsonSerializer.Deserialize<T>(responseContent, _jsonSerializerOptions);
-        return t;
-      }
-      else
-      {
-        Debug.WriteLine($"==Error==> {caller} / {nameof(GetAsync)} : {response.StatusCode}");
-        Debug.WriteLine($"           {response}");
-      }
-    }
-    catch (Exception ex)
-    {
-      Debug.WriteLine($"==Exception==> {caller} / {nameof(GetAsync)} : exception occured while trying to get");
-      Debug.WriteLine($"               {ex}");
-    }
-    return t;
-  }
-
-  public async Task<HttpResponseMessage?> FullPostAsync<T>(string route, T t, [CallerMemberName] string caller = "")
-  {
-    try
-    {
-      string json = JsonSerializer.Serialize(t, _jsonSerializerOptions);
-      StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-      HttpResponseMessage response = await _httpClient.PostAsync(route, content);
-      if (response.IsSuccessStatusCode)
-      {
-        Debug.WriteLine($"==Success==> {caller} / {nameof(PostAsync)} : {response.StatusCode}");
-        return response;
-      }
-      else
-      {
-        Debug.WriteLine($"==Error==> {caller} / {nameof(PostAsync)} : {response.StatusCode}");
-        Debug.WriteLine($"           {response}");
-      }
-    }
-    catch (Exception ex)
-    {
-      Debug.WriteLine($"==Exception==> {caller} / {nameof(PostAsync)} : exception occured while trying to post");
-      Debug.WriteLine($"               {ex}");
-    }
-    return null;
+    return await GetAsync<T>(route, queries);
   }
 
   public async Task<bool> PostAsync<T>(string route, T t, [CallerMemberName] string caller = "")
   {
+    // Convert
+    string json;
     try
     {
-      string json = JsonSerializer.Serialize(t, _jsonSerializerOptions);
-      StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-      HttpResponseMessage response = await _httpClient.PostAsync(route, content);
-      if (response.IsSuccessStatusCode)
-      {
-        Debug.WriteLine($"==Success==> {caller} / {nameof(PostAsync)} : {response.StatusCode}");
-        return true;
-      }
-      else
-      {
-        Debug.WriteLine($"==Error==> {caller} / {nameof(PostAsync)} : {response.StatusCode}");
-        Debug.WriteLine($"           {response}");
-      }
+      json = JsonSerializer.Serialize(t, _jsonSerializerOptions);
+    }
+    catch (NotSupportedException ex)
+    {
+      throw;
+    }
+
+    StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+    // Request
+    HttpResponseMessage response;
+    try
+    {
+      response = await _httpClient.PostAsync(route, content, _ctSource.Token);
     }
     catch (Exception ex)
     {
-      Debug.WriteLine($"==Exception==> {caller} / {nameof(PostAsync)} : exception occured while trying to post");
-      Debug.WriteLine($"               {ex}");
+      throw;
     }
-    return false;
+
+    response.EnsureSuccessStatusCode();
+
+    return true;
   }
 
   public async Task<T2?> PostAsync<T1, T2>(string route, T1 t1, [CallerMemberName] string caller = "")
   {
+    // Convert
+    string json;
     try
     {
-      string json = JsonSerializer.Serialize(t1, _jsonSerializerOptions);
-      StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-      HttpResponseMessage response = await _httpClient.PostAsync(route, content);
-      if (response.IsSuccessStatusCode)
-      {
-        Debug.WriteLine($"==Success==> {caller} / {nameof(PostAsync)} : {response.StatusCode}");
-        string responseContent = await response.Content.ReadAsStringAsync();
-        T2? t2 = JsonSerializer.Deserialize<T2>(responseContent, _jsonSerializerOptions);
-        return t2;
-      }
-      else
-      {
-        Debug.WriteLine($"==Error==> {caller} / {nameof(PostAsync)} : {response.StatusCode}");
-        Debug.WriteLine($"           {response}");
-      }
+      json = JsonSerializer.Serialize(t1, _jsonSerializerOptions);
+    }
+    catch (NotSupportedException ex)
+    {
+      throw;
+    }
+
+    StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+    // Request
+    HttpResponseMessage response;
+    try
+    {
+      response = await _httpClient.PostAsync(route, content, _ctSource.Token);
     }
     catch (Exception ex)
     {
-      Debug.WriteLine($"==Exception==> {caller} / {nameof(PostAsync)} : Exception occured while trying to post");
-      Debug.WriteLine($"               {ex}");
+      throw;
     }
-    return default(T2?);
+
+    response.EnsureSuccessStatusCode();
+
+    string responseContent = await response.Content.ReadAsStringAsync();
+
+    T2? result;
+    try
+    {
+      result = JsonSerializer.Deserialize<T2>(responseContent, _jsonSerializerOptions);
+    }
+    catch (Exception ex)
+    {
+      throw;
+    }
+
+    return result;
   }
 }

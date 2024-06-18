@@ -47,17 +47,6 @@ public interface IHttpService
 
   /// <summary>
   /// Posts an Object of the specified Type to the given route.
-  /// Should only be used for debugging.
-  /// </summary>
-  /// <typeparam name="T">The Type of the Object that should be posted</typeparam>
-  /// <param name="route">The route to which the Object should be posted</param>
-  /// <param name="t">The Object that should be posted</param>
-  /// <param name="caller">The name of the calling Method (does not need to be specified)</param>
-  /// <returns>All the information the destination returned</returns>
-  Task<HttpResponseMessage?> FullPostAsync<T>(string route, T t, [CallerMemberName] string caller = "");
-
-  /// <summary>
-  /// Posts an Object of the specified Type to the given route.
   /// Returns an Object of the specified Type.
   /// </summary>
   /// <typeparam name="T1">The Type of the Object that should be posted</typeparam>

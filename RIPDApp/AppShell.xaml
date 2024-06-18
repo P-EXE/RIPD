@@ -10,7 +10,10 @@
     Shell.FlyoutBehavior="Disabled"
     Title="RIPD">
 
-  <FlyoutItem Title="Register" FlyoutItemIsVisible="False">
+  <ShellContent ContentTemplate="{DataTemplate pages:AutoLoginPage}"
+                Route="AuthCheckPage"/>
+
+  <FlyoutItem Title="Register">
     <Tab Title="Register">
       <ShellContent
         ContentTemplate="{DataTemplate pages:RegisterPage}"

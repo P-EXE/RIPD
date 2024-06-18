@@ -16,6 +16,13 @@ public static class API
 #endif
 }
 
+public static class LocalDB
+{
+  public static string SQLiteConnection = $"DataSource={Path.Combine(FileSystem.AppDataDirectory, "storage.db3")}";
+  public static string SQLiteInMemoryConnection = "DataSource=myshareddb;mode=memory;cache=shared";
+
+}
+
 public static class Auth
 {
   public static string Email = "user1@mail.com";

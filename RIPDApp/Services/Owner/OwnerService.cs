@@ -3,6 +3,7 @@ using Microsoft.Maui.ApplicationModel.Communication;
 using RIPDApp.DataBase;
 using RIPDShared.Models;
 using System.Diagnostics;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace RIPDApp.Services;
 
@@ -23,66 +24,114 @@ public class OwnerService : IOwnerService
 
   public async Task LoginAsync(AppUser_Create createUser)
   {
-    // Get Bearer Token
-    BearerToken? bt = await _httpService.PostAsync<AppUser_Create, BearerToken>("user/login", createUser);
-    if (bt == null)
+    bool newBearerToken = false;
+    bool newOwner = false;
+
+    // Get Local Entities
+    Statics.Auth.BearerToken = await _localDBContext.BearerTokens.FirstOrDefaultAsync();
+    if (Statics.Auth.BearerToken == null)
     {
+      newBearerToken = true;
     }
-    Debug.WriteLine($"==Success==> {nameof(LoginAsync)} : Got {nameof(BearerToken)}");
-    Statics.Auth.BearerToken = bt;
+    Statics.Auth.Owner = await _localDBContext.Users.FirstOrDefaultAsync();
+    if (Statics.Auth.Owner == null)
+    {
+      newOwner = true;
+    }
+
+    // Get Bearer Token
+    try
+    {
+      Statics.Auth.BearerToken = await _httpService.PostAsync<AppUser_Create, BearerToken>("user/login", createUser);
+    }
+    catch (Exception ex)
+    {
+      throw;
+    }
 
     // Inject Bearer Token to HTTPService
     await _httpService.Authorize();
 
     // Get Self
-    AppUser? owner = await _httpService.GetAsync<AppUser>("user/self/private");
-    if (owner == null)
+    try
     {
+      Statics.Auth.Owner = await _httpService.GetAsync<AppUser>("user/self/private");
     }
-    Debug.WriteLine($"==Success==> {nameof(LoginAsync)} : Got {nameof(owner)}");
-    Statics.Auth.Owner = owner;
+    catch (Exception ex)
+    {
+      throw;
+    }
 
-    // Save to Local DB
-    await _localDBContext.BearerTokens.AddAsync(bt);
-    await _localDBContext.Users.AddAsync(owner);
+    // Save Local Entities
+    if (newBearerToken)
+    {
+      _localDBContext.BearerTokens.RemoveRange();
+      await _localDBContext.BearerTokens.AddAsync(Statics.Auth.BearerToken);
+    }
+    if (newOwner)
+    {
+      _localDBContext.Users.RemoveRange();
+      await _localDBContext.Users.AddAsync(Statics.Auth.Owner);
+    }
+    await _localDBContext.SaveChangesAsync();
   }
+
   public async Task<bool> DeleteAsync()
   {
     throw new NotImplementedException();
     return false;
   }
 
-  private async Task AutoLogin()
+  public async Task<bool> AutoLogin()
   {
     // Get Bearer Token from Local
-    Statics.Auth.BearerToken = await _localDBContext.BearerTokens.FirstAsync();
+    Statics.Auth.BearerToken = await _localDBContext.BearerTokens.FirstOrDefaultAsync();
     if (Statics.Auth.BearerToken == null)
     {
-      throw new NullReferenceException(nameof(Statics.Auth.BearerToken));
+      return false;
     }
 
-    // Get new Bearer Token from API
-    Statics.Auth.BearerToken = await _httpService.PostAsync<string, BearerToken>("user/refresh", Statics.Auth.BearerToken.RefreshToken);
+    // Get Owner from Local
+    Statics.Auth.Owner = await _localDBContext.Users.FirstOrDefaultAsync();
 
+    // Get new Bearer Token from API
+    Dictionary<string, string> refreshTokenPayload = new()
+    {
+      { "refreshToken", Statics.Auth.BearerToken.RefreshToken }
+    };
+    try
+    {
+      Statics.Auth.BearerToken = await _httpService.PostAsync<Dictionary<string, string>, BearerToken>("user/refresh", refreshTokenPayload);
+    }
+    catch (Exception ex)
+    {
+      return false;
+    }
     await _httpService.Authorize();
 
-    // Get the Owner from API
-    Statics.Auth.Owner = await _httpService.GetAsync<AppUser>("user/self");
+    // Set the Owner from API
+    try
+    {
+      Statics.Auth.Owner = await _httpService.GetAsync<AppUser>("user/self");
+    }
+    catch (Exception ex)
+    {
+      throw;
+    }
 
     // Update Local
-    _localDBContext.BearerTokens.Update(Statics.Auth.BearerToken);
-    _localDBContext.Users.Update(Statics.Auth.Owner);
     await _localDBContext.SaveChangesAsync();
+
+    return true;
   }
 
   public async Task<bool> LogoutAsync()
   {
     // Local DB
     if (Statics.Auth.Owner == null) return false;
-    _localDBContext.Users.Remove(Statics.Auth.Owner);
     if (Statics.Auth.BearerToken == null) return false;
-    _localDBContext.BearerTokens.Remove(Statics.Auth.BearerToken);
-    await _localDBContext.SaveChangesAsync();
+    await _localDBContext.Database.EnsureDeletedAsync();
+    await _localDBContext.Database.EnsureCreatedAsync();
 
     // Statics
     Statics.Auth.Owner = null;

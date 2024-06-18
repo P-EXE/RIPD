@@ -1,4 +1,5 @@
 ﻿using RIPDApp.Pages;
+using RIPDApp.Services;
 
 namespace RIPDApp;
 
@@ -50,7 +51,7 @@ public partial class AppShell : Shell
     // Food Search -> Food Create
     Routing.RegisterRoute(
       $"{nameof(FoodSearchPage)}" +
-      $"/{nameof(FoodCreatePage)}", 
+      $"/{nameof(FoodCreatePage)}",
       typeof(FoodCreatePage)
       );
 

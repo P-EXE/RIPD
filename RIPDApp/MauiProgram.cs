@@ -32,12 +32,8 @@ public static class MauiProgram
 
     #region SQLite
 
-    SqliteConnection sqliteConnection = new SqliteConnection(
-      builder.Configuration.GetConnectionString("SQLiteConnection")
-    );
-    sqliteConnection.Open();
     builder.Services.AddDbContext<LocalDBContext>(options =>
-      options.UseSqlite(sqliteConnection)
+      options.UseSqlite(Statics.LocalDB.SQLiteConnection)
     );
 
     #endregion SQLite
@@ -69,6 +65,7 @@ public static class MauiProgram
 
     #region Register & Login
 
+    builder.Services.AddScoped<AutoLoginPage>();
     builder.Services.AddTransient<RegisterPage>();
     builder.Services.AddTransient<LoginPage>();
     builder.Services.AddTransient<RegisterLoginVM>();

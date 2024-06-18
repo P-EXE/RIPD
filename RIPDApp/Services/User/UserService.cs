@@ -12,13 +12,21 @@ public class UserService : IUserService
 
   public async Task<IEnumerable<AppUser>?> GetUsersByNameAtPositionAsync(string query, int position)
   {
+    if (string.IsNullOrEmpty(query))
+    {
+      return null;
+    }
+
     IEnumerable<AppUser>? users;
+
     Dictionary<string, string> queries = new()
     {
       ["name"] = query,
       ["position"] = position.ToString(),
     };
+
     users = await _httpService.GetAsync<IEnumerable<AppUser>?>("user", queries);
+
     return users;
   }
 }
