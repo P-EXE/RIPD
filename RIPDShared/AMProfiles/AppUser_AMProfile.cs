@@ -9,5 +9,6 @@ public class AppUser_AMProfile : Profile
   {
     // Transit -> Rest
     CreateMap<AppUser_Create, AppUser>();
+    CreateMap<AppUser_Update, AppUser>();
   }
 }

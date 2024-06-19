@@ -48,4 +48,17 @@ public class UserRepo : IUserRepo
     // Return
     return users;
   }
+
+  public async Task<AppUser?> UpdateUserAsync(AppUser_Update updateUser)
+  {
+    // Mapping
+    AppUser user = _mapper.Map<AppUser>(updateUser);
+
+    // SQL Context
+    _sqlContext.Users.Update(user);
+    await _sqlContext.SaveChangesAsync();
+
+    // Return
+    return user;
+  }
 }

@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C#: RIPDApp",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}\\RIPDApp\\RIPDApp.csproj",
+      "launchConfigurationId": "vscode-maui"
+    }
+  ]
+}

@@ -8,20 +8,26 @@ namespace RIPDApp.ViewModels;
 public partial class OwnerProfileVM : ObservableObject
 {
   private readonly IOwnerService _userDataService;
+  public OwnerProfileVM()
+  {
+
+  }
 
   [ObservableProperty]
-  private AppUser? _owner;
+  private AppUser? _owner = Statics.Auth.Owner;
+  [ObservableProperty]
+  private int? _followers = Statics.Auth.Owner?.Followers?.Count();
+  [ObservableProperty]
+  private int? _following = Statics.Auth.Owner?.Following?.Count();
 
   public OwnerProfileVM(IOwnerService userDataService)
   {
-/*    _userDataService = userDataService;
-    Owner = _userDataService.GetOwnerAsync().Result;*/
+    /*    _ownerService = userDataService;
+        Owner = _ownerService.GetOwnerAsync().Result;*/
   }
 
   [RelayCommand]
-  private async Task DeleteAccount()
+  private async Task SwitchToEditMode()
   {
-/*    await _userDataService.DeleteOwnerAsync();
-    await Shell.Current.Navigation.PopToRootAsync();*/
   }
 }

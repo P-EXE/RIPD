@@ -36,13 +36,21 @@ public class FoodService : IFoodService
 
   public async Task<IEnumerable<Food>?> GetFoodsByNameAtPositionAsync(string query, int position)
   {
+    if (string.IsNullOrEmpty(query))
+    {
+      return null;
+    }
+
     IEnumerable<Food>? foods;
+    
     Dictionary<string, string> queries = new()
     {
       ["name"] = query,
       ["position"] = position.ToString(),
     };
+    
     foods = await _httpService.GetAsync<IEnumerable<Food>?>("food", queries);
+    
     return foods;
   }
 }
