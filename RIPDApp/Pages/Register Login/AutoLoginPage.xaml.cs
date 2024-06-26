@@ -12,18 +12,20 @@ public partial class AutoLoginPage : ContentPage
     InitializeComponent();
   }
 
-  protected override async void OnNavigatedTo(NavigatedToEventArgs args)
+  protected override async void OnAppearing()
   {
-    base.OnNavigatedTo(args);
+    base.OnAppearing();
+
+    await Task.Delay(1);
 
     bool success = await _ownerService.AutoLogin();
     if (success)
     {
-      await Shell.Current.GoToAsync($"///{nameof(MainPage)}");
+      await Shell.Current.GoToAsync($"///{nameof(HomePage)}");
     }
     else
     {
-      await Shell.Current.GoToAsync($"///{nameof(RegisterPage)}");
+      await Shell.Current.GoToAsync($"///RegisterLogin");
     }
   }
 }
