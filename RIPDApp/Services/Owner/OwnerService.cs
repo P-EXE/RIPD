@@ -112,7 +112,7 @@ public class OwnerService : IOwnerService
     // Set the Owner from API
     try
     {
-      Statics.Auth.Owner = await _httpService.GetAsync<AppUser>("user/self");
+      Statics.Auth.Owner = await _httpService.GetAsync<AppUser>("user/self/private");
     }
     catch (Exception ex)
     {

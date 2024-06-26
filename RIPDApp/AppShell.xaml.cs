@@ -10,6 +10,7 @@ public partial class AppShell : Shell
     InitializeComponent();
 
     #region Routes
+    Routing.RegisterRoute(nameof(AutoLoginPage), typeof(AutoLoginPage));
     Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
     Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
 
