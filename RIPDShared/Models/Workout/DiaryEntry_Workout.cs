@@ -1,12 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿namespace RIPDShared.Models;
 
-namespace RIPDShared.Models;
-
-[PrimaryKey(nameof(DiaryId), nameof(EntryNr))]
-[Owned]
 public class DiaryEntry_Workout : DiaryEntry
 {
-  public required int? WorkoutId { get; set; }
-  public required Workout? Workout { get; set; }
-  public required double? Amount { get; set; }
+  public Guid? WorkoutId { get; set; }
+  public Workout? Workout { get; set; }
+  public double Amount { get; set; }
 }

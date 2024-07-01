@@ -25,6 +25,17 @@ public class DiaryService : IDiaryService
     // Return
   }
 
+  public async Task<bool> AddWorkoutEntryToDiaryAsync(DiaryEntry_Workout entry)
+  {
+    // Mapping
+    DiaryEntry_Workout_Create createEntry = _mapper.Map<DiaryEntry_Workout_Create>(entry);
+
+    // Api
+    return await _httpService.PostAsync("diary/workout", createEntry);
+
+    // Return
+  }
+
   public async Task<IEnumerable<DiaryEntry_Food>?> GetFoodEntriesInDateRange(Diary diary, DateTime startDate, DateTime endDate)
   {
     Dictionary<string, string> queries = new()

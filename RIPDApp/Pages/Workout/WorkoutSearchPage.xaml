@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:v="clr-namespace:RIPDApp.Views"
+             xmlns:vm="clr-namespace:RIPDApp.ViewModels"
+             x:Class="RIPDApp.Pages.WorkoutSearchPage"
+             x:DataType="vm:WorkoutSearchVM">
+  <Grid RowDefinitions="auto, *,auto">
+
+    <Grid ColumnDefinitions="*, auto">
+      <SearchBar Grid.Column="0"
+                 Text="{Binding SearchText}">
+        <SearchBar.Behaviors>
+          <toolkit:EventToCommandBehavior EventName="TextChanged"
+                                          Command="{Binding SearchCommand}"/>
+        </SearchBar.Behaviors>
+      </SearchBar>
+    </Grid>
+
+    <RefreshView Grid.Row="1"
+                 Command="{Binding RefreshCommand}"
+                 IsRefreshing="{Binding IsRefreshing}">
+      <CollectionView SelectionMode="Single"
+                      ItemsSource="{Binding Workouts}"
+                      SelectedItem="{Binding SelectedWorkout}"
+                      SelectionChangedCommand="{Binding GoToCreateDiaryEntryCommand}">
+        <CollectionView.ItemTemplate>
+          <DataTemplate>
+            <SwipeView>
+              <v:WorkoutListWorkoutV/>
+            </SwipeView>
+          </DataTemplate>
+        </CollectionView.ItemTemplate>
+      </CollectionView>
+    </RefreshView>
+
+    <Button Grid.Row="2" Text="New Workout" Command="{Binding NewWorkoutCommand}"/>
+  </Grid>
+</ContentPage>

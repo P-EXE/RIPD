@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:RIPDApp.ViewModels"
+             x:Class="RIPDApp.Pages.DiaryEntryWorkoutCreatePage"
+             x:DataType="vm:DiaryEntryVM">
+  <Grid RowDefinitions="auto,*,auto">
+    <VerticalStackLayout Grid.Row="0">
+
+      <!-- #region Meta -->
+      <VerticalStackLayout>
+        <Image Source="{Binding Workout.Image}"/>
+        <Label Text="{Binding Workout.Name}"
+               FontSize="Header"/>
+        <Label Text="{Binding Workout.Contributer.UserName}"
+               FontSize="Caption"/>
+        <Label Text="{Binding Workout.Description}"
+               FontSize="Default"/>
+      </VerticalStackLayout>
+
+      <!-- #region Entry -->
+      <VerticalStackLayout>
+        <HorizontalStackLayout>
+          <DatePicker Date="{Binding WorkoutEntry.Acted.Date}"/>
+          <TimePicker Time="{Binding WorkoutEntry.Acted.TimeOfDay}"/>
+        </HorizontalStackLayout>
+        <Entry Placeholder="Amount" Text="{Binding WorkoutEntry.Amount}"/>
+      </VerticalStackLayout>
+      <!-- #endregion Entry -->
+
+    </VerticalStackLayout>
+
+    <ScrollView Grid.Row="1" Margin="10">
+      <VerticalStackLayout Spacing="20">
+        <!-- #region Macros -->
+        <Label Text="Info" FontSize="Title"/>
+        <Label Text="Energy" FontSize="Caption"/>
+        <Label Text="{Binding Workout.Energy}"/>
+      </VerticalStackLayout>
+    </ScrollView>
+
+    <Button Grid.Row="2" Text="Add to Diary" Command="{Binding AddWorkoutEntryToDiaryCommand}"/>
+  </Grid>
+</ContentPage>

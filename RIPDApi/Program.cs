@@ -71,6 +71,7 @@ builder.Services.AddSingleton<MongoDBService>();
 #region Repos
 
 builder.Services.AddTransient<IFoodRepo, FoodRepo>();
+builder.Services.AddTransient<IWorkoutRepo, WorkoutRepo>();
 builder.Services.AddTransient<IDiaryRepo, DiaryRepo>();
 builder.Services.AddTransient<IUserRepo, UserRepo>();
 

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RIPDApp.Pages.WorkoutCreatePage"
+             xmlns:vm="clr-namespace:RIPDApp.ViewModels"
+             x:DataType="vm:WorkoutDetailsVM">
+  <Grid RowDefinitions="auto,*,auto">
+    
+    <VerticalStackLayout Grid.Row="0">
+      <!-- #region Meta -->
+      <Image Source="{Binding Workout.Image}"/>
+      <Entry Placeholder="Name"  Text="{Binding Workout.Name}"/>
+      <Entry Placeholder="Description" Text="{Binding Workout.Description}"/>
+      <!-- #rendegion Meta -->
+    </VerticalStackLayout>
+
+    <ScrollView Grid.Row="1" Margin="10">
+      <VerticalStackLayout Spacing="20">
+
+        <VerticalStackLayout>
+          <Label Text="Info" FontSize="Title"/>
+          <Label Text="Energy" FontSize="Caption"/>
+          <Entry Text="{Binding Workout.Energy}"/>
+        </VerticalStackLayout>
+        
+      </VerticalStackLayout>
+    </ScrollView>
+
+    <Button Grid.Row="2" Text="Create" Command="{Binding CreateWorkoutCommand}"/>
+    
+  </Grid>
+</ContentPage>
