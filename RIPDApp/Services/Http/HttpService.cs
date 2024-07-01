@@ -79,7 +79,7 @@ internal class HttpService : IHttpService
     }
     queries += $"{queriesDict.Last().Key}={queriesDict.Last().Value}";
 
-    return await GetAsync<T>(route, queries);
+    return await GetAsync<T>(route + queries, queries);
   }
 
   public async Task<bool> PostAsync<T>(string route, T t, [CallerMemberName] string caller = "")

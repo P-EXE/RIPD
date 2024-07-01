@@ -56,6 +56,7 @@ public static class MauiProgram
 
     builder.Services.AddTransient<IOwnerService, OwnerService>();
     builder.Services.AddTransient<IFoodService, FoodService>();
+    builder.Services.AddTransient<IWorkoutService, WorkoutService>();
     builder.Services.AddTransient<IUserService, UserService>();
     builder.Services.AddTransient<IDiaryService, DiaryService>();
 
@@ -94,6 +95,7 @@ public static class MauiProgram
     #region DiaryEntry
 
     builder.Services.AddTransient<DiaryEntryFoodCreatePage>();
+    builder.Services.AddTransient<DiaryEntryWorkoutCreatePage>();
     builder.Services.AddTransient<DiaryEntryVM>();
 
     #endregion DiaryEntry
@@ -116,6 +118,16 @@ public static class MauiProgram
     builder.Services.AddTransient<ScannerVM>();
 
     #endregion Food
+
+    #region Workout
+
+    builder.Services.AddTransient<WorkoutSearchPage>();
+    builder.Services.AddTransient<WorkoutSearchVM>();
+
+    builder.Services.AddTransient<WorkoutCreatePage>();
+    builder.Services.AddTransient<WorkoutDetailsVM>();
+
+    #endregion Workout
 
     #region user
 

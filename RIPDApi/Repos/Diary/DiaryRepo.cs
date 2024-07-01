@@ -29,10 +29,13 @@ public class DiaryRepo : IDiaryRepo
     DiaryEntry_Food foodEntry = _mapper.Map<DiaryEntry_Food>(createFood);
 
     // SQL Context
-    ICollection<DiaryEntry_Food>? foodEntries = _sqlContext.Diaries
+    ICollection<DiaryEntry_Food> foodEntries = _sqlContext.Diaries
       .Include(d => d.FoodEntries)
       .First(d => d.OwnerId == createFood.DiaryId)
       .FoodEntries;
+
+    // Info: Could maybe be handled by the DB?
+    foodEntry.EntryNr = foodEntries.Count + 1;
 
     foodEntries.Add(foodEntry);
 
@@ -48,10 +51,13 @@ public class DiaryRepo : IDiaryRepo
     DiaryEntry_Workout workoutEntry = _mapper.Map<DiaryEntry_Workout>(createWorkout);
 
     // SQL Context
-    ICollection<DiaryEntry_Workout>? workoutEntries = _sqlContext.Diaries
+    ICollection<DiaryEntry_Workout> workoutEntries = _sqlContext.Diaries
       .Include(d => d.WorkoutEntries)
       .First(d => d.OwnerId == createWorkout.DiaryId)
       .WorkoutEntries;
+
+    // Info: Could maybe be handled by the DB?
+    workoutEntry.EntryNr = workoutEntries.Count + 1;
 
     workoutEntries.Add(workoutEntry);
 
@@ -90,7 +96,7 @@ public class DiaryRepo : IDiaryRepo
   {
     // SQL Context
     IEnumerable<DiaryEntry_Food> foods = _sqlContext.Diaries
-      .Include(d => d.FoodEntries)
+      .Include(d => d.FoodEntries).ThenInclude(fe => fe.Food)
       .First(d => d.OwnerId == diaryId)
       .FoodEntries
       .Where(f => f.Acted >= start && f.Acted <= end)
@@ -103,7 +109,7 @@ public class DiaryRepo : IDiaryRepo
   {
     // SQL Context
     IEnumerable<DiaryEntry_Workout> workouts = _sqlContext.Diaries
-      .Include(d => d.FoodEntries)
+      .Include(d => d.WorkoutEntries).ThenInclude(we => we.Workout)
       .First(d => d.OwnerId == diaryId)
       .WorkoutEntries
       .Where(w => w.Acted >= start && w.Acted <= end)

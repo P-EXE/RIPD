@@ -98,6 +98,10 @@ public class SQLDataBaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>,
 
     builder.Entity<DiaryEntry_Workout>(we =>
     {
+      we.HasKey(w => new { w.DiaryId, w.EntryNr });
+      we.Property(w => w.DiaryId).ValueGeneratedNever();
+      we.Property(w => w.EntryNr).ValueGeneratedNever();
+
       we.HasOne(w => w.Workout).WithMany()
       .HasForeignKey(w => w.WorkoutId)
       .OnDelete(DeleteBehavior.NoAction);
@@ -135,8 +139,8 @@ public class SQLDataBaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>,
       .HasForeignKey(f => f.ManufacturerId)
       .OnDelete(DeleteBehavior.NoAction);
       f.HasOne(f => f.Contributer).WithMany(u => u.ContributedFoods)
-          .HasForeignKey(f => f.ContributerId)
-          .OnDelete(DeleteBehavior.NoAction);
+      .HasForeignKey(f => f.ContributerId)
+      .OnDelete(DeleteBehavior.NoAction);
     });
 
     builder.Entity<Workout>(w =>

@@ -2,6 +2,6 @@
 
 public class DiaryEntry_Workout_Create : DiaryEntry_Create
 {
-  public required int? WorkoutId { get; set; }
-  public required double Amount { get; set; }
+  public Guid? WorkoutId { get; set; }
+  public double Amount { get; set; }
 }
