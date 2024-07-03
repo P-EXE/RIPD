@@ -19,37 +19,92 @@ public class FoodController : ControllerBase
   }
 
   [HttpPost]
-  public async Task<Food?> CreateFoodAsync([FromBody] Food_Create createFood)
+  public async Task<ActionResult<Food?>> CreateFoodAsync([FromBody] Food_Create createFood)
   {
     AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
-    return await _foodRepo.CreateFoodAsync(createFood);
+    Food? food = null;
+
+    if (createFood == null) return BadRequest(createFood);
+
+    try
+    {
+      food = await _foodRepo.CreateFoodAsync(createFood);
+    }
+    catch (Exception ex)
+    {
+      return UnprocessableEntity(ex);
+    }
+
+    if (food == null) return NotFound(food);
+    return Created(nameof(CreateFoodAsync), food);
   }
 
   [HttpGet("{id}")]
-  public async Task<Food?> GetFoodByIdAsync([FromRoute] Guid id)
+  public async Task<ActionResult<Food?>> GetFoodByIdAsync([FromRoute] Guid id)
   {
     AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
-    return await _foodRepo.ReadFoodByIdAsync(id);
+    Food? food = null;
+
+    if (id == default)
+    {
+      return BadRequest(id);
+    }
+
+    food = await _foodRepo.ReadFoodByIdAsync(id);
+
+    return food == null ? NotFound(food) : Ok(food);
   }
 
   [HttpGet]
-  public async Task<IEnumerable<Food>?> GetFoodsByNameAtPositionAsync([FromQuery] string name, [FromQuery] int position)
+  public async Task<ActionResult<IEnumerable<Food>?>> GetFoodsByNameAtPositionAsync([FromQuery] string name, [FromQuery] int position = 0)
   {
     AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
-    return await _foodRepo.ReadFoodsByNameAtPositionAsync(name, position);
+    IEnumerable<Food>? foods = null;
+
+    if (name == null) return BadRequest(name);
+
+    foods = await _foodRepo.ReadFoodsByNameAtPositionAsync(name, position);
+
+    return foods!.Any() ? Ok(foods) : NotFound(foods);
   }
 
   [HttpPut]
-  public async Task<Food?> UpdateFoodAsync([FromBody] Food_Update updateFood)
+  public async Task<ActionResult<Food?>> UpdateFoodAsync([FromBody] Food_Update updateFood)
   {
     AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
-    return await _foodRepo.UpdateFoodAsync(updateFood);
+    Food? food = null;
+
+    if (updateFood == null) return BadRequest(food);
+
+    try
+    {
+      food = await _foodRepo.UpdateFoodAsync(updateFood);
+    }
+    catch (Exception ex)
+    {
+      return UnprocessableEntity(ex);
+    }
+
+    return food == null ? Conflict(updateFood) : Ok(food);
   }
 
   [HttpDelete("{id}")]
-  public async Task<bool> DeleteFoodByIdAsync([FromRoute] Guid id)
+  public async Task<ActionResult<bool>> DeleteFoodByIdAsync([FromRoute] Guid id)
   {
     AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
-    return await _foodRepo.DeleteFoodByIdAsync(id);
+    bool success = false;
+
+    if (id == default) return BadRequest(id);
+
+    try
+    {
+      success = await _foodRepo.DeleteFoodByIdAsync(id);
+    }
+    catch (Exception ex)
+    {
+      return UnprocessableEntity(ex);
+    }
+
+    return success ? Ok(success) : NotFound(id);
   }
 }

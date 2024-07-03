@@ -4,7 +4,6 @@ using Swashbuckle.AspNetCore.Filters;
 using RIPDApi.Data;
 using RIPDShared.Models;
 using RIPDApi.Services;
-using Microsoft.Data.Sqlite;
 using RIPDApi.Repos;
 using System.Text.Json.Serialization;
 
@@ -13,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers()
   .AddJsonOptions(options =>
   {
-    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
     options.JsonSerializerOptions.WriteIndented = true;
   });
 
@@ -30,29 +29,35 @@ builder.Services.AddSwaggerGen(options =>
   options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 
+#region SQL Server
+
+builder.Services.AddDbContext<SQLDataBaseContext>(options =>
+  options.UseSqlServer(
+    builder.Configuration.GetConnectionString("RIPDDB-SQLConnection")
+  )
+);
+
+#endregion SQL Server
+
 #region SQLite in Memory
 
-SqliteConnection sqliteConnection = new SqliteConnection(
-  builder.Configuration.GetConnectionString("SQLiteConnection")
-);
-sqliteConnection.Open();
-builder.Services.AddDbContext<SQLDataBaseContext>(options =>
-  options.UseSqlite(sqliteConnection)
-);
+/*builder.Services.AddSingleton<DbConnection>(container =>
+{
+  SqliteConnection connection = new("DataSource=:memory:");
+  connection.Open();
 
-builder.Services.AddTransient<Seeding>();
+  return connection;
+});
+
+builder.Services.AddDbContext<SQLDataBaseContext>((container, options) =>
+{
+  var connection = container.GetRequiredService<DbConnection>();
+  options.UseSqlite(connection);
+});*/
 
 #endregion SQLite in Memory
 
-#region SQL Server
 
-/*builder.Services.AddDbContext<SQLDataBaseContext>(options =>
-  options.UseSqlServer(
-    builder.Configuration.GetConnectionString("RIPDDB2-SQLConnection")
-  )
-);*/
-
-#endregion SQL Server
 
 #region MongoDB
 
@@ -101,3 +106,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }
