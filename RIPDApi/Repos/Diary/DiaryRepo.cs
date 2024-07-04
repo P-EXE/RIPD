@@ -35,7 +35,7 @@ public class DiaryRepo : IDiaryRepo
       .FoodEntries;
 
     // Info: Could maybe be handled by the DB?
-    foodEntry.EntryNr = foodEntries.Count + 1;
+    foodEntry.EntryNr = foodEntries.Last().EntryNr + 1;
 
     foodEntries.Add(foodEntry);
 
@@ -57,7 +57,7 @@ public class DiaryRepo : IDiaryRepo
       .WorkoutEntries;
 
     // Info: Could maybe be handled by the DB?
-    workoutEntry.EntryNr = workoutEntries.Count + 1;
+    workoutEntry.EntryNr = workoutEntries.Last().EntryNr + 1;
 
     workoutEntries.Add(workoutEntry);
 
@@ -77,6 +77,8 @@ public class DiaryRepo : IDiaryRepo
       .Include(d => d.RunEntries)
       .First(d => d.OwnerId == createRun.DiaryId)
       .RunEntries;
+
+    runEntry.EntryNr = runEntries.Last().EntryNr + 1;
 
     runEntries.Add(runEntry);
 

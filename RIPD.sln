@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RIPDApi", "RIPDApi\RIPDApi.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RIPDApp", "RIPDApp\RIPDApp.csproj", "{D6F600F7-3309-4182-8244-D9551C6698C9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RIPDApi.IntegrationTests", "RIPDApi.IntegrationTests\RIPDApi.IntegrationTests.csproj", "{188618E9-BC57-443D-AD24-F86ED17C8BCD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{D6F600F7-3309-4182-8244-D9551C6698C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6F600F7-3309-4182-8244-D9551C6698C9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D6F600F7-3309-4182-8244-D9551C6698C9}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{188618E9-BC57-443D-AD24-F86ED17C8BCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{188618E9-BC57-443D-AD24-F86ED17C8BCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{188618E9-BC57-443D-AD24-F86ED17C8BCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{188618E9-BC57-443D-AD24-F86ED17C8BCD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

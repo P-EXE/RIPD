@@ -37,4 +37,8 @@
     <Folder Include="Migrations\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="RIPDApi.IntegrationTests"/>
+  </ItemGroup>
+
 </Project>
