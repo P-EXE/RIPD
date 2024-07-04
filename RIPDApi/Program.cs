@@ -6,6 +6,8 @@ using RIPDShared.Models;
 using RIPDApi.Services;
 using RIPDApi.Repos;
 using System.Text.Json.Serialization;
+using Microsoft.Data.Sqlite;
+using System.Data.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,17 +33,17 @@ builder.Services.AddSwaggerGen(options =>
 
 #region SQL Server
 
-builder.Services.AddDbContext<SQLDataBaseContext>(options =>
+/*builder.Services.AddDbContext<SQLDataBaseContext>(options =>
   options.UseSqlServer(
     builder.Configuration.GetConnectionString("RIPDDB-SQLConnection")
   )
-);
+);*/
 
 #endregion SQL Server
 
 #region SQLite in Memory
 
-/*builder.Services.AddSingleton<DbConnection>(container =>
+builder.Services.AddSingleton<DbConnection>(container =>
 {
   SqliteConnection connection = new("DataSource=:memory:");
   connection.Open();
@@ -53,7 +55,7 @@ builder.Services.AddDbContext<SQLDataBaseContext>((container, options) =>
 {
   var connection = container.GetRequiredService<DbConnection>();
   options.UseSqlite(connection);
-});*/
+});
 
 #endregion SQLite in Memory
 
