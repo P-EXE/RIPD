@@ -1,11 +1,8 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
-using RIPDApi.Data;
 using RIPDShared.Models;
-using RIPDApi.Services;
-using RIPDApi.Repos;
 using System.Text.Json.Serialization;
+using RIPDApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,75 +15,12 @@ builder.Services.AddControllers()
 
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddSwaggerGen(options =>
-{
-  options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
-  {
-    In = ParameterLocation.Header,
-    Name = "Authorization",
-    Type = SecuritySchemeType.ApiKey,
-  });
-  options.OperationFilter<SecurityRequirementsOperationFilter>();
-});
-
-#region SQL Server
-
-builder.Services.AddDbContext<SQLDataBaseContext>(options =>
-  options.UseSqlServer(
-    builder.Configuration.GetConnectionString("RIPDDB-SQLConnection")
-  )
-);
-
-#endregion SQL Server
-
-#region SQLite in Memory
-
-/*builder.Services.AddSingleton<DbConnection>(container =>
-{
-  SqliteConnection connection = new("DataSource=:memory:");
-  connection.Open();
-
-  return connection;
-});
-
-builder.Services.AddDbContext<SQLDataBaseContext>((container, options) =>
-{
-  var connection = container.GetRequiredService<DbConnection>();
-  options.UseSqlite(connection);
-});*/
-
-#endregion SQLite in Memory
-
-
-
-#region MongoDB
-
-MongoDataBaseSettings mongoDataBaseSettings = builder.Configuration.GetSection("MongoDataBaseSettings").Get<MongoDataBaseSettings>();
-builder.Services.Configure<MongoDataBaseSettings>(builder.Configuration.GetSection("MongoDataBaseSettings"));
-builder.Services.AddDbContext<MongoDataBaseContext>(options =>
-  options.UseMongoDB(
-    mongoDataBaseSettings.ConnectionString, mongoDataBaseSettings.DatabaseName
-  )
-);
-
-builder.Services.AddSingleton<MongoDBService>();
-
-#endregion MongoDB
-
-#region Repos
-
-builder.Services.AddTransient<IFoodRepo, FoodRepo>();
-builder.Services.AddTransient<IWorkoutRepo, WorkoutRepo>();
-builder.Services.AddTransient<IDiaryRepo, DiaryRepo>();
-builder.Services.AddTransient<IUserRepo, UserRepo>();
-
-#endregion Repos
-
-builder.Services.AddAuthorization();
-builder.Services.AddIdentityApiEndpoints<AppUser>()
-  .AddEntityFrameworkStores<SQLDataBaseContext>();
-
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.RegisterRepos();
+builder.RegisterSQLServerDBContext();
+builder.RegisterMongoDBContext();
+builder.RegisterIdentity();
+builder.RegisterAutoMapper();
+builder.RegisterSwagger();
 
 var app = builder.Build();
 
