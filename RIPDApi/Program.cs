@@ -6,6 +6,8 @@ using RIPDShared.Models;
 using RIPDApi.Services;
 using RIPDApi.Repos;
 using System.Text.Json.Serialization;
+using System.Data.Common;
+using Microsoft.Data.Sqlite;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,9 +43,9 @@ builder.Services.AddDbContext<SQLDataBaseContext>(options =>
 
 #region SQLite in Memory
 
-/*builder.Services.AddSingleton<DbConnection>(container =>
+builder.Services.AddSingleton<DbConnection>(container =>
 {
-  SqliteConnection connection = new("DataSource=:memory:");
+  SqliteConnection connection = new("DataSource=sharedInMemoryDB;mode=memory;cache=shared");
   connection.Open();
 
   return connection;
@@ -53,7 +55,7 @@ builder.Services.AddDbContext<SQLDataBaseContext>((container, options) =>
 {
   var connection = container.GetRequiredService<DbConnection>();
   options.UseSqlite(connection);
-});*/
+});
 
 #endregion SQLite in Memory
 
