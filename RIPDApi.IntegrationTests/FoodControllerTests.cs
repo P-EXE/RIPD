@@ -1,6 +1,4 @@
-﻿using Azure;
-using FluentAssertions;
-using RIPDShared.Models;
+﻿using RIPDShared.Models;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -18,7 +16,7 @@ public class FoodControllerTests : IntegrationTest
       Name = "Valid Food",
       ManufacturerId = TestUser.Id,
       ContributerId = TestUser.Id,
-      Description = "Food description idk",
+      Description = "A valid Food for integration testing",
       Image = "Link here",
       Energy = 0.1f,
       Water = 0.9f,
