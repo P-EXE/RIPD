@@ -27,10 +27,21 @@ public class UserController : ControllerBase
   /// </summary>
   /// <returns>The User with all Public information</returns>
   [HttpGet("self/public"), Authorize]
-  public async Task<AppUser?> GetSelfPublic()
+  public async Task<ActionResult<AppUser?>> GetSelfPublic()
   {
     AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
-    return await _userRepo.GetSelfPublicAsync(user);
+
+    try
+    {
+      user = await _userRepo.GetSelfPublicAsync(user);
+    }
+    catch (Exception ex)
+    {
+      return UnprocessableEntity(ex);
+    }
+
+    if (user == null) return NotFound(HttpContext.User);
+    return Ok(user);
   }
 
   /// <summary>
@@ -38,10 +49,21 @@ public class UserController : ControllerBase
   /// </summary>
   /// <returns>The User with all Private information</returns>
   [HttpGet("self/private"), Authorize]
-  public async Task<AppUser?> GetSelfPrivate()
+  public async Task<ActionResult<AppUser?>> GetSelfPrivate()
   {
     AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
-    return await _userRepo.GetSelfPrivateAsync(user);
+
+    try
+    {
+      user = await _userRepo.GetSelfPrivateAsync(user);
+    }
+    catch (Exception ex)
+    {
+      return UnprocessableEntity(ex);
+    }
+
+    if (user == null) return NotFound(HttpContext.User);
+    return Ok(user);
   }
 
   /// <summary>
@@ -49,16 +71,43 @@ public class UserController : ControllerBase
   /// </summary>
   /// <returns>The User with all Private information</returns>
   [HttpGet]
-  public async Task<IEnumerable<AppUser>?> GetUsersByNameAtPositionAsync([FromQuery] string name, [FromQuery] int position = 0)
+  public async Task<ActionResult<IEnumerable<AppUser>?>> GetUsersByNameAtPositionAsync([FromQuery] string name, [FromQuery] int position = 0)
   {
     AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
-    return await _userRepo.GetUsersByNameAtPosition(name, position);
+    IEnumerable<AppUser>? users;
+
+    if (name == null) return BadRequest(name);
+
+    try
+    {
+      users = await _userRepo.GetUsersByNameAtPosition(name, position);
+    }
+    catch (Exception ex)
+    {
+      return UnprocessableEntity(ex);
+    }
+
+    if (users == null) return NotFound(name);
+    return Ok(users);
   }
 
   [HttpPut("manage"), Authorize]
-  public async Task<AppUser?> UpdateSelf([FromBody] AppUser_Update updateUser)
+  public async Task<ActionResult<AppUser?>> UpdateSelf([FromBody] AppUser_Update updateUser)
   {
     AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
-    return await _userRepo.UpdateUserAsync(updateUser);
+
+    if (updateUser == null) return BadRequest(updateUser);
+
+    try
+    {
+      user = await _userRepo.UpdateUserAsync(updateUser);
+    }
+    catch (Exception ex)
+    {
+      return UnprocessableEntity(ex);
+    }
+
+    if (user == null) return NotFound(user);
+    return Ok(user);
   }
 }
