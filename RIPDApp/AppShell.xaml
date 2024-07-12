@@ -55,8 +55,8 @@
     </Tab>
     <Tab Title="Profile">
       <ShellContent
-        ContentTemplate="{DataTemplate pages:OwnerProfilePage}"
-        Route="OwnerProfilePage" />
+        ContentTemplate="{DataTemplate pages:UserProfilePage}"
+        Route="UserProfilePage" />
     </Tab>
     <Tab Title="Settings">
       <ShellContent

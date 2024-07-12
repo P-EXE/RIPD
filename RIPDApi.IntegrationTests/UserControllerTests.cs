@@ -5,37 +5,50 @@ using System.Text.Json;
 
 namespace RIPDApi.IntegrationTests;
 
-public class UserControllerTests : IntegrationTest
+[Collection("WithUser")]
+public class UserControllerTests
 {
-  private static readonly AppUser_Create LoginUserValid = new()
+  UserFixture _fixture;
+
+  public UserControllerTests(UserFixture fixture)
   {
-    Email = TestUser.Email,
-    Password = "P455w0rd!"
-  };
+    _fixture = fixture;
+  }
 
   [Fact]
-  public async void LogIn_Valid()
+  public async Task Register_Valid()
   {
     // Arrange
-
     // Act
-    HttpResponseMessage response = await TestHttpClient.PostAsJsonAsync("api/user/login", LoginUserValid);
-    AppUser? responseUser = JsonSerializer.Deserialize<AppUser>(await response.Content.ReadAsStringAsync(), JsonOptions);
+    HttpResponseMessage response = await _fixture.TestClient.PostAsJsonAsync<Dictionary<string, string>>("/api/user/register", new(){
+      { "Email", "registerUser@mail.com" },
+      { "Password", "P455w0rd!" }
+    });
 
     // Assert
     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
   }
 
   [Fact]
-  public async void GetUsersByNameAtPositionAsync_Valid()
+  public async Task Login_Valid()
   {
-    // Arrange
-
     // Act
-    HttpResponseMessage response = await TestHttpClient.GetAsync($"api/user?name={TestUser.UserName}&position=0");
-    IEnumerable<AppUser>? responseUsers = JsonSerializer.Deserialize<IEnumerable<AppUser>>(await response.Content.ReadAsStringAsync(), JsonOptions);
+    HttpResponseMessage response = await _fixture.TestClient.PostAsJsonAsync<Dictionary<string, string>>("/api/user/login", new(){
+      { "Email", Defaults.TESTUSER_EMAIL },
+      { "Password", Defaults.TESTUSER_PASSWORD }
+    });
 
     // Assert
     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+    // Act
+    BearerToken? bt = JsonSerializer.Deserialize<BearerToken>(await response.Content.ReadAsStringAsync(), _fixture.JsonOpt);
+
+    // Assert
+    Assert.NotNull(bt);
+    Assert.NotNull(bt.TokenType);
+    Assert.NotNull(bt.AccessToken);
+    Assert.True(0 < bt.ExpiresIn);
+    Assert.NotNull(bt.RefreshToken);
   }
 }

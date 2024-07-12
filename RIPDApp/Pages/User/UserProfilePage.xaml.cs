@@ -2,10 +2,10 @@ using RIPDApp.ViewModels;
 
 namespace RIPDApp.Pages;
 
-public partial class ProfilePage : ContentPage
+public partial class UserProfilePage : ContentPage
 {
-  private ProfileVM _vm;
-  public ProfilePage(ProfileVM vm)
+  private UserProfileVM _vm;
+  public UserProfilePage(UserProfileVM vm)
   {
     InitializeComponent();
     _vm = vm;

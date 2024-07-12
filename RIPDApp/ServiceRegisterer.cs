@@ -67,8 +67,8 @@ public static class ServiceRegisterer
 
     builder.Services.AddTransient<BarcodeScannerPage>();
 
-    builder.Services.AddTransient<ProfilePage>();
-    builder.Services.AddTransient<OwnerProfilePage>();
+    builder.Services.AddTransient<UserProfilePage>();
+    builder.Services.AddScoped<UserProfileUpdatePage>();
 
     builder.Services.AddTransient<SettingsPage>();
     builder.Services.AddTransient<SettingsDevPage>();
@@ -102,8 +102,7 @@ public static class ServiceRegisterer
 
     builder.Services.AddTransient<ScannerVM>();
 
-    builder.Services.AddTransient<ProfileVM>();
-    builder.Services.AddTransient<OwnerProfileVM>();
+    builder.Services.AddTransient<UserProfileVM>();
 
     builder.Services.AddTransient<SettingsVM>();
     builder.Services.AddTransient<SettingsDevVM>();
@@ -187,8 +186,7 @@ public static class ServiceRegisterer
   }
   private static void RegisterProfileRoutes()
   {
-    Routing.RegisterRoute(nameof(ProfilePage), typeof(ProfilePage));
-    Routing.RegisterRoute(nameof(OwnerProfilePage), typeof(OwnerProfilePage));
+    Routing.RegisterRoute($"{Routes.UserProfilePage}/{Routes.UserProfileUpdatePage}", typeof(UserProfileUpdatePage));
   }
   private static void RegisterSettingsRoutes()
   {

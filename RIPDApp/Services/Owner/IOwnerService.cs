@@ -11,6 +11,7 @@ public interface IOwnerService
   Task LoginAsync(AppUser_Create createUser);
   Task<bool> AutoLogin();
   Task<bool> LogoutAsync();
+  Task<AppUser?> UpdateAsync(AppUser updateUser);
   Task<bool> DeleteAsync();
   Task<bool> CheckUserLoginStateAsync();
 }

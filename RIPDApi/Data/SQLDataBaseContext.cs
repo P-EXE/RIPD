@@ -18,13 +18,11 @@ public class SQLDataBaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>,
 
   public SQLDataBaseContext(DbContextOptions<SQLDataBaseContext> options) : base(options)
   {
-    Database.EnsureCreated();
   }
 
   protected override void OnConfiguring(DbContextOptionsBuilder options)
   {
     base.OnConfiguring(options);
-    options.EnableSensitiveDataLogging();
   }
 
   protected override void OnModelCreating(ModelBuilder builder)
