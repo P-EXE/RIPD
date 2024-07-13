@@ -96,11 +96,12 @@ public class UserController : ControllerBase
   {
     AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
 
+    if (user == null) return BadRequest(user);
     if (updateUser == null) return BadRequest(updateUser);
 
     try
     {
-      user = await _userRepo.UpdateUserAsync(updateUser);
+      user = await _userRepo.UpdateUserAsync(user, updateUser);
     }
     catch (Exception ex)
     {
