@@ -58,5 +58,5 @@ public interface IHttpService
   Task<T2?> PostAsync<T1, T2>(string route, T1 t1, [CallerMemberName] string caller = "");
 
   Task<T2?> PutAsync<T1, T2>(string route, T1 t1, [CallerMemberName] string caller = "");
-  Task<T?> DeleteAsync<T>(string route, [CallerMemberName] string caller = "")
+  Task<T?> DeleteAsync<T>(string route, [CallerMemberName] string caller = "");
 }
