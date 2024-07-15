@@ -21,7 +21,7 @@ public class UserControllerTests
     // Arrange
     // Act
     HttpResponseMessage response = await _fixture.TestClient.PostAsJsonAsync<Dictionary<string, string>>("/api/user/register", new(){
-      { "Email", "registerUser@mail.com" },
+      { "Email", "User@UserController.test" },
       { "Password", "P455w0rd!" }
     });
 
@@ -34,8 +34,8 @@ public class UserControllerTests
   {
     // Act
     HttpResponseMessage response = await _fixture.TestClient.PostAsJsonAsync<Dictionary<string, string>>("/api/user/login", new(){
-      { "Email", Defaults.TESTUSER_EMAIL },
-      { "Password", Defaults.TESTUSER_PASSWORD }
+      { "Email", "User@UserController.test" },
+      { "Password", "P455w0rd!" }
     });
 
     // Assert
@@ -75,5 +75,7 @@ public class UserControllerTests
     Assert.NotNull(updatedUser);
     Assert.Equal(updateUser.UserName, updatedUser.UserName);
     Assert.Equal(updateUser.Email, updatedUser.Email);
+
+    await _fixture.DisposeAsync();
   }
 }
