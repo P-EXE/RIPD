@@ -126,6 +126,10 @@ public static class ServiceRegisterer
   {
     builder.UseBarcodeReader();
   }
+  private static void RegisterJsonSerializerOptions(this MauiAppBuilder builder)
+  {
+
+  }
 
   /// <summary>
   /// All routes which are registered here are registered in their respective methods according to their start point or origin

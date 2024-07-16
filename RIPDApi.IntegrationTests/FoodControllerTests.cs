@@ -52,6 +52,9 @@ public class FoodControllerTests
     // Assert
     Assert.Equal(HttpStatusCode.Created, response.StatusCode);
     Assert.NotNull(responseFood);
+    Assert.Equal(_fixture.TestUser.UserName, responseFood.Contributer?.UserName);
+    Assert.Equal(_fixture.TestUser.UserName, responseFood.Manufacturer?.UserName);
+    Assert.Equal(_validCreateFood.Barcode, responseFood.Barcode);
   }
 
   [Fact]

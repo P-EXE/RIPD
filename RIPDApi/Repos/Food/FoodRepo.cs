@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using RIPDApi.Data;
 using RIPDShared.Models;
 
@@ -21,11 +22,16 @@ public class FoodRepo : IFoodRepo
   public async Task<Food?> CreateFoodAsync(Food_Create createFood)
   {
     // Mapping
-    Food food = _mapper.Map<Food>(createFood);
+    Food? food = _mapper.Map<Food>(createFood);
+    food.Manufacturer = await _sqlContext.Users.FirstOrDefaultAsync(u => u.Id == food.ManufacturerId);
+    food.Contributer = await _sqlContext.Users.FirstOrDefaultAsync(u => u.Id == food.ContributerId);
 
     // SQL Context
     await _sqlContext.Foods.AddAsync(food);
     await _sqlContext.SaveChangesAsync();
+    food = await _sqlContext.Foods
+      .Include(f => f.Manufacturer).Include(f => f.Contributer)
+      .FirstOrDefaultAsync(f => f.Id == food.Id);
 
     // Return
     return food;
@@ -46,6 +52,7 @@ public class FoodRepo : IFoodRepo
     // SQL Context
     // Null reference dereference !!!
     IEnumerable<Food>? foods = _sqlContext.Foods
+      .Include(f => f.Manufacturer).Include(f => f.Contributer)
       .Where(f => f.Name.StartsWith(name) || f.Barcode.StartsWith(name))
       .Skip(position * takeSize)
       .Take(takeSize)

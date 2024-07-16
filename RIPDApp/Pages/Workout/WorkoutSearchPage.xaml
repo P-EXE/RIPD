@@ -5,7 +5,8 @@
              xmlns:v="clr-namespace:RIPDApp.Views"
              xmlns:vm="clr-namespace:RIPDApp.ViewModels"
              x:Class="RIPDApp.Pages.WorkoutSearchPage"
-             x:DataType="vm:WorkoutSearchVM">
+             x:DataType="vm:WorkoutSearchVM"
+             Title="">
   <Grid RowDefinitions="auto, *,auto">
 
     <Grid ColumnDefinitions="*, auto">

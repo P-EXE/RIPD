@@ -12,7 +12,7 @@ using RIPDApi.Data;
 namespace RIPDApi.Migrations
 {
     [DbContext(typeof(SQLDataBaseContext))]
-    [Migration("20240701170440_InitialMigration")]
+    [Migration("20240715100442_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />

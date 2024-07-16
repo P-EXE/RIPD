@@ -61,7 +61,7 @@ public class UserControllerTests
       UserName = "Updated UserName",
       Email = "updated@mail.com"
     };
-    
+
     // Act
     HttpResponseMessage response = await _fixture.TestClient.PutAsJsonAsync("/api/user/manage", updateUser);
 
@@ -75,7 +75,5 @@ public class UserControllerTests
     Assert.NotNull(updatedUser);
     Assert.Equal(updateUser.UserName, updatedUser.UserName);
     Assert.Equal(updateUser.Email, updatedUser.Email);
-
-    await _fixture.DisposeAsync();
   }
 }
