@@ -52,6 +52,10 @@
         Title="Workout"
         ContentTemplate="{DataTemplate pages:WorkoutSearchPage}"
         Route="WorkoutSearchPage" />
+      <ShellContent
+        Title="Body Metric"
+        ContentTemplate="{DataTemplate pages:BodyMetricPage}"
+        Route="BodyMetricPage" />
     </Tab>
     <Tab Title="Profile">
       <ShellContent

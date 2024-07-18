@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:RIPDApp.ViewModels"
+             x:DataType="vm:BodyMetricDetailsVM"
+             x:Class="RIPDApp.Pages.BodyMetricCreatePage"
+             Title="">
+  <Grid RowDefinitions="*, auto">
+    <VerticalStackLayout Grid.Row="0">
+      <Entry Placeholder="Height cm"
+           Text="{Binding BodyMetric.Height}"/>
+      <Entry Placeholder="Weight kg"
+           Text="{Binding BodyMetric.Weight}"/>
+      <DatePicker Date="{Binding ActedDate}"/>
+      <TimePicker Time="{Binding ActedTime}"/>
+    </VerticalStackLayout>
+    <Button Grid.Row="1"
+            Text="Save" 
+            Command="{Binding CreateNewBodyMetricCommand}"/>
+  </Grid>
+</ContentPage>

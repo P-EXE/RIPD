@@ -65,6 +65,10 @@ public static class ServiceRegisterer
 
     builder.Services.AddTransient<WorkoutCreatePage>();
 
+    builder.Services.AddTransient<BodyMetricPage>();
+    builder.Services.AddTransient<BodyMetricCreatePage>();
+    builder.Services.AddTransient<BodyMetricViewPage>();
+
     builder.Services.AddTransient<BarcodeScannerPage>();
 
     builder.Services.AddTransient<UserProfilePage>();
@@ -99,6 +103,9 @@ public static class ServiceRegisterer
 
     builder.Services.AddTransient<FoodDetailsVM>();
     builder.Services.AddTransient<WorkoutDetailsVM>();
+
+    builder.Services.AddTransient<BodyMetricVM>();
+    builder.Services.AddTransient<BodyMetricDetailsVM>();
 
     builder.Services.AddTransient<ScannerVM>();
 
@@ -141,6 +148,7 @@ public static class ServiceRegisterer
     RegisterDiaryRoutes();
     RegisterFoodSearchRoutes();
     RegisterWorkoutSearchRoutes();
+    RegisterBodyMetricRoutes();
     RegisterFoodDetailsRoutes();
     RegisterProfileRoutes();
     RegisterSettingsRoutes();
@@ -187,6 +195,11 @@ public static class ServiceRegisterer
     Routing.RegisterRoute($"{nameof(FoodCreatePage)}" + $"/{nameof(UserSearchPage)}", typeof(UserSearchPage));
     // Food Create -> Scan Barcode
     Routing.RegisterRoute($"{nameof(FoodCreatePage)}" + $"/{nameof(BarcodeScannerPage)}", typeof(BarcodeScannerPage));
+  }
+  private static void RegisterBodyMetricRoutes()
+  {
+    Routing.RegisterRoute($"{Routes.BodyMetricPage}/{Routes.BodyMetricCreatePage}", typeof(BodyMetricCreatePage));
+    Routing.RegisterRoute($"{Routes.BodyMetricPage}/{Routes.BodyMetricViewPage}", typeof(BodyMetricViewPage));
   }
   private static void RegisterProfileRoutes()
   {

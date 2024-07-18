@@ -85,6 +85,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Pages\BodyMetric\BodyMetricViewPage.xaml.cs">
+	    <DependentUpon>BodyMetricViewPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\BodyMetric\BodyMetricCreatePage.xaml.cs">
+	    <DependentUpon>BodyMetricCreatePage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Pages\Diary\DiaryMonthPage.xaml.cs">
 	    <DependentUpon>DiaryMonthPage.xaml</DependentUpon>
 	  </Compile>
@@ -124,10 +130,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Pages\BodyMetric\BodyMetricViewPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\BodyMetric\BodyMetricPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\DiaryEntry\DiaryEntryFoodCreatePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\DiaryEntry\DiaryEntryWorkoutCreatePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\BodyMetric\BodyMetricCreatePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Diary\DiaryTodayPage.xaml">
