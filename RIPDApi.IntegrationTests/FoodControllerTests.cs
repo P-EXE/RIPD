@@ -77,6 +77,26 @@ public class FoodControllerTests : IntegrationTest
   }
 
   [Fact]
+  public async void GetFoodsByNameAtPosition_Valid()
+  {
+    // Arrange
+    string? name = _validCreateFood.Name;
+    int position = 0;
+
+    // Act
+    HttpResponseMessage createResponse = await TestHttpClient.PostAsJsonAsync("api/food", _validCreateFood);
+    Food? responseFood = JsonSerializer.Deserialize<Food>(await createResponse.Content.ReadAsStringAsync(), JsonOptions);
+
+    HttpResponseMessage response = await TestHttpClient.GetAsync($"api/food?name={name}&position={position}");
+    IEnumerable<Food>? readFoods = JsonSerializer.Deserialize<IEnumerable<Food>>(await response.Content.ReadAsStringAsync(), JsonOptions);
+
+    // Assert
+    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    Assert.NotNull(readFoods);
+    Assert.NotEmpty(readFoods);
+  }
+
+  [Fact]
   public async void GetFoodsByNameAtPosition_ValidEmpty()
   {
     // Arrange
@@ -90,5 +110,29 @@ public class FoodControllerTests : IntegrationTest
     // Assert
     Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     Assert.Equal([], readFoods);
+  }
+
+  // TODO: Update still needs to be implemented
+  private void UpdatedFood_Valid()
+  {
+    throw new NotImplementedException();
+  }
+
+  [Fact]
+  public async void DeleteFoodById_Valid()
+  {
+    // Arrange
+    string? name = _validCreateFood.Name;
+
+    // Act
+    HttpResponseMessage createResponse = await TestHttpClient.PostAsJsonAsync("api/food", _validCreateFood);
+    Food? responseFood = JsonSerializer.Deserialize<Food>(await createResponse.Content.ReadAsStringAsync(), JsonOptions);
+
+    HttpResponseMessage response = await TestHttpClient.DeleteAsync($"api/food/{responseFood?.Id}");
+    bool responseValue = JsonSerializer.Deserialize<bool>(await response.Content.ReadAsStringAsync(), JsonOptions);
+
+    // Assert
+    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    Assert.True(responseValue);
   }
 }
