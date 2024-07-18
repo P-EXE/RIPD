@@ -6,8 +6,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using RIPDApp.DataBase;
 using RIPDApp.Pages;
+using RIPDApp.Pages.Run;
 using RIPDApp.Services;
 using RIPDApp.ViewModels;
+using RIPDApp.ViewModels.Run;
 using RIPDApp.Views;
 using System.Net.Http.Headers;
 using System.Reflection;
@@ -140,6 +142,11 @@ public static class MauiProgram
     builder.Services.AddTransient<UserSearchVM>();
 
     #endregion user
+
+    #region runs
+    builder.Services.AddTransient<RunPage>();
+    builder.Services.AddTransient<RunVM>();
+    #endregion runs
 
     #region Settings
 
