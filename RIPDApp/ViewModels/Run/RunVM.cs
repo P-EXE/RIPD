@@ -1,22 +1,17 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using RIPDApp.Services.Run;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RIPDApp.Services;
 
-namespace RIPDApp.ViewModels.Run
+namespace RIPDApp.ViewModels
 {
   public partial class RunVM : ObservableObject
   {
-    private readonly RunGpsLocation _location;
+    private readonly RunGpsLocationService _location;
 
     [ObservableProperty]
     public List<Location> _locationsList = new List<Location>();
 
-    public RunVM(RunGpsLocation location)
+    public RunVM(RunGpsLocationService location)
     {
       _location = location;
       LocationsList = _location.LocationsList;
