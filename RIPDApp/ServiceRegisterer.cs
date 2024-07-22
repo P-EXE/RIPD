@@ -2,10 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using RIPDApp.DataBase;
 using RIPDApp.Pages;
-using RIPDApp.Pages.Run;
 using RIPDApp.Services;
 using RIPDApp.ViewModels;
-using RIPDApp.ViewModels.Run;
 using RIPDApp.Views;
 using System.Net.Http.Headers;
 using ZXing.Net.Maui.Controls;
@@ -40,6 +38,7 @@ public static class ServiceRegisterer
     builder.Services.AddTransient<IWorkoutService, WorkoutService>();
     builder.Services.AddTransient<IUserService, UserService>();
     builder.Services.AddTransient<IDiaryService, DiaryService>();
+    builder.Services.AddTransient<RunGpsLocationService>();
   }
   private static void RegisterPages(this MauiAppBuilder builder)
   {
@@ -48,6 +47,7 @@ public static class ServiceRegisterer
     builder.Services.AddTransient<LoginPage>();
 
     builder.Services.AddTransient<HomePage>();
+    builder.Services.AddTransient<RunPage>();
 
     builder.Services.AddTransient<DiaryTodayPage>();
     builder.Services.AddTransient<DiaryWeekPage>();
@@ -55,8 +55,6 @@ public static class ServiceRegisterer
 
     builder.Services.AddTransient<DiaryEntryFoodCreatePage>();
     builder.Services.AddTransient<DiaryEntryWorkoutCreatePage>();
-
-    builder.Services.AddTransient<RunPage>();
 
     builder.Services.AddTransient<FoodSearchPage>();
     builder.Services.AddTransient<WorkoutSearchPage>();
@@ -90,12 +88,11 @@ public static class ServiceRegisterer
     builder.Services.AddTransient<RegisterLoginVM>();
 
     builder.Services.AddTransient<HomeVM>();
+    builder.Services.AddTransient<RunVM>();
 
     builder.Services.AddTransient<DiaryVM>();
 
     builder.Services.AddTransient<DiaryEntryVM>();
-
-    builder.Services.AddTransient<RunVM>();
 
     builder.Services.AddTransient<FoodSearchVM>();
     builder.Services.AddTransient<WorkoutSearchVM>();

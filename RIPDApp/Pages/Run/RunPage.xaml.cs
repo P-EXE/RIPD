@@ -1,9 +1,15 @@
-namespace RIPDApp.Pages.Run;
+using RIPDApp.ViewModels;
+
+namespace RIPDApp.Pages;
 
 public partial class RunPage : ContentPage
 {
-	public RunPage()
+	private readonly RunVM _vm;
+	public RunPage(RunVM vm)
 	{
 		InitializeComponent();
+
+		_vm = vm;
+		BindingContext = _vm;
 	}
 }
