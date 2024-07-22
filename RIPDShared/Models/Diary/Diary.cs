@@ -10,6 +10,6 @@ public class Diary
   public ICollection<DiaryEntry_Workout> WorkoutEntries = [];
   public ICollection<DiaryEntry_Run> RunEntries = [];
 
-  public ICollection<BodyMetric> BodyMetrics = [];
+  public ICollection<DiaryEntry_BodyMetric> BodyMetrics = [];
   public ICollection<FitnessTarget> FitnessTargets = [];
 }

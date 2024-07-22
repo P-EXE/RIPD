@@ -41,7 +41,7 @@ internal class HttpService : IHttpService
     return true;
   }
 
-  public async Task<T> GetAsync<T>(string route, [CallerMemberName] string caller = "")
+  public async Task<T?> GetAsync<T>(string route, [CallerMemberName] string caller = "")
   {
     CancellationTokenSource ctSource = new(CancelationTimeout);
     // Request
@@ -73,7 +73,7 @@ internal class HttpService : IHttpService
     return result;
   }
 
-  public async Task<T> GetAsync<T>(string route, Dictionary<string, string> queriesDict, [CallerMemberName] string caller = "")
+  public async Task<T?> GetAsync<T>(string route, Dictionary<string, object> queriesDict, [CallerMemberName] string caller = "")
   {
     string queries = "?";
     for (int i = 0; i < queriesDict.Count - 1; i++)
@@ -82,7 +82,7 @@ internal class HttpService : IHttpService
     }
     queries += $"{queriesDict.Last().Key}={queriesDict.Last().Value}";
 
-    return await GetAsync<T>(route + queries, queries);
+    return await GetAsync<T>(route + queries);
   }
 
   public async Task<bool> PostAsync<T>(string route, T t, [CallerMemberName] string caller = "")
@@ -205,7 +205,19 @@ internal class HttpService : IHttpService
     return result;
   }
 
-  public async Task<T> DeleteAsync<T>(string route, [CallerMemberName] string caller = "")
+  public async Task<T?> DeleteAsync<T>(string route, Dictionary<string, object> queriesDict, [CallerMemberName] string caller = "")
+  {
+    string queries = "?";
+    for (int i = 0; i < queriesDict.Count - 1; i++)
+    {
+      queries += $"{queriesDict.ElementAt(i).Key}={queriesDict.ElementAt(i).Value}&";
+    }
+    queries += $"{queriesDict.Last().Key}={queriesDict.Last().Value}";
+
+    return await DeleteAsync<T>(route + queries);
+  }
+
+  public async Task<T?> DeleteAsync<T>(string route, [CallerMemberName] string caller = "")
   {
     CancellationTokenSource ctSource = new(CancelationTimeout);
     // Request
@@ -222,6 +234,8 @@ internal class HttpService : IHttpService
     response.EnsureSuccessStatusCode();
 
     string responseContent = await response.Content.ReadAsStringAsync();
+
+    if (responseContent == string.Empty) return await Task.FromResult<T?>(default);
 
     T? result;
     try

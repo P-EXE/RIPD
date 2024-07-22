@@ -33,7 +33,7 @@ public interface IHttpService
   /// <param name="queriesDict">The Query parameters in the form of Property : Value</param>
   /// <param name="caller">The name of the calling Method (does not need to be specified)</param>
   /// <returns>An Object of the specified Type, otherwise null</returns>
-  Task<T?> GetAsync<T>(string route, Dictionary<string, string> queriesDict, [CallerMemberName] string caller = "");
+  Task<T?> GetAsync<T>(string route, Dictionary<string, object> queriesDict, [CallerMemberName] string caller = "");
 
   /// <summary>
   /// Posts an Object of the specified Type to the given route.
@@ -58,5 +58,7 @@ public interface IHttpService
   Task<T2?> PostAsync<T1, T2>(string route, T1 t1, [CallerMemberName] string caller = "");
 
   Task<T2?> PutAsync<T1, T2>(string route, T1 t1, [CallerMemberName] string caller = "");
+
+  Task<T?> DeleteAsync<T>(string route, Dictionary<string, object> queriesDict, [CallerMemberName] string caller = "");
   Task<T?> DeleteAsync<T>(string route, [CallerMemberName] string caller = "");
 }

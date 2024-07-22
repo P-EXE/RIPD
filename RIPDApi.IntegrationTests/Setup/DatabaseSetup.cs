@@ -11,7 +11,8 @@ internal static class DatabaseSetup
   public static void SetupTestDB(this IServiceCollection services)
   {
     services.RemoveProductionDB();
-    services.AddSQLiteTestDB();
+    /*services.AddSQLiteTestDB();*/
+    services.AddSQLServerTestDB();
   }
   private static void RemoveProductionDB(this IServiceCollection services)
   {

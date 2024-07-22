@@ -272,10 +272,10 @@ namespace RIPDApi.Migrations
                 columns: table => new
                 {
                     DiaryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EntryNr = table.Column<int>(type: "int", nullable: false),
+                    EntryNr = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Height = table.Column<double>(type: "float", nullable: true),
                     Weight = table.Column<double>(type: "float", nullable: true),
-                    Recorded = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Acted = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Added = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -295,7 +295,8 @@ namespace RIPDApi.Migrations
                 columns: table => new
                 {
                     DiaryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EntryNr = table.Column<int>(type: "int", nullable: false),
+                    EntryNr = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     MongoDBId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Acted = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Added = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -316,7 +317,8 @@ namespace RIPDApi.Migrations
                 columns: table => new
                 {
                     DiaryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EntryNr = table.Column<int>(type: "int", nullable: false),
+                    EntryNr = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     FoodId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Amount = table.Column<double>(type: "float", nullable: false),
                     Acted = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -343,7 +345,8 @@ namespace RIPDApi.Migrations
                 columns: table => new
                 {
                     DiaryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EntryNr = table.Column<int>(type: "int", nullable: false),
+                    EntryNr = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     WorkoutId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Amount = table.Column<double>(type: "float", nullable: false),
                     Acted = table.Column<DateTime>(type: "datetime2", nullable: false),

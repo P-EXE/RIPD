@@ -7,13 +7,15 @@ namespace RIPDApi.Data;
 
 public class SQLDataBaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
 {
+  private const int IdentityColumnSeed = 1;
+  private const int IdentityColumnIncrement = 1;
   public DbSet<Diary> Diaries => Set<Diary>();
   public DbSet<Food> Foods => Set<Food>();
   public DbSet<DiaryEntry_Food> DiaryFoods => Set<DiaryEntry_Food>();
   public DbSet<Workout> Workouts => Set<Workout>();
   public DbSet<DiaryEntry_Workout> DiaryWorkouts => Set<DiaryEntry_Workout>();
   public DbSet<DiaryEntry_Run> DiaryRuns => Set<DiaryEntry_Run>();
-  public DbSet<BodyMetric> BodyMetrics => Set<BodyMetric>();
+  public DbSet<DiaryEntry_BodyMetric> BodyMetrics => Set<DiaryEntry_BodyMetric>();
   public DbSet<FitnessTarget> FitnessTargets => Set<FitnessTarget>();
 
   public SQLDataBaseContext(DbContextOptions<SQLDataBaseContext> options) : base(options)
@@ -84,9 +86,10 @@ public class SQLDataBaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>,
     #region Things in Diary
     builder.Entity<DiaryEntry_Food>(fe =>
     {
-      fe.HasKey(f => new { f.DiaryId, f.EntryNr });
-      fe.Property(f => f.DiaryId).ValueGeneratedNever();
-      fe.Property(f => f.EntryNr).ValueGeneratedNever();
+      fe.HasKey(e => new { e.DiaryId, e.EntryNr });
+      fe.Property(e => e.DiaryId).ValueGeneratedNever();
+      fe.Property(e => e.EntryNr).ValueGeneratedOnAdd()
+      .UseIdentityColumn();
 
       fe.HasOne(f => f.Food).WithMany()
       .HasForeignKey(f => f.FoodId)
@@ -95,9 +98,10 @@ public class SQLDataBaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>,
 
     builder.Entity<DiaryEntry_Workout>(we =>
     {
-      we.HasKey(w => new { w.DiaryId, w.EntryNr });
-      we.Property(w => w.DiaryId).ValueGeneratedNever();
-      we.Property(w => w.EntryNr).ValueGeneratedNever();
+      we.HasKey(e => new { e.DiaryId, e.EntryNr });
+      we.Property(e => e.DiaryId).ValueGeneratedNever();
+      we.Property(e => e.EntryNr).ValueGeneratedOnAdd()
+      .UseIdentityColumn();
 
       we.HasOne(w => w.Workout).WithMany()
       .HasForeignKey(w => w.WorkoutId)
@@ -106,14 +110,18 @@ public class SQLDataBaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>,
 
     builder.Entity<DiaryEntry_Run>(re =>
     {
-      re.HasKey(r => new { r.DiaryId, r.EntryNr });
+      re.HasKey(e => new { e.DiaryId, e.EntryNr });
+      re.Property(e => e.DiaryId).ValueGeneratedNever();
+      re.Property(e => e.EntryNr).ValueGeneratedOnAdd()
+      .UseIdentityColumn();
     });
 
-    builder.Entity<BodyMetric>(b =>
+    builder.Entity<DiaryEntry_BodyMetric>(be =>
     {
-      b.HasKey(b => new { b.DiaryId, b.EntryNr });
-      b.Property(b => b.DiaryId).ValueGeneratedNever();
-      b.Property(b => b.EntryNr).ValueGeneratedNever();
+      be.HasKey(e => new { e.DiaryId, e.EntryNr });
+      be.Property(e => e.DiaryId).ValueGeneratedNever();
+      be.Property(e => e.EntryNr).ValueGeneratedOnAdd()
+      .UseIdentityColumn();
     });
 
     builder.Entity<FitnessTarget>(ft =>

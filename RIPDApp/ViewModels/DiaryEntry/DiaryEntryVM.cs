@@ -42,7 +42,7 @@ public partial class DiaryEntryVM : ObservableObject
   {
     FoodEntry.FoodId = Food.Id;
     FoodEntry.Food = Food;
-    bool success = await _diaryService.AddFoodEntryToDiaryAsync(FoodEntry);
+    bool success = await _diaryService.AddFoodEntryyAsync(FoodEntry);
     if (!success)
       return;
     await GoBack();
@@ -53,7 +53,7 @@ public partial class DiaryEntryVM : ObservableObject
   {
     WorkoutEntry.WorkoutId = Workout.Id;
     WorkoutEntry.Workout = Workout;
-    bool success = await _diaryService.AddWorkoutEntryToDiaryAsync(WorkoutEntry);
+    bool success = await _diaryService.AddWorkoutEntryAsync(WorkoutEntry);
     if (!success)
       return;
     await GoBack();

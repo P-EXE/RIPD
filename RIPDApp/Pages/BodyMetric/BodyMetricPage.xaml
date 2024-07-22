@@ -19,7 +19,7 @@
           <LinearItemsLayout Orientation="Vertical" ItemSpacing="4"/>
         </CollectionView.ItemsLayout>
         <CollectionView.ItemTemplate>
-          <DataTemplate x:DataType="m:BodyMetric">
+          <DataTemplate x:DataType="m:DiaryEntry_BodyMetric">
             <SwipeView>
               <FlexLayout Direction="Row">
                 <VerticalStackLayout FlexLayout.Grow="1">

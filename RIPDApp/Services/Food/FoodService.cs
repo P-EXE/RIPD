@@ -43,10 +43,10 @@ public class FoodService : IFoodService
 
     IEnumerable<Food>? foods;
     
-    Dictionary<string, string> queries = new()
+    Dictionary<string, object> queries = new()
     {
       ["name"] = query,
-      ["position"] = position.ToString(),
+      ["position"] = position,
     };
     
     foods = await _httpService.GetAsync<IEnumerable<Food>?>("food", queries);

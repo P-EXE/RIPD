@@ -63,7 +63,7 @@ public partial class DiaryVM : ObservableObject
 
   private async Task GetFoodEntriesInDateRange()
   {
-    IEnumerable<DiaryEntry_Food>? foodEntries = await _diaryService.GetFoodEntriesInDateRange(Statics.Auth.Owner.Diary, StartDate, EndDate);
+    IEnumerable<DiaryEntry_Food>? foodEntries = await _diaryService.GetFoodEntriesAsync(Statics.Auth.Owner.Diary, StartDate, EndDate);
     FoodEntries = foodEntries?.ToObservableCollection();
   }
 
