@@ -1,9 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Maui.ApplicationModel.Communication;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using RIPDApp.DataBase;
 using RIPDShared.Models;
-using System.Diagnostics;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace RIPDApp.Services;
 
@@ -11,10 +9,12 @@ public class OwnerService : IOwnerService
 {
   private readonly IHttpService _httpService;
   private readonly LocalDBContext _localDBContext;
-  public OwnerService(IHttpService httpService, LocalDBContext localDBContext)
+  private readonly IMapper _mapper;
+  public OwnerService(IHttpService httpService, LocalDBContext localDBContext, IMapper mapper)
   {
     _httpService = httpService;
     _localDBContext = localDBContext;
+    _mapper = mapper;
   }
 
   public async Task RegisterAsync(AppUser_Create createUser)
@@ -139,6 +139,28 @@ public class OwnerService : IOwnerService
 
     // Return
     return true;
+  }
+
+  public async Task<AppUser?> UpdateAsync(AppUser user)
+  {
+    bool success = true;
+    AppUser? retUser;
+    // Mapping
+    AppUser_Update updateUser = _mapper.Map<AppUser_Update>(user);
+
+    try
+    {
+      retUser = await _httpService.PutAsync<AppUser_Update, AppUser>("user/update", updateUser);
+    }
+    catch (Exception ex)
+    {
+      success = false;
+      throw;
+    }
+
+    if (success) Statics.Auth.Owner = retUser;
+
+    return retUser;
   }
 
   public async Task<bool> CheckUserLoginStateAsync()

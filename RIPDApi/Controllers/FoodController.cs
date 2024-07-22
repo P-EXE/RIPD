@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RIPDApi.Repos;
 using RIPDShared.Models;
@@ -19,6 +20,7 @@ public class FoodController : ControllerBase
   }
 
   [HttpPost]
+  [Authorize]
   public async Task<ActionResult<Food?>> CreateFoodAsync([FromBody] Food_Create createFood)
   {
     AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
@@ -69,6 +71,7 @@ public class FoodController : ControllerBase
   }
 
   [HttpPut]
+  [Authorize]
   public async Task<ActionResult<Food?>> UpdateFoodAsync([FromBody] Food_Update updateFood)
   {
     AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
@@ -89,6 +92,7 @@ public class FoodController : ControllerBase
   }
 
   [HttpDelete("{id}")]
+  [Authorize]
   public async Task<ActionResult<bool>> DeleteFoodByIdAsync([FromRoute] Guid id)
   {
     AppUser? user = await _userManager.GetUserAsync(HttpContext.User);

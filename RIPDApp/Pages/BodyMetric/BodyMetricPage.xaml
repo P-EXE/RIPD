@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:RIPDApp.ViewModels"
+             xmlns:m="clr-namespace:RIPDShared.Models;assembly=RIPDShared"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:DataType="vm:BodyMetricVM"
+             x:Class="RIPDApp.Pages.BodyMetricPage"
+             Title="">
+  <Grid RowDefinitions="*,auto">
+
+    <ScrollView Grid.Row="0">
+      <CollectionView SelectionMode="Single"
+                      Margin="8"
+                      ItemsSource="{Binding BodyMetrics}"
+                      SelectedItem="{Binding SelectedBodyMetric}"
+                      SelectionChangedCommand="{Binding NavToViewPageCommand}">
+        <CollectionView.ItemsLayout>
+          <LinearItemsLayout Orientation="Vertical" ItemSpacing="4"/>
+        </CollectionView.ItemsLayout>
+        <CollectionView.ItemTemplate>
+          <DataTemplate x:DataType="m:DiaryEntry_BodyMetric">
+            <SwipeView>
+              <FlexLayout Direction="Row">
+                <VerticalStackLayout FlexLayout.Grow="1">
+                  <Label Text="{Binding Weight}"/>
+                  <Label Text="{Binding Height}"/>
+                </VerticalStackLayout>
+                <VerticalStackLayout FlexLayout.Grow="0">
+                  <Label Text="{Binding Acted, StringFormat='{0:dd.MM.yyyy}'}"/>
+                  <Label Text="{Binding Acted, StringFormat='{0:hh:mm:ss}'}"/>
+                </VerticalStackLayout>
+              </FlexLayout>
+            </SwipeView>
+          </DataTemplate>
+        </CollectionView.ItemTemplate>
+      </CollectionView>
+    </ScrollView>
+
+    <VerticalStackLayout Grid.Row="1">
+      <Button Text="Add New"
+              Command="{Binding NavToCreatePageCommand}"/>
+    </VerticalStackLayout>
+
+  </Grid>
+</ContentPage>

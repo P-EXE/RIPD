@@ -1,52 +1,48 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using RIPDShared.Models;
+using Bogus;
 
 namespace RIPDApi.Data;
 
 public class Seeding
 {
-  private const int defaultCount = 9;
-  private static PasswordHasher<AppUser> ph = new();
-  private readonly SQLDataBaseContext _sqlContext;
-  private readonly UserManager<AppUser> _userManager;
+  private static readonly PasswordHasher<AppUser> ph = new();
 
-  public Seeding(SQLDataBaseContext sqlContext, UserManager<AppUser> userManager)
+  public static IEnumerable<AppUser> GenerateFakeAndTestUser(int fakeUsersCount)
   {
-    _sqlContext = sqlContext;
-    _userManager = userManager;
+    List<AppUser> users = [];
+    users.Add(GenerateTestUser());
+    users.AddRange(GenerateFakeUsers(fakeUsersCount));
+    return users;
   }
 
-  public async void GenerateAppUsers(int count = defaultCount)
+  public static IEnumerable<AppUser> GenerateFakeUsers(int fakeUsersCount)
   {
-    for (int i = 1; i <= count; i++)
-    {
-      AppUser user = new()
-      {
-        Id = new($"11111111-1111-1111-1111-11111111111{i}"),
-        UserName = $"seededUser{i}",
-        NormalizedUserName = $"USER{i}",
-        Email = $"seededUser{i}@mail.com",
-        NormalizedEmail = $"SEEDEDUSER{i}@MAIL.COM",
-        EmailConfirmed = true
-      };
+    Faker<AppUser> userFaker = new Faker<AppUser>()
+      .RuleFor(u => u.Id, f => Guid.NewGuid())
+      .RuleFor(u => u.UserName, f => f.Name.FirstName())
+      .RuleFor(u => u.Email, (f, usr) => f.Internet.Email(usr.UserName, f.Name.LastName()))
+      .RuleFor(u => u.EmailConfirmed, true)
+      .RuleFor(u => u.PasswordHash, (f, usr) => ph.HashPassword(usr, "P455w0rd!"))
+      .RuleFor(u => u.PhoneNumber, f => f.Phone.PhoneNumber())
+      .RuleFor(u => u.PhoneNumberConfirmed, true)
+      .RuleFor(u => u.TwoFactorEnabled, true);
 
-      await _userManager.CreateAsync(user);
-    }
+    return userFaker.GenerateLazy(fakeUsersCount).ToList();
   }
 
-  public async Task<List<Diary>> GenerateDiaries(int count = defaultCount)
+  public static AppUser GenerateTestUser()
   {
-    List<Diary> diaries = [];
+    Faker<AppUser> userFaker = new Faker<AppUser>()
+      .RuleFor(u => u.Id, f => new("00000000-0000-0000-0000-000000000001"))
+      .RuleFor(u => u.UserName, f => f.Name.FirstName())
+      .RuleFor(u => u.Email, (f, usr) => f.Internet.Email(usr.UserName, f.Name.LastName()))
+      .RuleFor(u => u.EmailConfirmed, true)
+      .RuleFor(u => u.PasswordHash, (f, usr) => ph.HashPassword(usr, "P455w0rd!"))
+      .RuleFor(u => u.PhoneNumber, f => f.Phone.PhoneNumber())
+      .RuleFor(u => u.PhoneNumberConfirmed, true)
+      .RuleFor(u => u.TwoFactorEnabled, true);
 
-    for (int i = 1; i <= count; i++)
-    {
-      diaries.Add(new()
-      {
-        OwnerId = new($"11111111-1111-1111-1111-11111111111{i}")
-      });
-    }
-
-    return diaries;
+    return userFaker.GenerateLazy(1).First();
   }
 }

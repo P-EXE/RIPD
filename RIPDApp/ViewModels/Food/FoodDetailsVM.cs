@@ -95,7 +95,6 @@ public partial class FoodDetailsVM : ObservableObject
   // Sets the Barcode field
   private void SetBarcode(string barcode)
   {
-    Food.Barcode = barcode;
     Barcode = barcode;
   }
 
@@ -120,6 +119,7 @@ public partial class FoodDetailsVM : ObservableObject
   [RelayCommand]
   private async Task CreateFood()
   {
+    Food.Barcode = Barcode;
     Food = await _foodService.CreateFoodAsync(Food);
     GoBack();
   }

@@ -37,10 +37,10 @@ public class WorkoutService : IWorkoutService
 
     IEnumerable<Workout>? workouts;
 
-    Dictionary<string, string> queries = new()
+    Dictionary<string, object> queries = new()
     {
       ["name"] = query,
-      ["position"] = position.ToString(),
+      ["position"] = position,
     };
 
     workouts = await _httpService.GetAsync<IEnumerable<Workout>?>("workout", queries);

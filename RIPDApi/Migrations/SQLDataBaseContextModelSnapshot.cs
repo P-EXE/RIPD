@@ -222,34 +222,6 @@ namespace RIPDApi.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("RIPDShared.Models.BodyMetric", b =>
-                {
-                    b.Property<Guid>("DiaryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("EntryNr")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Acted")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Added")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double?>("Height")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("Recorded")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double?>("Weight")
-                        .HasColumnType("float");
-
-                    b.HasKey("DiaryId", "EntryNr");
-
-                    b.ToTable("BodyMetrics");
-                });
-
             modelBuilder.Entity("RIPDShared.Models.Diary", b =>
                 {
                     b.Property<Guid>("OwnerId")
@@ -260,13 +232,44 @@ namespace RIPDApi.Migrations
                     b.ToTable("Diaries");
                 });
 
+            modelBuilder.Entity("RIPDShared.Models.DiaryEntry_BodyMetric", b =>
+                {
+                    b.Property<Guid>("DiaryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("EntryNr")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EntryNr"));
+
+                    b.Property<DateTime>("Acted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Added")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double?>("Height")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Weight")
+                        .HasColumnType("float");
+
+                    b.HasKey("DiaryId", "EntryNr");
+
+                    b.ToTable("BodyMetrics");
+                });
+
             modelBuilder.Entity("RIPDShared.Models.DiaryEntry_Food", b =>
                 {
                     b.Property<Guid>("DiaryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("EntryNr")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EntryNr"));
 
                     b.Property<DateTime>("Acted")
                         .HasColumnType("datetime2");
@@ -293,7 +296,10 @@ namespace RIPDApi.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("EntryNr")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EntryNr"));
 
                     b.Property<DateTime>("Acted")
                         .HasColumnType("datetime2");
@@ -315,7 +321,10 @@ namespace RIPDApi.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("EntryNr")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EntryNr"));
 
                     b.Property<DateTime>("Acted")
                         .HasColumnType("datetime2");
@@ -621,17 +630,6 @@ namespace RIPDApi.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RIPDShared.Models.BodyMetric", b =>
-                {
-                    b.HasOne("RIPDShared.Models.Diary", "Diary")
-                        .WithMany("BodyMetrics")
-                        .HasForeignKey("DiaryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Diary");
-                });
-
             modelBuilder.Entity("RIPDShared.Models.Diary", b =>
                 {
                     b.HasOne("RIPDShared.Models.AppUser", "Owner")
@@ -641,6 +639,17 @@ namespace RIPDApi.Migrations
                         .IsRequired();
 
                     b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("RIPDShared.Models.DiaryEntry_BodyMetric", b =>
+                {
+                    b.HasOne("RIPDShared.Models.Diary", "Diary")
+                        .WithMany("BodyMetrics")
+                        .HasForeignKey("DiaryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Diary");
                 });
 
             modelBuilder.Entity("RIPDShared.Models.DiaryEntry_Food", b =>
@@ -698,13 +707,13 @@ namespace RIPDApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RIPDShared.Models.BodyMetric", "GoalBodyMetric")
+                    b.HasOne("RIPDShared.Models.DiaryEntry_BodyMetric", "GoalBodyMetric")
                         .WithMany()
                         .HasForeignKey("BodyMetricUser", "GoalBodyMetricEntryNr")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("RIPDShared.Models.BodyMetric", "StartBodyMetric")
+                    b.HasOne("RIPDShared.Models.DiaryEntry_BodyMetric", "StartBodyMetric")
                         .WithMany()
                         .HasForeignKey("BodyMetricUser", "StartBodyMetricEntryNr")
                         .OnDelete(DeleteBehavior.NoAction)

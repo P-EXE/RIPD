@@ -65,10 +65,14 @@ public static class ServiceRegisterer
 
     builder.Services.AddTransient<WorkoutCreatePage>();
 
+    builder.Services.AddTransient<BodyMetricPage>();
+    builder.Services.AddTransient<BodyMetricCreatePage>();
+    builder.Services.AddTransient<BodyMetricViewPage>();
+
     builder.Services.AddTransient<BarcodeScannerPage>();
 
-    builder.Services.AddTransient<ProfilePage>();
-    builder.Services.AddTransient<OwnerProfilePage>();
+    builder.Services.AddTransient<UserProfilePage>();
+    builder.Services.AddScoped<UserProfileUpdatePage>();
 
     builder.Services.AddTransient<SettingsPage>();
     builder.Services.AddTransient<SettingsDevPage>();
@@ -100,10 +104,12 @@ public static class ServiceRegisterer
     builder.Services.AddTransient<FoodDetailsVM>();
     builder.Services.AddTransient<WorkoutDetailsVM>();
 
+    builder.Services.AddTransient<BodyMetricVM>();
+    builder.Services.AddTransient<BodyMetricDetailsVM>();
+
     builder.Services.AddTransient<ScannerVM>();
 
-    builder.Services.AddTransient<ProfileVM>();
-    builder.Services.AddTransient<OwnerProfileVM>();
+    builder.Services.AddTransient<UserProfileVM>();
 
     builder.Services.AddTransient<SettingsVM>();
     builder.Services.AddTransient<SettingsDevVM>();
@@ -127,6 +133,10 @@ public static class ServiceRegisterer
   {
     builder.UseBarcodeReader();
   }
+  private static void RegisterJsonSerializerOptions(this MauiAppBuilder builder)
+  {
+
+  }
 
   /// <summary>
   /// All routes which are registered here are registered in their respective methods according to their start point or origin
@@ -138,6 +148,7 @@ public static class ServiceRegisterer
     RegisterDiaryRoutes();
     RegisterFoodSearchRoutes();
     RegisterWorkoutSearchRoutes();
+    RegisterBodyMetricRoutes();
     RegisterFoodDetailsRoutes();
     RegisterProfileRoutes();
     RegisterSettingsRoutes();
@@ -185,10 +196,14 @@ public static class ServiceRegisterer
     // Food Create -> Scan Barcode
     Routing.RegisterRoute($"{nameof(FoodCreatePage)}" + $"/{nameof(BarcodeScannerPage)}", typeof(BarcodeScannerPage));
   }
+  private static void RegisterBodyMetricRoutes()
+  {
+    Routing.RegisterRoute($"{Routes.BodyMetricPage}/{Routes.BodyMetricCreatePage}", typeof(BodyMetricCreatePage));
+    Routing.RegisterRoute($"{Routes.BodyMetricPage}/{Routes.BodyMetricViewPage}", typeof(BodyMetricViewPage));
+  }
   private static void RegisterProfileRoutes()
   {
-    Routing.RegisterRoute(nameof(ProfilePage), typeof(ProfilePage));
-    Routing.RegisterRoute(nameof(OwnerProfilePage), typeof(OwnerProfilePage));
+    Routing.RegisterRoute($"{Routes.UserProfilePage}/{Routes.UserProfileUpdatePage}", typeof(UserProfileUpdatePage));
   }
   private static void RegisterSettingsRoutes()
   {

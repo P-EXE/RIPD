@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Text.Json;
 
@@ -13,16 +14,16 @@ namespace RIPDApp.Services;
 /// </summary>
 internal class HttpService : IHttpService
 {
+  private static readonly TimeSpan CancelationTimeout = TimeSpan.FromSeconds(5);
   private readonly HttpClient _httpClient;
   private readonly JsonSerializerOptions _jsonSerializerOptions;
-  private readonly CancellationTokenSource _ctSource = new(TimeSpan.FromSeconds(50));
   public HttpService(HttpClient httpClient)
   {
     _httpClient = httpClient;
 
     _jsonSerializerOptions = new JsonSerializerOptions
     {
-      PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+      PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
   }
 
@@ -40,13 +41,15 @@ internal class HttpService : IHttpService
     return true;
   }
 
-  public async Task<T> GetAsync<T>(string route, [CallerMemberName] string caller = "")
+  public async Task<T?> GetAsync<T>(string route, [CallerMemberName] string caller = "")
   {
+    CancellationTokenSource ctSource = new(CancelationTimeout);
     // Request
-    HttpResponseMessage response = await _httpClient.GetAsync(route);
+    HttpResponseMessage response;
+
     try
     {
-      response = await _httpClient.GetAsync(route, _ctSource.Token);
+      response = await _httpClient.GetAsync(route, ctSource.Token);
     }
     catch (Exception ex)
     {
@@ -70,7 +73,7 @@ internal class HttpService : IHttpService
     return result;
   }
 
-  public async Task<T> GetAsync<T>(string route, Dictionary<string, string> queriesDict, [CallerMemberName] string caller = "")
+  public async Task<T?> GetAsync<T>(string route, Dictionary<string, object> queriesDict, [CallerMemberName] string caller = "")
   {
     string queries = "?";
     for (int i = 0; i < queriesDict.Count - 1; i++)
@@ -79,11 +82,12 @@ internal class HttpService : IHttpService
     }
     queries += $"{queriesDict.Last().Key}={queriesDict.Last().Value}";
 
-    return await GetAsync<T>(route + queries, queries);
+    return await GetAsync<T>(route + queries);
   }
 
   public async Task<bool> PostAsync<T>(string route, T t, [CallerMemberName] string caller = "")
   {
+    CancellationTokenSource ctSource = new(CancelationTimeout);
     // Convert
     string json;
     try
@@ -95,13 +99,13 @@ internal class HttpService : IHttpService
       throw;
     }
 
-    StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+    StringContent content = new(json, Encoding.UTF8, "application/json");
 
     // Request
     HttpResponseMessage response;
     try
     {
-      response = await _httpClient.PostAsync(route, content, _ctSource.Token);
+      response = await _httpClient.PostAsync(route, content, ctSource.Token);
     }
     catch (Exception ex)
     {
@@ -115,6 +119,7 @@ internal class HttpService : IHttpService
 
   public async Task<T2?> PostAsync<T1, T2>(string route, T1 t1, [CallerMemberName] string caller = "")
   {
+    CancellationTokenSource ctSource = new(CancelationTimeout);
     // Convert
     string json;
     try
@@ -126,13 +131,13 @@ internal class HttpService : IHttpService
       throw;
     }
 
-    StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+    StringContent content = new(json, Encoding.UTF8, "application/json");
 
     // Request
     HttpResponseMessage response;
     try
     {
-      response = await _httpClient.PostAsync(route, content, _ctSource.Token);
+      response = await _httpClient.PostAsync(route, content, ctSource.Token);
     }
     catch (Exception ex)
     {
@@ -147,6 +152,95 @@ internal class HttpService : IHttpService
     try
     {
       result = JsonSerializer.Deserialize<T2>(responseContent, _jsonSerializerOptions);
+    }
+    catch (Exception ex)
+    {
+      throw;
+    }
+
+    return result;
+  }
+
+  public async Task<T2?> PutAsync<T1, T2>(string route, T1 t1, [CallerMemberName] string caller = "")
+  {
+    CancellationTokenSource ctSource = new(CancelationTimeout);
+    // Convert
+    string json;
+    try
+    {
+      json = JsonSerializer.Serialize(t1, _jsonSerializerOptions);
+    }
+    catch (NotSupportedException ex)
+    {
+      throw;
+    }
+
+    StringContent content = new(json, Encoding.UTF8, "application/json");
+
+    // Request
+    HttpResponseMessage response;
+    try
+    {
+      response = await _httpClient.PutAsync(route, content, ctSource.Token);
+    }
+    catch (Exception ex)
+    {
+      throw;
+    }
+
+    response.EnsureSuccessStatusCode();
+
+    string responseContent = await response.Content.ReadAsStringAsync();
+
+    T2? result;
+    try
+    {
+      result = JsonSerializer.Deserialize<T2>(responseContent, _jsonSerializerOptions);
+    }
+    catch (Exception ex)
+    {
+      throw;
+    }
+
+    return result;
+  }
+
+  public async Task<T?> DeleteAsync<T>(string route, Dictionary<string, object> queriesDict, [CallerMemberName] string caller = "")
+  {
+    string queries = "?";
+    for (int i = 0; i < queriesDict.Count - 1; i++)
+    {
+      queries += $"{queriesDict.ElementAt(i).Key}={queriesDict.ElementAt(i).Value}&";
+    }
+    queries += $"{queriesDict.Last().Key}={queriesDict.Last().Value}";
+
+    return await DeleteAsync<T>(route + queries);
+  }
+
+  public async Task<T?> DeleteAsync<T>(string route, [CallerMemberName] string caller = "")
+  {
+    CancellationTokenSource ctSource = new(CancelationTimeout);
+    // Request
+    HttpResponseMessage response;
+    try
+    {
+      response = await _httpClient.DeleteAsync(route, ctSource.Token);
+    }
+    catch (Exception ex)
+    {
+      throw;
+    }
+
+    response.EnsureSuccessStatusCode();
+
+    string responseContent = await response.Content.ReadAsStringAsync();
+
+    if (responseContent == string.Empty) return await Task.FromResult<T?>(default);
+
+    T? result;
+    try
+    {
+      result = JsonSerializer.Deserialize<T>(responseContent, _jsonSerializerOptions);
     }
     catch (Exception ex)
     {

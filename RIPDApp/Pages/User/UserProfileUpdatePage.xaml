@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:RIPDApp.ViewModels"
+             x:Class="RIPDApp.Pages.UserProfileUpdatePage"
+             x:DataType="vm:UserProfileVM">
+  <Grid RowDefinitions="auto,*,auto">
+
+    <Grid Grid.Row="0"
+        ColumnDefinitions="auto,*"
+        Margin="20"
+        ColumnSpacing="20">
+
+      <Image Grid.Column="0"
+           WidthRequest="100"
+           Source="dotnet_bot.png"/>
+
+      <VerticalStackLayout Grid.Column="1" Spacing="10">
+
+        <VerticalStackLayout>
+          <Entry Placeholder="User Name"
+                 Text="{Binding User.UserName}"
+                 FontSize="Header"/>
+          <Entry Placeholder="Email"
+                 Text="{Binding User.Email}" 
+                 FontSize="Caption"/>
+        </VerticalStackLayout>
+
+        <HorizontalStackLayout Spacing="10">
+          <HorizontalStackLayout Spacing="3">
+            <Label Text="Followers:"
+                   FontAttributes="Bold"/>
+            <!--<Label Text="{Binding Followers}"/>-->
+          </HorizontalStackLayout>
+          <HorizontalStackLayout Spacing="3">
+            <Label Text="Following:"
+                   FontAttributes="Bold"/>
+            <!--<Label Text="{Binding Following}"/>-->
+          </HorizontalStackLayout>
+        </HorizontalStackLayout>
+
+      </VerticalStackLayout>
+    </Grid>
+
+    <Button Text="Save"
+            Grid.Row="2"
+            Command="{Binding UpdateUserInfoCommand}"/>
+
+  </Grid>
+</ContentPage>

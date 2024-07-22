@@ -12,6 +12,7 @@ namespace RIPDApi.Controllers;
 /// </summary>
 [Route("api/diary")]
 [ApiController]
+[Authorize]
 public class DiaryController : ControllerBase
 {
   private readonly UserManager<AppUser> _userManager;
@@ -25,63 +26,83 @@ public class DiaryController : ControllerBase
 
   #region Create
   [HttpPost("food"), Authorize]
-  public async Task<ActionResult<DiaryEntry_Food?>> AddFoodEntryAsync(DiaryEntry_Food_Create createEntry)
+  public async Task<ActionResult<DiaryEntry_Food?>> AddFoodEntryAsync(DiaryEntry_Food_Create create)
   {
     AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
-    DiaryEntry_Food? diaryEntry = null;
+    DiaryEntry_Food? entry = null;
 
-    if (createEntry == null) return BadRequest(createEntry);
+    if (create == null) return BadRequest(create);
 
     try
     {
-      diaryEntry = await _diaryRepo.CreateFoodEntryAsync(createEntry);
+      entry = await _diaryRepo.CreateFoodEntryAsync(create);
     }
     catch (Exception ex)
     {
       return UnprocessableEntity(ex);
     }
 
-    return diaryEntry == null ? NotFound(diaryEntry) : Created(nameof(AddFoodEntryAsync), diaryEntry);
+    return entry == null ? NotFound(entry) : Created(nameof(AddFoodEntryAsync), entry);
   }
 
   [HttpPost("workout"), Authorize]
-  public async Task<ActionResult<DiaryEntry_Workout?>> AddWorkoutEntryAsync(DiaryEntry_Workout_Create createEntry)
+  public async Task<ActionResult<DiaryEntry_Workout?>> AddWorkoutEntryAsync(DiaryEntry_Workout_Create create)
   {
     AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
-    DiaryEntry_Workout? diaryEntry = null;
+    DiaryEntry_Workout? entry = null;
 
-    if (createEntry == null) return BadRequest(createEntry);
+    if (create == null) return BadRequest(create);
 
     try
     {
-      diaryEntry = await _diaryRepo.CreateWorkoutEntryAsync(createEntry);
+      entry = await _diaryRepo.CreateWorkoutEntryAsync(create);
     }
     catch (Exception ex)
     {
       return UnprocessableEntity(ex);
     }
 
-    return diaryEntry == null ? NotFound(diaryEntry) : Created(nameof(AddWorkoutEntryAsync), diaryEntry);
+    return entry == null ? NotFound(entry) : Created(nameof(AddWorkoutEntryAsync), entry);
   }
 
   [HttpPost("run"), Authorize]
-  public async Task<ActionResult<DiaryEntry_Run?>> AddRunEntryAsync(DiaryEntry_Run_Create createEntry)
+  public async Task<ActionResult<DiaryEntry_Run?>> AddRunEntryAsync(DiaryEntry_Run_Create create)
   {
     AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
-    DiaryEntry_Run? diaryEntry = null;
+    DiaryEntry_Run? entry = null;
 
-    if (createEntry == null) return BadRequest(createEntry);
+    if (create == null) return BadRequest(create);
 
     try
     {
-      diaryEntry = await _diaryRepo.CreateRunEntryAsync(createEntry);
+      entry = await _diaryRepo.CreateRunEntryAsync(create);
     }
     catch (Exception ex)
     {
       return UnprocessableEntity(ex);
     }
 
-    return diaryEntry == null ? NotFound(diaryEntry) : Created(nameof(AddWorkoutEntryAsync), diaryEntry);
+    return entry == null ? NotFound(entry) : Created(nameof(AddWorkoutEntryAsync), entry);
+  }
+
+  [HttpPost("bodymetric"), Authorize]
+  public async Task<ActionResult<DiaryEntry_BodyMetric?>> AddBodyMetricEntryAsync(DiaryEntry_BodyMetric_Create create)
+  {
+    AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
+    DiaryEntry_BodyMetric? entry = null;
+
+    if (create == null) return BadRequest(create);
+
+    try
+    {
+      entry = await _diaryRepo.CreateBodyMetricEntryAsync(create);
+    }
+    catch (Exception ex)
+    {
+      return UnprocessableEntity(ex);
+    }
+
+    return entry == null ? NotFound(entry) : Created(nameof(AddBodyMetricEntryAsync), entry);
   }
   #endregion Create
 
@@ -128,6 +149,28 @@ public class DiaryController : ControllerBase
     }
 
     return diaryEntries == null ? NotFound(diaryEntries) : Ok(diaryEntries);
+  }
+
+  [HttpGet("bodymetric"), Authorize]
+  public async Task<ActionResult<IEnumerable<DiaryEntry_BodyMetric>?>> GetBodyMetricEntriesFromToDate([FromQuery] string? diary = null, [FromQuery] DateTime start = default, [FromQuery] DateTime end = default)
+  {
+    AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
+    IEnumerable<DiaryEntry_BodyMetric>? entries = null;
+
+    Guid diaryId = diary == null ? user.Id : new(diary);
+    DateTime startDate = start == default ? DateTime.MinValue : start;
+    DateTime endDate = end == default ? DateTime.Now : end;
+
+    try
+    {
+      entries = await _diaryRepo.ReadBodyMetricEntriesFromToDateAsync(diaryId, startDate, endDate);
+    }
+    catch (Exception ex)
+    {
+      return UnprocessableEntity(ex);
+    }
+
+    return entries == null ? NotFound(entries) : Ok(entries);
   }
 
   [HttpGet("run"), Authorize]
@@ -192,6 +235,27 @@ public class DiaryController : ControllerBase
 
     return diaryEntry == null ? Conflict(updateEntry) : Ok(diaryEntry);
   }
+
+  [HttpPut("bodymetric")]
+  public async Task<ActionResult<DiaryEntry_BodyMetric?>> UpdateBodyMetricEntryAsync([FromBody] DiaryEntry_BodyMetric_Update update)
+  {
+    AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
+    DiaryEntry_BodyMetric? entry = null;
+
+    if (update == null) return BadRequest(update);
+
+    try
+    {
+      entry = await _diaryRepo.UpdateBodyMetricEntryAsync(update);
+    }
+    catch (Exception ex)
+    {
+      return UnprocessableEntity(ex);
+    }
+
+    return entry == null ? Conflict(update) : Ok(entry);
+  }
+
   [HttpPut("run")]
   public async Task<ActionResult<DiaryEntry_Run?>> UpdateRunEntryAsync([FromBody] DiaryEntry_Run_Update updateEntry)
   {
@@ -254,6 +318,28 @@ public class DiaryController : ControllerBase
 
     return success ? Ok(entry) : NotFound(entry);
   }
+
+  [HttpDelete("bodymetric")]
+  public async Task<ActionResult> DeleteBodyMetricEntryAsync([FromQuery] int entry, [FromQuery] string? diary = default)
+  {
+    AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
+    Guid diaryId = diary == null ? user.Id : new(diary);
+    bool success = false;
+
+    if (entry == default) return BadRequest(entry);
+
+    try
+    {
+      success = await _diaryRepo.DeleteBodyMetricEntryAsync(diaryId, entry);
+    }
+    catch (Exception ex)
+    {
+      return UnprocessableEntity(ex);
+    }
+
+    return success ? Ok() : NotFound(entry);
+  }
+
   [HttpDelete("run")]
   public async Task<ActionResult> DeleteRunEntryAsync([FromQuery] int entry, [FromQuery] string? diary = default)
   {

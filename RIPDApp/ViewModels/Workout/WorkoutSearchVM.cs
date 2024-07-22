@@ -36,8 +36,15 @@ public partial class WorkoutSearchVM : ObservableObject
   [RelayCommand]
   async Task Search()
   {
-    IEnumerable<Workout>? workouts = await _workoutService.GetWorkoutsByNameAtPositionAsync(SearchText, 0);
-    Workouts = workouts?.ToObservableCollection();
+    try
+    {
+      IEnumerable<Workout>? workouts = await _workoutService.GetWorkoutsByNameAtPositionAsync(SearchText, 0);
+      Workouts = workouts?.ToObservableCollection();
+    }
+    catch (HttpRequestException ex)
+    {
+
+    }
   }
 
   [RelayCommand]

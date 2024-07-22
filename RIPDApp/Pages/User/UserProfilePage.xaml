@@ -2,48 +2,47 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:RIPDApp.ViewModels"
-             x:Class="RIPDApp.Pages.OwnerProfilePage"
-             x:DataType="vm:OwnerProfileVM">
+             x:Class="RIPDApp.Pages.UserProfilePage"
+             x:DataType="vm:UserProfileVM">
   <Grid RowDefinitions="auto,*,auto">
 
     <Grid Grid.Row="0"
-          ColumnDefinitions="auto,*"
-          Margin="20"
-          ColumnSpacing="20">
+        ColumnDefinitions="auto,*"
+        Margin="20"
+        ColumnSpacing="20">
 
       <Image Grid.Column="0"
-             WidthRequest="100"
-             Source="dotnet_bot.png"/>
+           WidthRequest="100"
+           Source="dotnet_bot.png"/>
 
       <VerticalStackLayout Grid.Column="1" Spacing="10">
 
         <VerticalStackLayout>
-          <Label Text="{Binding Owner.UserName}"
-               FontSize="Header"/>
-          <Label Text="{Binding Owner.Email}" 
-               FontSize="Caption"/>
+          <Label Text="{Binding User.UserName}"
+                 FontSize="Header"/>
+          <Label Text="{Binding User.Email}" 
+                 FontSize="Caption"/>
         </VerticalStackLayout>
 
         <HorizontalStackLayout Spacing="10">
           <HorizontalStackLayout Spacing="3">
             <Label Text="Followers:"
                    FontAttributes="Bold"/>
-            <Label Text="{Binding Followers}"/>
+            <!--<Label Text="{Binding Followers}"/>-->
           </HorizontalStackLayout>
           <HorizontalStackLayout Spacing="3">
             <Label Text="Following:"
                    FontAttributes="Bold"/>
-            <Label Text="{Binding Following}"/>
+            <!--<Label Text="{Binding Following}"/>-->
           </HorizontalStackLayout>
         </HorizontalStackLayout>
 
-        <Button Text="Edit"
-                Grid.Row="2"
-                Command="{Binding SwitchToEditModeCommand}"
-                HorizontalOptions="Start"/>
       </VerticalStackLayout>
-
-
     </Grid>
+
+    <Button Text="Edit"
+            Grid.Row="2"
+            Command="{Binding SwitchToUpdateModeCommand}"/>
+
   </Grid>
 </ContentPage>

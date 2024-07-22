@@ -5,7 +5,8 @@
              xmlns:v="clr-namespace:RIPDApp.Views"
              xmlns:vm="clr-namespace:RIPDApp.ViewModels"
              x:Class="RIPDApp.Pages.FoodSearchPage"
-             x:DataType="vm:FoodSearchVM">
+             x:DataType="vm:FoodSearchVM"
+             Title="">
   <Grid RowDefinitions="auto, *,auto">
 
     <Grid ColumnDefinitions="*, auto">

@@ -19,7 +19,8 @@ public class UserRepo : IUserRepo
 
   public async Task<AppUser?> GetSelfPrivateAsync(AppUser? user)
   {
-    if (user == null) return null;
+    if (user == null)
+      return null;
 
     // SQL Context
     user = await _sqlContext.Users.FindAsync(user.Id);
@@ -31,7 +32,8 @@ public class UserRepo : IUserRepo
 
   public async Task<AppUser?> GetSelfPublicAsync(AppUser? findUser)
   {
-    if (findUser == null) return null;
+    if (findUser == null)
+      return null;
     AppUser? retUser = await _sqlContext.Users.FindAsync(findUser.Id);
     return retUser;
   }
@@ -49,13 +51,13 @@ public class UserRepo : IUserRepo
     return users;
   }
 
-  public async Task<AppUser?> UpdateUserAsync(AppUser_Update updateUser)
+  public async Task<AppUser?> UpdateUserAsync(AppUser user, AppUser_Update updateUser)
   {
-    // Mapping
-    AppUser user = _mapper.Map<AppUser>(updateUser);
-
     // SQL Context
-    _sqlContext.Users.Update(user);
+    user = await _sqlContext.Users.FirstAsync(u => u.Id == user.Id);
+    user.UserName = updateUser.UserName;
+    user.Email = updateUser.Email;
+
     await _sqlContext.SaveChangesAsync();
 
     // Return

@@ -36,8 +36,15 @@ public partial class FoodSearchVM : ObservableObject
   [RelayCommand]
   async Task Search()
   {
-    IEnumerable<Food>? foods = await _foodService.GetFoodsByNameAtPositionAsync(SearchText, 0);
-    Foods = foods?.ToObservableCollection();
+    try
+    {
+      IEnumerable<Food>? foods = await _foodService.GetFoodsByNameAtPositionAsync(SearchText, 0);
+      Foods = foods?.ToObservableCollection();
+    }
+    catch (HttpRequestException ex)
+    {
+      
+    }
   }
   [RelayCommand]
   private async Task SearchViaBarcode()

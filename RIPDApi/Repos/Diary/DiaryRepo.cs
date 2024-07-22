@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using RIPDApi.Data;
 using RIPDApi.Services;
 using RIPDShared.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace RIPDApi.Repos;
 
@@ -34,9 +35,6 @@ public class DiaryRepo : IDiaryRepo
       .First(d => d.OwnerId == createFood.DiaryId)
       .FoodEntries;
 
-    // Info: Could maybe be handled by the DB?
-    foodEntry.EntryNr = foodEntries.Last().EntryNr + 1;
-
     foodEntries.Add(foodEntry);
 
     await _sqlContext.SaveChangesAsync();
@@ -56,15 +54,32 @@ public class DiaryRepo : IDiaryRepo
       .First(d => d.OwnerId == createWorkout.DiaryId)
       .WorkoutEntries;
 
-    // Info: Could maybe be handled by the DB?
-    workoutEntry.EntryNr = workoutEntries.Last().EntryNr + 1;
-
     workoutEntries.Add(workoutEntry);
 
     await _sqlContext.SaveChangesAsync();
 
     // Return
     return workoutEntry;
+  }
+
+  public async Task<DiaryEntry_BodyMetric?> CreateBodyMetricEntryAsync(DiaryEntry_BodyMetric_Create create)
+  {
+    // Mapping
+    DiaryEntry_BodyMetric entry = _mapper.Map<DiaryEntry_BodyMetric>(create);
+    entry.EntryNr = 0;
+
+    // SQL Context
+    ICollection<DiaryEntry_BodyMetric> entries = _sqlContext.Diaries
+      .Include(d => d.BodyMetrics)
+      .First(d => d.OwnerId == create.DiaryId)
+      .BodyMetrics;
+
+    entries.Add(entry);
+
+    await _sqlContext.SaveChangesAsync();
+
+    // Return
+    return entry;
   }
 
   public async Task<DiaryEntry_Run?> CreateRunEntryAsync(DiaryEntry_Run_Create createRun)
@@ -120,6 +135,19 @@ public class DiaryRepo : IDiaryRepo
     return workouts;
   }
 
+  public async Task<IEnumerable<DiaryEntry_BodyMetric>?> ReadBodyMetricEntriesFromToDateAsync(Guid diaryId, DateTime start, DateTime end)
+  {
+    // SQL Context
+    IEnumerable<DiaryEntry_BodyMetric> entries = _sqlContext.Diaries
+      .Include(d => d.BodyMetrics)
+      .First(d => d.OwnerId == diaryId)
+      .BodyMetrics
+      .Where(w => w.Acted >= start && w.Acted <= end)
+      .AsEnumerable();
+    // Return
+    return entries;
+  }
+
   public async Task<IEnumerable<DiaryEntry_Run>?> ReadRunEntriesFromToDateAsync(Guid diaryId, DateTime start, DateTime end)
   {
     // SQL Context
@@ -142,30 +170,60 @@ public class DiaryRepo : IDiaryRepo
   #endregion Read
 
   #region Update
-  public async Task<DiaryEntry_Food?> UpdateFoodEntryAsync(DiaryEntry_Food_Update updateFood)
+  public async Task<DiaryEntry_Food?> UpdateFoodEntryAsync(DiaryEntry_Food_Update update)
   {
-    throw new NotImplementedException();
+    DiaryEntry_Food updater = _mapper.Map<DiaryEntry_Food>(update);
+
+    _sqlContext.DiaryFoods.Update(updater);
+    await _sqlContext.SaveChangesAsync();
+
+    return updater;
   }
 
-  public async Task<DiaryEntry_Workout?> UpdateWorkoutEntryAsync(DiaryEntry_Workout_Update updateWorkout)
+  public async Task<DiaryEntry_Workout?> UpdateWorkoutEntryAsync(DiaryEntry_Workout_Update update)
   {
-    throw new NotImplementedException();
+    DiaryEntry_Workout updater = _mapper.Map<DiaryEntry_Workout>(update);
+
+    _sqlContext.DiaryWorkouts.Update(updater);
+    await _sqlContext.SaveChangesAsync();
+
+    return updater;
   }
 
-  public async Task<DiaryEntry_Run?> UpdateRunEntryAsync(DiaryEntry_Run_Update updateRun)
+  public async Task<DiaryEntry_BodyMetric?> UpdateBodyMetricEntryAsync(DiaryEntry_BodyMetric_Update update)
   {
-    throw new NotImplementedException();
+    DiaryEntry_BodyMetric updater = _mapper.Map<DiaryEntry_BodyMetric>(update);
+
+    _sqlContext.BodyMetrics.Update(updater);
+    await _sqlContext.SaveChangesAsync();
+
+    return updater;
+  }
+
+  public async Task<DiaryEntry_Run?> UpdateRunEntryAsync(DiaryEntry_Run_Update update)
+  {
+    DiaryEntry_Run updater = _mapper.Map<DiaryEntry_Run>(update);
+
+    _sqlContext.DiaryRuns.Update(updater);
+    await _sqlContext.SaveChangesAsync();
+
+    return updater;
   }
   #endregion Update
 
   #region Delete
-  public async Task<bool> DeleteFoodEntryAsync(Guid diaryId, int deleteFoodId)
+  public async Task<bool> DeleteFoodEntryAsync(Guid diaryId, int deleteId)
   {
     // SQL Context
-    DiaryEntry_Food? deleteFood = await _sqlContext.DiaryFoods.FindAsync($"{diaryId}{deleteFoodId}");
-    if (deleteFood == null) return false;
+    DiaryEntry_Food? delete = _sqlContext.Diaries
+      .Include(d => d.FoodEntries)
+      .FirstOrDefault(d => d.OwnerId == diaryId)?
+      .FoodEntries
+      .FirstOrDefault(bm => bm.EntryNr == deleteId);
 
-    _sqlContext.DiaryFoods.Remove(deleteFood);
+    if (delete == null) return false;
+
+    _sqlContext.DiaryFoods.Remove(delete);
 
     await _sqlContext.SaveChangesAsync();
 
@@ -173,13 +231,18 @@ public class DiaryRepo : IDiaryRepo
     return true;
   }
 
-  public async Task<bool> DeleteWorkoutEntryAsync(Guid diaryId, int deleteWorkoutId)
+  public async Task<bool> DeleteWorkoutEntryAsync(Guid diaryId, int deleteId)
   {
     // SQL Context
-    DiaryEntry_Workout? deleteWorkout = await _sqlContext.DiaryWorkouts.FindAsync($"{diaryId}{deleteWorkoutId}");
-    if (deleteWorkout == null) return false;
+    DiaryEntry_Workout? delete = _sqlContext.Diaries
+      .Include(d => d.WorkoutEntries)
+      .FirstOrDefault(d => d.OwnerId == diaryId)?
+      .WorkoutEntries
+      .FirstOrDefault(bm => bm.EntryNr == deleteId);
 
-    _sqlContext.DiaryWorkouts.Remove(deleteWorkout);
+    if (delete == null) return false;
+
+    _sqlContext.DiaryWorkouts.Remove(delete);
 
     await _sqlContext.SaveChangesAsync();
 
@@ -187,15 +250,37 @@ public class DiaryRepo : IDiaryRepo
     return true;
   }
 
-  public async Task<bool> DeleteRunEntryAsync(Guid diaryId, int deleteRunId)
+  public async Task<bool> DeleteBodyMetricEntryAsync(Guid diaryId, int deleteId)
   {
     // SQL Context
-    DiaryEntry_Run? deleteRun = await _sqlContext.DiaryRuns.FindAsync($"{diaryId}{deleteRunId}");
-    if (deleteRun == null) return false;
+    DiaryEntry_BodyMetric? delete = _sqlContext.Diaries
+      .Include(d => d.BodyMetrics)
+      .FirstOrDefault(d => d.OwnerId == diaryId)?
+      .BodyMetrics
+      .FirstOrDefault(bm => bm.EntryNr == deleteId);
 
-    await _mongoService.DeleteFromMongoDBAsync<Run>("Runs", deleteRun.MongoDBId);
+    if (delete == null) return false;
 
-    _sqlContext.DiaryRuns.Remove(deleteRun);
+    _sqlContext.BodyMetrics.Remove(delete);
+
+    await _sqlContext.SaveChangesAsync();
+
+    // Return
+    return true;
+  }
+
+  public async Task<bool> DeleteRunEntryAsync(Guid diaryId, int deleteId)
+  {
+    // SQL Context
+    DiaryEntry_Run? delete = _sqlContext.Diaries
+      .Include(d => d.RunEntries)
+      .FirstOrDefault(d => d.OwnerId == diaryId)?
+      .RunEntries
+      .FirstOrDefault(bm => bm.EntryNr == deleteId);
+
+    if (delete == null) return false;
+
+    _sqlContext.DiaryRuns.Remove(delete);
 
     await _sqlContext.SaveChangesAsync();
 

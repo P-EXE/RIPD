@@ -7,5 +7,5 @@ public interface IUserRepo
   Task<AppUser?> GetSelfPublicAsync(AppUser? user);
   Task<AppUser?> GetSelfPrivateAsync(AppUser? user);
   Task<IEnumerable<AppUser>?> GetUsersByNameAtPosition(string name, int position);
-  Task<AppUser?> UpdateUserAsync(AppUser_Update updateUser); 
+  Task<AppUser?> UpdateUserAsync(AppUser user, AppUser_Update updateUser); 
 }
