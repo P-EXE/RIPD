@@ -10,10 +10,10 @@
     Shell.FlyoutBehavior="Disabled"
     Title="RIPD">
 
-  <ShellContent ContentTemplate="{DataTemplate pages:AutoLoginPage}"
-                Route="AutoLoginPage"/>
+  <!--<ShellContent ContentTemplate="{DataTemplate pages:AutoLoginPage}"
+                Route="AutoLoginPage"/>-->
 
-  <TabBar Route="RegisterLogin">
+  <!--<TabBar Route="RegisterLogin">
     <Tab Title="Register">
       <ShellContent
         ContentTemplate="{DataTemplate pages:RegisterPage}"
@@ -24,7 +24,7 @@
         ContentTemplate="{DataTemplate pages:LoginPage}"
         Route="LoginPage" />
     </Tab>
-  </TabBar>
+  </TabBar>-->
 
   <TabBar>
     <Tab Title="Home">

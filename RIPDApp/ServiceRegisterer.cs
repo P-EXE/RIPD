@@ -2,8 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using RIPDApp.DataBase;
 using RIPDApp.Pages;
+using RIPDApp.Pages.Run;
 using RIPDApp.Services;
 using RIPDApp.ViewModels;
+using RIPDApp.ViewModels.Run;
 using RIPDApp.Views;
 using System.Net.Http.Headers;
 using ZXing.Net.Maui.Controls;
@@ -54,6 +56,8 @@ public static class ServiceRegisterer
     builder.Services.AddTransient<DiaryEntryFoodCreatePage>();
     builder.Services.AddTransient<DiaryEntryWorkoutCreatePage>();
 
+    builder.Services.AddTransient<RunPage>();
+
     builder.Services.AddTransient<FoodSearchPage>();
     builder.Services.AddTransient<WorkoutSearchPage>();
     builder.Services.AddTransient<UserSearchPage>();
@@ -90,6 +94,8 @@ public static class ServiceRegisterer
     builder.Services.AddTransient<DiaryVM>();
 
     builder.Services.AddTransient<DiaryEntryVM>();
+
+    builder.Services.AddTransient<RunVM>();
 
     builder.Services.AddTransient<FoodSearchVM>();
     builder.Services.AddTransient<WorkoutSearchVM>();
@@ -141,6 +147,7 @@ public static class ServiceRegisterer
     RegisterFoodDetailsRoutes();
     RegisterProfileRoutes();
     RegisterSettingsRoutes();
+    RegisterRunRoutes();
   }
   private static void RegisterAuthRoutes()
   {
@@ -194,5 +201,10 @@ public static class ServiceRegisterer
   {
     Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
     Routing.RegisterRoute(nameof(SettingsDevPage), typeof(SettingsDevPage));
+  }
+
+  private static void RegisterRunRoutes()
+  {
+    Routing.RegisterRoute($"{Routes.RunPage}", typeof(RunPage));
   }
 }

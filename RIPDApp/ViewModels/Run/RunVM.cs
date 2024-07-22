@@ -1,4 +1,6 @@
-﻿using RIPDApp.Services.Run;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using RIPDApp.Services.Run;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,16 +9,23 @@ using System.Threading.Tasks;
 
 namespace RIPDApp.ViewModels.Run
 {
-  class RunVM : RunGpsLocation
+  public partial class RunVM : ObservableObject
   {
-    public RunVM()
+    private readonly RunGpsLocation _location;
+
+    [ObservableProperty]
+    public List<Location> _locationsList = new List<Location>();
+
+    public RunVM(RunGpsLocation location)
     {
-      
+      _location = location;
+      LocationsList = _location.LocationsList;
     }
 
-    public async void Test()
+    [RelayCommand]
+    async Task StartGettingLocation()
     {
-      await GetCurrentLocation();
+      await _location.GetCurrentLocation();
     }
   }
 }

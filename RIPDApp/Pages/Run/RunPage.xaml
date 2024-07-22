@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:RIPDApp.ViewModels.Run"
              x:Class="RIPDApp.Pages.Run.RunPage"
+             x:DataType="vm:RunVM"
              Title="RunPage">
-  
-  <Label Text="Das ist die Run Page" />
+
+  <VerticalStackLayout>
+    <Button Text="Start getting Location" Command="{Binding StartGettingLocationCommand}"/>
+    <Button Text="Stop gettting Location" WidthRequest="250"/>
+    <Label Text="{Binding LocationsList}"/>
+  </VerticalStackLayout>
 </ContentPage>

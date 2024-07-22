@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -7,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace RIPDApp.Services.Run
 {
-    public class RunGpsLocation
-    {
+  public partial class RunGpsLocation : ObservableObject
+  {
     private CancellationTokenSource _cancelTokenSource;
     private bool _isCheckingLocation;
-    private List<Location> _locations = new List<Location>();
+
+    public List<Location> LocationsList = new List<Location>();
 
     public async Task GetCurrentLocation()
     {
@@ -26,7 +28,12 @@ namespace RIPDApp.Services.Run
         Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
 
         if (location != null)
-          Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
+        {
+          LocationsList.Add(location);
+          OnStartListening();
+        }
+        //Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
+
       }
       // Catch one of the following exceptions:
       //   FeatureNotSupportedException
@@ -64,7 +71,7 @@ namespace RIPDApp.Services.Run
     void Geolocation_LocationChanged(object sender, GeolocationLocationChangedEventArgs e)
     {
       // Process e.Location to get the new location
-      _locations.Add(e.Location);
+      LocationsList.Add(e.Location);
     }
 
     void OnStopListening()
