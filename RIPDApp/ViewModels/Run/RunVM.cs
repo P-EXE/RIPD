@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RIPDApp.Services;
+using System.Collections.ObjectModel;
 
 namespace RIPDApp.ViewModels
 {
@@ -9,18 +10,25 @@ namespace RIPDApp.ViewModels
     private readonly RunGpsLocationService _location;
 
     [ObservableProperty]
-    public List<Location> _locationsList = new List<Location>();
-
+    [NotifyPropertyChangedFor(nameof(CurrentLocation))]
+    private ObservableCollection<Location> _locationList;
+    public Location? CurrentLocation => LocationList?.Last();
     public RunVM(RunGpsLocationService location)
     {
       _location = location;
-      LocationsList = _location.LocationsList;
     }
 
     [RelayCommand]
     async Task StartGettingLocation()
     {
       await _location.GetCurrentLocation();
+      LocationList = _location.LocationsList;
+    }
+
+    [RelayCommand]
+    async Task StopGettingLocation()
+    {
+      await _location.OnStopListening();
     }
   }
 }

@@ -8,7 +8,7 @@
 
   <VerticalStackLayout>
     <Button Text="Start getting Location" Command="{Binding StartGettingLocationCommand}"/>
-    <Button Text="Stop gettting Location" WidthRequest="250"/>
-    <Label Text="{Binding LocationsList}"/>
+    <Button Text="Stop gettting Location" Command="{Binding StopGettingLocationCommand}" WidthRequest="250"/>
+    <Label Text="{Binding CurrentLocation}"/>
   </VerticalStackLayout>
 </ContentPage>

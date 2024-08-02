@@ -2,4 +2,5 @@
 
 public interface IRunGpsLocationService
 {
+  Task<Location> GetCurrentLocation();
 }

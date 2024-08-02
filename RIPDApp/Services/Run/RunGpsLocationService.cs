@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace RIPDApp.Services;
 
@@ -7,9 +9,10 @@ public partial class RunGpsLocationService : IRunGpsLocationService
   private CancellationTokenSource _cancelTokenSource;
   private bool _isCheckingLocation;
 
-  public List<Location> LocationsList = new List<Location>();
 
-  public async Task GetCurrentLocation()
+  public ObservableCollection<Location> LocationsList = new ObservableCollection<Location>();
+
+  public async Task<Location> GetCurrentLocation()
   {
     try
     {
@@ -24,7 +27,8 @@ public partial class RunGpsLocationService : IRunGpsLocationService
       if (location != null)
       {
         LocationsList.Add(location);
-        OnStartListening();
+        await OnStartListening();
+        return location;
       }
       //Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
 
@@ -36,14 +40,16 @@ public partial class RunGpsLocationService : IRunGpsLocationService
     catch (Exception ex)
     {
       // Unable to get location
+      Debug.WriteLine(ex);
     }
     finally
     {
       _isCheckingLocation = false;
     }
+    return null;
   }
 
-  async void OnStartListening()
+  async Task OnStartListening()
   {
     try
     {
@@ -68,7 +74,7 @@ public partial class RunGpsLocationService : IRunGpsLocationService
     LocationsList.Add(e.Location);
   }
 
-  void OnStopListening()
+   async public Task OnStopListening()
   {
     try
     {
