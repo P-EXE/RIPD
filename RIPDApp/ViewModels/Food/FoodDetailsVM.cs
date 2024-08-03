@@ -120,8 +120,15 @@ public partial class FoodDetailsVM : ObservableObject
   private async Task CreateFood()
   {
     Food.Barcode = Barcode;
-    Food = await _foodService.CreateFoodAsync(Food);
-    GoBack();
+    try
+    {
+      Food = await _foodService.CreateFoodAsync(Food);
+    }
+    catch (Exception ex)
+    {
+      await Shell.Current.DisplayAlert("Error", ex.Message, "Return");
+    }
+    await GoBack();
   }
 
   [RelayCommand]

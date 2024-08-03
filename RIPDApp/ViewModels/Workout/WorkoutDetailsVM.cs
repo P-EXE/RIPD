@@ -44,7 +44,14 @@ public partial class WorkoutDetailsVM : ObservableObject
   [RelayCommand]
   private async Task CreateWorkout()
   {
-    Workout = await _workoutService.CreateWorkoutAsync(Workout);
+    try
+    {
+      Workout = await _workoutService.CreateWorkoutAsync(Workout);
+    }
+    catch (Exception ex)
+    {
+      await Shell.Current.DisplayAlert("Error", ex.Message, "Return");
+    }
     await GoBack();
   }
 
