@@ -148,6 +148,19 @@ public class DiaryRepo : IDiaryRepo
     return entries;
   }
 
+  public Task<DiaryEntry_FitnessTarget?> ReadFitnessTargetEntryAsync(Guid diaryId)
+  {
+    DiaryEntry_FitnessTarget? entry;
+
+    // SQL Context
+    entry = _sqlContext.Diaries
+      .Include(d => d.FitnessTarget)
+      .First(d => d.OwnerId == diaryId)
+      .FitnessTarget;
+
+    return Task.FromResult(entry);
+  }
+
   public async Task<IEnumerable<DiaryEntry_Run>?> ReadRunEntriesFromToDateAsync(Guid diaryId, DateTime start, DateTime end)
   {
     // SQL Context
@@ -195,6 +208,16 @@ public class DiaryRepo : IDiaryRepo
     DiaryEntry_BodyMetric updater = _mapper.Map<DiaryEntry_BodyMetric>(update);
 
     _sqlContext.BodyMetrics.Update(updater);
+    await _sqlContext.SaveChangesAsync();
+
+    return updater;
+  }
+
+  public async Task<DiaryEntry_FitnessTarget> UpdateFitnessTargetEntryAsync(DiaryEntry_FitnessTarget_Update update)
+  {
+    DiaryEntry_FitnessTarget updater = _mapper.Map<DiaryEntry_FitnessTarget>(update);
+
+    _sqlContext.FitnessTargets.Update(updater);
     await _sqlContext.SaveChangesAsync();
 
     return updater;

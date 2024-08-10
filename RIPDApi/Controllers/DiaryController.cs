@@ -173,6 +173,25 @@ public class DiaryController : ControllerBase
     return entries == null ? NotFound(entries) : Ok(entries);
   }
 
+  [HttpGet("fitnesstarget"), Authorize]
+  public async Task<ActionResult<DiaryEntry_FitnessTarget>> GetFitnessTargetEntry()
+  {
+    AppUser? user = await _userManager.GetUserAsync(User);
+    if (user == null) return BadRequest(User);
+    DiaryEntry_FitnessTarget? entry;
+
+    try
+    {
+      entry = await _diaryRepo.ReadFitnessTargetEntryAsync(user.Id);
+    }
+    catch (Exception ex)
+    {
+      return UnprocessableEntity(ex);
+    }
+
+    return entry == null ? NotFound(entry) : Ok(entry);
+  }
+
   [HttpGet("run"), Authorize]
   public async Task<ActionResult<IEnumerable<DiaryEntry_Run>?>> GetRunEntriesFromToDate([FromQuery] string? diary = null, [FromQuery] DateTime start = default, [FromQuery] DateTime end = default)
   {
@@ -247,6 +266,27 @@ public class DiaryController : ControllerBase
     try
     {
       entry = await _diaryRepo.UpdateBodyMetricEntryAsync(update);
+    }
+    catch (Exception ex)
+    {
+      return UnprocessableEntity(ex);
+    }
+
+    return entry == null ? Conflict(update) : Ok(entry);
+  }
+
+  [HttpPut("fitnesstarget")]
+  public async Task<ActionResult<DiaryEntry_FitnessTarget?>> UpdateFitnessTargetEntryAsync([FromBody] DiaryEntry_FitnessTarget_Update update)
+  {
+    AppUser? user = await _userManager.GetUserAsync(User);
+    if (user == null) return BadRequest(User);
+    if (update == null) return BadRequest(update);
+
+    DiaryEntry_FitnessTarget? entry;
+
+    try
+    {
+      entry = await _diaryRepo.UpdateFitnessTargetEntryAsync(update);
     }
     catch (Exception ex)
     {

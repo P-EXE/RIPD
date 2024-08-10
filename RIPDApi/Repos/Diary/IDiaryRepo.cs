@@ -17,12 +17,14 @@ public interface IDiaryRepo
   Task<IEnumerable<DiaryEntry_Food>?> ReadFoodEntriesFromToDateAsync(Guid diaryId, DateTime start, DateTime end);
   Task<IEnumerable<DiaryEntry_Workout>?> ReadWorkoutEntriesFromToDateAsync(Guid diaryId, DateTime start, DateTime end);
   Task<IEnumerable<DiaryEntry_BodyMetric>?> ReadBodyMetricEntriesFromToDateAsync(Guid diaryId, DateTime start, DateTime end);
+  Task<DiaryEntry_FitnessTarget?> ReadFitnessTargetEntryAsync(Guid diaryId);
   // Has to ensure that both the DiaryEntry_Run aswell as the Run itself are read and returned.
   Task<IEnumerable<DiaryEntry_Run>?> ReadRunEntriesFromToDateAsync(Guid diaryId, DateTime start, DateTime end);
 
   Task<DiaryEntry_Food?> UpdateFoodEntryAsync(DiaryEntry_Food_Update update);
   Task<DiaryEntry_Workout?> UpdateWorkoutEntryAsync(DiaryEntry_Workout_Update update);
   Task<DiaryEntry_BodyMetric?> UpdateBodyMetricEntryAsync(DiaryEntry_BodyMetric_Update update);
+  Task<DiaryEntry_FitnessTarget> UpdateFitnessTargetEntryAsync(DiaryEntry_FitnessTarget_Update update);
   // Since a Run can hardly be updated this should only concern metadata in DiaryEntry_Run.
   Task<DiaryEntry_Run?> UpdateRunEntryAsync(DiaryEntry_Run_Update update);
 

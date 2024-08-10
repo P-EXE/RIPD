@@ -92,4 +92,15 @@ public class DiaryService : IDiaryService
     };
     return await _httpService.GetAsync<IEnumerable<DiaryEntry_Food>?>($"diary/foods", queries);
   }
+
+  public async Task<DiaryEntry_FitnessTarget?> GetFitnessTargetEntryAsync()
+  {
+    return await _httpService.GetAsync<DiaryEntry_FitnessTarget?>($"diary/fitnesstarget");
+  }
+
+  public async Task<DiaryEntry_FitnessTarget?> UpdateFitnessTargetEntryAsync(DiaryEntry_FitnessTarget entry)
+  {
+    DiaryEntry_FitnessTarget_Update update = _mapper.Map<DiaryEntry_FitnessTarget_Update>(entry);
+    return await _httpService.PutAsync<DiaryEntry_FitnessTarget_Update, DiaryEntry_FitnessTarget?>($"diary/fitnesstarget", update);
+  }
 }

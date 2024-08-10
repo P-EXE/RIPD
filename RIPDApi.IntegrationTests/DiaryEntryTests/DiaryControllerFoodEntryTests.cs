@@ -1,4 +1,5 @@
-﻿using RIPDShared.Models;
+﻿using RIPDApi.IntegrationTests.Setup;
+using RIPDShared.Models;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -23,13 +24,13 @@ public class DiaryControllerFoodEntryTests
     {
       Barcode = "1",
       Name = "Food Entry test Food Name",
-      ManufacturerId = _fixture.TestUser.Id,
-      ContributerId = _fixture.TestUser.Id,
+      ManufacturerId = _fixture.User.Id,
+      ContributerId = _fixture.User.Id,
       Description = "Food Entry test Food Description",
       Image = "Test Image"
     };
 
-    HttpResponseMessage responseCreatedFood = await _fixture.TestClient.PostAsJsonAsync("api/food", createFood, _fixture.JsonOpt);
+    HttpResponseMessage responseCreatedFood = await _fixture.Client.PostAsJsonAsync("api/food", createFood, _fixture.JsonOpt);
     Food? createdFood = JsonSerializer.Deserialize<Food>(await responseCreatedFood.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     Assert.Equal(HttpStatusCode.Created, responseCreatedFood.StatusCode);
@@ -37,7 +38,7 @@ public class DiaryControllerFoodEntryTests
 
     DiaryEntry_Food_Create createEntry = new()
     {
-      DiaryId = _fixture.TestUser.Id,
+      DiaryId = _fixture.User.Id,
       Acted = DateTime.UtcNow,
       Added = DateTime.UtcNow,
       FoodId = createdFood.Id,
@@ -45,7 +46,7 @@ public class DiaryControllerFoodEntryTests
     };
 
     // Act
-    HttpResponseMessage responseCreateEntry = await _fixture.TestClient.PostAsJsonAsync("api/diary/food", createEntry, _fixture.JsonOpt);
+    HttpResponseMessage responseCreateEntry = await _fixture.Client.PostAsJsonAsync("api/diary/food", createEntry, _fixture.JsonOpt);
     DiaryEntry_Food? createdEntry = JsonSerializer.Deserialize<DiaryEntry_Food>(await responseCreateEntry.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     // Assert
@@ -57,7 +58,7 @@ public class DiaryControllerFoodEntryTests
   public async Task EntryFood_Get_FromToDate_ValidEmpty()
   {
     // Act
-    HttpResponseMessage response = await _fixture.TestClient.GetAsync("api/diary/food");
+    HttpResponseMessage response = await _fixture.Client.GetAsync("api/diary/food");
     IEnumerable<DiaryEntry_Food>? got = JsonSerializer.Deserialize<IEnumerable<DiaryEntry_Food>>(await response.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     // Assert
@@ -70,7 +71,7 @@ public class DiaryControllerFoodEntryTests
     // Arrange
     await EntryFood_WithFood_Create_Valid();
     // Act
-    HttpResponseMessage response = await _fixture.TestClient.GetAsync("api/diary/food");
+    HttpResponseMessage response = await _fixture.Client.GetAsync("api/diary/food");
     IEnumerable<DiaryEntry_Food>? got = JsonSerializer.Deserialize<IEnumerable<DiaryEntry_Food>>(await response.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     // Assert
@@ -86,13 +87,13 @@ public class DiaryControllerFoodEntryTests
     {
       Barcode = "1",
       Name = "Food Entry test Food Name",
-      ManufacturerId = _fixture.TestUser.Id,
-      ContributerId = _fixture.TestUser.Id,
+      ManufacturerId = _fixture.User.Id,
+      ContributerId = _fixture.User.Id,
       Description = "Food Entry test Food Description",
       Image = "Test Image"
     };
 
-    HttpResponseMessage responseCreatedFood = await _fixture.TestClient.PostAsJsonAsync("api/food", createFood, _fixture.JsonOpt);
+    HttpResponseMessage responseCreatedFood = await _fixture.Client.PostAsJsonAsync("api/food", createFood, _fixture.JsonOpt);
     Food? createdFood = JsonSerializer.Deserialize<Food>(await responseCreatedFood.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     Assert.Equal(HttpStatusCode.Created, responseCreatedFood.StatusCode);
@@ -100,14 +101,14 @@ public class DiaryControllerFoodEntryTests
 
     DiaryEntry_Food_Create createEntry = new()
     {
-      DiaryId = _fixture.TestUser.Id,
+      DiaryId = _fixture.User.Id,
       Acted = DateTime.UtcNow,
       Added = DateTime.UtcNow,
       FoodId = createdFood.Id,
       Amount = 100
     };
 
-    HttpResponseMessage responseCreateEntry = await _fixture.TestClient.PostAsJsonAsync("api/diary/food", createEntry, _fixture.JsonOpt);
+    HttpResponseMessage responseCreateEntry = await _fixture.Client.PostAsJsonAsync("api/diary/food", createEntry, _fixture.JsonOpt);
     DiaryEntry_Food? createdEntry = JsonSerializer.Deserialize<DiaryEntry_Food>(await responseCreateEntry.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     Assert.Equal(HttpStatusCode.Created, responseCreateEntry.StatusCode);
@@ -115,7 +116,7 @@ public class DiaryControllerFoodEntryTests
 
     DiaryEntry_Food_Update updateEntry = new()
     {
-      DiaryId = _fixture.TestUser.Id,
+      DiaryId = _fixture.User.Id,
       EntryNr = createdEntry.EntryNr,
       Acted = DateTime.UtcNow,
       Added = DateTime.UtcNow,
@@ -124,7 +125,7 @@ public class DiaryControllerFoodEntryTests
     };
 
     // Act
-    HttpResponseMessage responseUpdatedEntry = await _fixture.TestClient.PutAsJsonAsync("api/diary/food", updateEntry, _fixture.JsonOpt);
+    HttpResponseMessage responseUpdatedEntry = await _fixture.Client.PutAsJsonAsync("api/diary/food", updateEntry, _fixture.JsonOpt);
     DiaryEntry_Food? updatedEntry = JsonSerializer.Deserialize<DiaryEntry_Food>(await responseUpdatedEntry.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     // Assert

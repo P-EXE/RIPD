@@ -11,4 +11,6 @@ public interface IDiaryService
   Task<DiaryEntry_BodyMetric?> UpdateBodyMetricEntryAsync(DiaryEntry_BodyMetric entry);
   Task<bool> DeleteBodyMetricEntryAsync(DiaryEntry_BodyMetric entry);
   Task<IEnumerable<DiaryEntry_Food>?> GetFoodEntriesAsync(Diary diary, DateTime startDate, DateTime endDate);
+  Task<DiaryEntry_FitnessTarget?> GetFitnessTargetEntryAsync();
+  Task<DiaryEntry_FitnessTarget?> UpdateFitnessTargetEntryAsync(DiaryEntry_FitnessTarget entry);
 }

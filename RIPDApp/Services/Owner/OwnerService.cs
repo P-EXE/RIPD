@@ -150,7 +150,7 @@ public class OwnerService : IOwnerService
 
     try
     {
-      retUser = await _httpService.PutAsync<AppUser_Update, AppUser>("user/update", updateUser);
+      retUser = await _httpService.PutAsync<AppUser_Update, AppUser>("user/manage", updateUser);
     }
     catch (Exception ex)
     {

@@ -73,7 +73,7 @@ public class UserController : ControllerBase
   [HttpGet]
   public async Task<ActionResult<IEnumerable<AppUser>?>> GetUsersByNameAtPositionAsync([FromQuery] string name, [FromQuery] int position = 0)
   {
-    AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
+    AppUser? user = await _userManager.GetUserAsync(User);
     IEnumerable<AppUser>? users;
 
     if (name == null) return BadRequest(name);
@@ -101,6 +101,11 @@ public class UserController : ControllerBase
 
     try
     {
+      if (updateUser.Email != null)
+      {
+        string changeEmailToken = await _userManager.GenerateChangeEmailTokenAsync(user, updateUser.Email);
+        await _userManager.ChangeEmailAsync(user, updateUser.Email, changeEmailToken);
+      }
       user = await _userRepo.UpdateUserAsync(user, updateUser);
     }
     catch (Exception ex)

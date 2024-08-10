@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
+using RIPDApi.IntegrationTests.Setup;
 using RIPDShared.Models;
 
 namespace RIPDApi.IntegrationTests;
@@ -24,8 +25,8 @@ public class FoodControllerTests
     {
       Barcode = "1111",
       Name = "Valid Food",
-      ManufacturerId = _fixture.TestUser.Id,
-      ContributerId = _fixture.TestUser.Id,
+      ManufacturerId = _fixture.User.Id,
+      ContributerId = _fixture.User.Id,
       Description = "A valid Food for integration testing",
       Image = "Link here",
       Energy = 0.1f,
@@ -46,14 +47,14 @@ public class FoodControllerTests
     // Arrange
 
     // Act
-    HttpResponseMessage response = await _fixture.TestClient.PostAsJsonAsync("api/food", _validCreateFood, _fixture.JsonOpt);
+    HttpResponseMessage response = await _fixture.Client.PostAsJsonAsync("api/food", _validCreateFood, _fixture.JsonOpt);
     Food? responseFood = JsonSerializer.Deserialize<Food>(await response.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     // Assert
     Assert.Equal(HttpStatusCode.Created, response.StatusCode);
     Assert.NotNull(responseFood);
-    Assert.Equal(_fixture.TestUser.UserName, responseFood.Contributer?.UserName);
-    Assert.Equal(_fixture.TestUser.UserName, responseFood.Manufacturer?.UserName);
+    Assert.Equal(_fixture.User.UserName, responseFood.Contributer?.UserName);
+    Assert.Equal(_fixture.User.UserName, responseFood.Manufacturer?.UserName);
     Assert.Equal(_validCreateFood.Barcode, responseFood.Barcode);
   }
 
@@ -64,7 +65,7 @@ public class FoodControllerTests
     Guid foodId = new("00000000-0000-0000-0000-000000000001");
 
     // Act
-    HttpResponseMessage response = await _fixture.TestClient.GetAsync($"api/food/{foodId}");
+    HttpResponseMessage response = await _fixture.Client.GetAsync($"api/food/{foodId}");
 
     // Assert
     Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -76,12 +77,12 @@ public class FoodControllerTests
     // Arrange
 
     // Act
-    HttpResponseMessage createResponse = await _fixture.TestClient.PostAsJsonAsync("api/food", _validCreateFood);
+    HttpResponseMessage createResponse = await _fixture.Client.PostAsJsonAsync("api/food", _validCreateFood);
     createResponse.EnsureSuccessStatusCode();
     Food? createdFood = JsonSerializer.Deserialize<Food>(await createResponse.Content.ReadAsStringAsync(), _fixture.JsonOpt);
     Assert.NotNull(createdFood);
 
-    HttpResponseMessage readResponse = await _fixture.TestClient.GetAsync($"api/food/{createdFood.Id}");
+    HttpResponseMessage readResponse = await _fixture.Client.GetAsync($"api/food/{createdFood.Id}");
     Food? readFood = JsonSerializer.Deserialize<Food>(await readResponse.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     // Assert
@@ -97,10 +98,10 @@ public class FoodControllerTests
     int position = 0;
 
     // Act
-    HttpResponseMessage createResponse = await _fixture.TestClient.PostAsJsonAsync("api/food", _validCreateFood);
+    HttpResponseMessage createResponse = await _fixture.Client.PostAsJsonAsync("api/food", _validCreateFood);
     Food? responseFood = JsonSerializer.Deserialize<Food>(await createResponse.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
-    HttpResponseMessage response = await _fixture.TestClient.GetAsync($"api/food?name={name}&position={position}");
+    HttpResponseMessage response = await _fixture.Client.GetAsync($"api/food?name={name}&position={position}");
     IEnumerable<Food>? readFoods = JsonSerializer.Deserialize<IEnumerable<Food>>(await response.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     // Assert
@@ -117,7 +118,7 @@ public class FoodControllerTests
     int position = 0;
 
     // Act
-    HttpResponseMessage response = await _fixture.TestClient.GetAsync($"api/food?name={name}&position={position}");
+    HttpResponseMessage response = await _fixture.Client.GetAsync($"api/food?name={name}&position={position}");
     IEnumerable<Food>? readFoods = JsonSerializer.Deserialize<IEnumerable<Food>>(await response.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     // Assert
@@ -138,10 +139,10 @@ public class FoodControllerTests
     string? name = _validCreateFood.Name;
 
     // Act
-    HttpResponseMessage createResponse = await _fixture.TestClient.PostAsJsonAsync("api/food", _validCreateFood);
+    HttpResponseMessage createResponse = await _fixture.Client.PostAsJsonAsync("api/food", _validCreateFood);
     Food? responseFood = JsonSerializer.Deserialize<Food>(await createResponse.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
-    HttpResponseMessage response = await _fixture.TestClient.DeleteAsync($"api/food/{responseFood?.Id}");
+    HttpResponseMessage response = await _fixture.Client.DeleteAsync($"api/food/{responseFood?.Id}");
     bool responseValue = JsonSerializer.Deserialize<bool>(await response.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     // Assert

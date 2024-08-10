@@ -2,6 +2,7 @@
 using System.Net.Http.Json;
 using System.Net;
 using System.Text.Json;
+using RIPDApi.IntegrationTests.Setup;
 
 namespace RIPDApi.IntegrationTests;
 
@@ -22,19 +23,19 @@ public class WorkoutControllerTests
     Workout_Create create = new()
     {
       Name = "Integration test Workout Name",
-      ContributerId = _fixture.TestUser.Id,
+      ContributerId = _fixture.User.Id,
       Description = "Integration test Workout Description",
       Energy = 100
     };
 
     // Act
-    HttpResponseMessage response = await _fixture.TestClient.PostAsJsonAsync("api/workout", create);
+    HttpResponseMessage response = await _fixture.Client.PostAsJsonAsync("api/workout", create);
     Workout? created = JsonSerializer.Deserialize<Workout>(await response.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     // Assert
     Assert.Equal(HttpStatusCode.Created, response.StatusCode);
     Assert.NotNull(created);
-    Assert.Equal(_fixture.TestUser.Id, created.Contributer?.Id);
+    Assert.Equal(_fixture.User.Id, created.Contributer?.Id);
   }
 
   [Fact]
@@ -44,7 +45,7 @@ public class WorkoutControllerTests
     Guid id = new("00000000-0000-0000-0000-000000000001");
 
     // Act
-    HttpResponseMessage response = await _fixture.TestClient.GetAsync($"api/workout/{id}");
+    HttpResponseMessage response = await _fixture.Client.GetAsync($"api/workout/{id}");
 
     // Assert
     Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -57,18 +58,18 @@ public class WorkoutControllerTests
     Workout_Create create = new()
     {
       Name = "Integration test Workout Name",
-      ContributerId = _fixture.TestUser.Id,
+      ContributerId = _fixture.User.Id,
       Description = "Integration test Workout Description",
       Energy = 100
     };
 
-    HttpResponseMessage responseCreated = await _fixture.TestClient.PostAsJsonAsync("api/workout", create);
+    HttpResponseMessage responseCreated = await _fixture.Client.PostAsJsonAsync("api/workout", create);
     Workout? created = JsonSerializer.Deserialize<Workout>(await responseCreated.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     Assert.NotNull(created);
 
     // Act
-    HttpResponseMessage response = await _fixture.TestClient.GetAsync($"api/workout/{created.Id}");
+    HttpResponseMessage response = await _fixture.Client.GetAsync($"api/workout/{created.Id}");
     Workout? found = JsonSerializer.Deserialize<Workout>(await response.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     // Assert
@@ -85,7 +86,7 @@ public class WorkoutControllerTests
     int position = 0;
 
     // Act
-    HttpResponseMessage response = await _fixture.TestClient.GetAsync($"api/workout?name={name}&position={position}");
+    HttpResponseMessage response = await _fixture.Client.GetAsync($"api/workout?name={name}&position={position}");
     IEnumerable<Workout>? read = JsonSerializer.Deserialize<IEnumerable<Workout>>(await response.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     // Assert
@@ -100,21 +101,21 @@ public class WorkoutControllerTests
     Workout_Create create = new()
     {
       Name = "Integration test Workout Name",
-      ContributerId = _fixture.TestUser.Id,
+      ContributerId = _fixture.User.Id,
       Description = "Integration test Workout Description",
       Energy = 100
     };
 
     int position = 0;
 
-    HttpResponseMessage responseCreate = await _fixture.TestClient.PostAsJsonAsync("api/workout", create);
+    HttpResponseMessage responseCreate = await _fixture.Client.PostAsJsonAsync("api/workout", create);
     Workout? created = JsonSerializer.Deserialize<Workout>(await responseCreate.Content.ReadAsStringAsync(), _fixture.JsonOpt);
     
     Assert.Equal(HttpStatusCode.Created, responseCreate.StatusCode);
     Assert.NotNull(created);
 
     // Act
-    HttpResponseMessage response = await _fixture.TestClient.GetAsync($"api/workout?name={created.Name}&position={position}");
+    HttpResponseMessage response = await _fixture.Client.GetAsync($"api/workout?name={created.Name}&position={position}");
     IEnumerable<Workout>? read = JsonSerializer.Deserialize<IEnumerable<Workout>>(await response.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     // Assert
@@ -130,19 +131,19 @@ public class WorkoutControllerTests
     Workout_Create create = new()
     {
       Name = "Integration test Workout Name",
-      ContributerId = _fixture.TestUser.Id,
+      ContributerId = _fixture.User.Id,
       Description = "Integration test Workout Description",
       Energy = 100
     };
 
-    HttpResponseMessage responseCreate = await _fixture.TestClient.PostAsJsonAsync("api/food", create);
+    HttpResponseMessage responseCreate = await _fixture.Client.PostAsJsonAsync("api/food", create);
     Workout? created = JsonSerializer.Deserialize<Workout>(await responseCreate.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     Assert.Equal(HttpStatusCode.Created, responseCreate.StatusCode);
     Assert.NotNull(created);
 
     // Act
-    HttpResponseMessage response = await _fixture.TestClient.DeleteAsync($"api/food/{created?.Id}");
+    HttpResponseMessage response = await _fixture.Client.DeleteAsync($"api/food/{created?.Id}");
     bool deleted = JsonSerializer.Deserialize<bool>(await response.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     // Assert

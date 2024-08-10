@@ -69,6 +69,8 @@ public static class ServiceRegisterer
     builder.Services.AddTransient<BodyMetricCreatePage>();
     builder.Services.AddTransient<BodyMetricViewPage>();
 
+    builder.Services.AddTransient<FitnessTargetPage>();
+
     builder.Services.AddTransient<BarcodeScannerPage>();
 
     builder.Services.AddTransient<UserProfilePage>();
@@ -106,6 +108,8 @@ public static class ServiceRegisterer
 
     builder.Services.AddTransient<BodyMetricVM>();
     builder.Services.AddTransient<BodyMetricDetailsVM>();
+
+    builder.Services.AddTransient<FitnessTargetVM>();
 
     builder.Services.AddTransient<ScannerVM>();
 

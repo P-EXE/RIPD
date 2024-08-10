@@ -1,4 +1,6 @@
-﻿namespace RIPDApi.IntegrationTests;
+﻿using RIPDApi.IntegrationTests.Setup;
+
+namespace RIPDApi.IntegrationTests;
 
 [CollectionDefinition("WithUser")]
 public class UserTestsCollection : ICollectionFixture<UserFixture>

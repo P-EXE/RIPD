@@ -8,7 +8,7 @@
     <Label Grid.Row="0" Text="Login" FontSize="70"/>
     <VerticalStackLayout Grid.Row="1">
       <VerticalStackLayout Margin="0,10">
-        <Entry Placeholder="e-mail" Text="{Binding Email}"/>
+        <Entry Placeholder="Username" Text="{Binding Email}"/>
         <Entry IsPassword="True" Placeholder="Password" Text="{Binding Password}"/>
       </VerticalStackLayout>
       <Button Text="Log in" Command="{Binding LogInCommand}" IsEnabled="{Binding IsAvailable}"/>
