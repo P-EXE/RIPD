@@ -30,8 +30,15 @@ public partial class BodyMetricVM : ObservableObject
 
   private async Task GetBodyMetricEntries()
   {
-    IEnumerable<DiaryEntry_BodyMetric>? bodyMetrics = await _diaryService.GetBodyMetricEntriesAsync(Statics.Auth.Owner.Diary, DateTime.MinValue, DateTime.UtcNow);
-    BodyMetrics = bodyMetrics!.ToObservableCollection();
+    try
+    {
+      IEnumerable<DiaryEntry_BodyMetric>? bodyMetrics = await _diaryService.GetBodyMetricEntriesAsync(Statics.Auth.Owner.Diary, DateTime.MinValue, DateTime.UtcNow);
+      BodyMetrics = bodyMetrics!.ToObservableCollection();
+    }
+    catch (Exception ex)
+    {
+      await Shell.Current.DisplayAlert("Error", ex.Message, "Return");
+    }
   }
 
   partial void OnCreatedBodyMetricChanged(DiaryEntry_BodyMetric? value)
