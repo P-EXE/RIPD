@@ -4,22 +4,39 @@
              xmlns:v="clr-namespace:RIPDApp.Views"
              xmlns:vm="clr-namespace:RIPDApp.ViewModels"
              x:Class="RIPDApp.Pages.DiaryWeekPage"
-             x:DataType="vm:DiaryVM">
+             x:DataType="vm:DiaryVM"
+             Title="">
   <VerticalStackLayout>
-    
-    <v:BarChartV/>
-    
+
+    <Grid ColumnDefinitions="*, *" ColumnSpacing="4" Padding="4">
+      <VerticalStackLayout Grid.Column="0" Spacing="4">
+        <v:StatisticTileV FlexLayout.Grow="1"/>
+        <v:StatisticTileV FlexLayout.Grow="1"/>
+        <v:StatisticTileV FlexLayout.Grow="1"/>
+      </VerticalStackLayout>
+      <VerticalStackLayout Grid.Column="1" Spacing="4">
+        <v:StatisticTileV FlexLayout.Grow="1"/>
+        <v:StatisticTileV FlexLayout.Grow="1"/>
+      </VerticalStackLayout>
+    </Grid>
+
+    <v:BarChartV Values="{Binding FoodEntriesKCals}" />
+
     <CollectionView SelectionMode="Single"
-                    ItemsSource="{Binding FoodEntries}"
-                    SelectedItem="{Binding SelectedFoodEntry}"
-                    SelectionChangedCommand="{Binding ShowFoodDetailsCommand}">
-        <CollectionView.ItemTemplate>
-          <DataTemplate>
-            <SwipeView>
-              <v:ListFoodEntryV/>
-            </SwipeView>
-          </DataTemplate>
-        </CollectionView.ItemTemplate>
-      </CollectionView>
+                    ItemsSource="{Binding FoodEntries}">
+      <CollectionView.ItemTemplate>
+        <DataTemplate>
+          <HorizontalStackLayout>
+            <VerticalStackLayout>
+              <Label Text="Food Name"/>
+              <Label Text="Food Manufacturer"/>
+            </VerticalStackLayout>
+            <Label Text="100 pc."/>
+            <Label Text="10.13."/>
+          </HorizontalStackLayout>
+        </DataTemplate>
+      </CollectionView.ItemTemplate>
+    </CollectionView>
+
   </VerticalStackLayout>
 </ContentPage>

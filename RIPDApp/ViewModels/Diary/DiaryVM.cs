@@ -29,7 +29,10 @@ public partial class DiaryVM : ObservableObject
   [ObservableProperty]
   ObservableCollection<DiaryEntry_Food>? _foodEntries = [];
   [ObservableProperty]
+  private ObservableCollection<double> _foodEntriesKCals = [10, 20, 30, 40, 50, 60, 70];
+  [ObservableProperty]
   DiaryEntry_Food? _selectedFoodEntry;
+
   [ObservableProperty]
   ObservableCollection<DiaryEntry_Workout>? _workoutEntries = [];
 

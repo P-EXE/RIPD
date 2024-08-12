@@ -34,12 +34,15 @@
     </Tab>
     <Tab Title="Diary">
       <ShellContent
+        Title="Today"
         ContentTemplate="{DataTemplate pages:DiaryTodayPage}"
         Route="DiaryTodayPage" />
       <ShellContent
+        Title="Week"
         ContentTemplate="{DataTemplate pages:DiaryWeekPage}"
         Route="DiaryWeekPage" />
       <ShellContent
+        Title="Month"
         ContentTemplate="{DataTemplate pages:DiaryMonthPage}"
         Route="DiaryMonthPage" />
     </Tab>

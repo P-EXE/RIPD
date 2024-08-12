@@ -4,7 +4,8 @@
              xmlns:v="clr-namespace:RIPDApp.Views"
              xmlns:vm="clr-namespace:RIPDApp.ViewModels"
              x:Class="RIPDApp.Pages.DiaryTodayPage"
-             x:DataType="vm:DiaryVM">
+             x:DataType="vm:DiaryVM"
+             Title="">
   <ScrollView>
     <VerticalStackLayout>
       

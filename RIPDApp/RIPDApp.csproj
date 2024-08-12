@@ -216,6 +216,9 @@
 	  <MauiXaml Update="Views\Diary\BarChartV.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Diary\StatisticTileV.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Food\FoodCreateV.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
