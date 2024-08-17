@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using epj.RouteGenerator;
+using Microcharts.Maui;
 
 namespace RIPDApp;
 
@@ -12,6 +13,7 @@ public static class MauiProgram
     var builder = MauiApp.CreateBuilder();
     builder
       .UseMauiApp<App>()
+      .UseMicrocharts()
       .UseMauiCommunityToolkit()
       .ConfigureFonts(fonts =>
       {
