@@ -14,7 +14,7 @@ public class DiaryService : IDiaryService
     _mapper = mapper;
   }
 
-  public async Task<bool> AddFoodEntryyAsync(DiaryEntry_Food entry)
+  public async Task<bool> AddFoodEntryAsync(DiaryEntry_Food entry)
   {
     // Mapping
     DiaryEntry_Food_Create createEntry = _mapper.Map<DiaryEntry_Food_Create>(entry);
@@ -91,5 +91,51 @@ public class DiaryService : IDiaryService
       ["endDate"] = endDate,
     };
     return await _httpService.GetAsync<IEnumerable<DiaryEntry_Food>?>($"diary/foods", queries);
+  }
+
+  public async Task<DiaryEntry_FitnessTarget?> GetFitnessTargetEntryAsync()
+  {
+    return await _httpService.GetAsync<DiaryEntry_FitnessTarget?>($"diary/fitnesstarget");
+  }
+
+  public async Task<DiaryEntry_FitnessTarget?> UpdateFitnessTargetEntryAsync(DiaryEntry_FitnessTarget entry)
+  {
+    DiaryEntry_FitnessTarget_Update update = _mapper.Map<DiaryEntry_FitnessTarget_Update>(entry);
+    return await _httpService.PutAsync<DiaryEntry_FitnessTarget_Update, DiaryEntry_FitnessTarget?>($"diary/fitnesstarget", update);
+  }
+
+  public Task<IEnumerable<DiaryEntry_Food>?> GetWorkoutEntriesAsync(Diary diary, DateTime startDate, DateTime endDate)
+  {
+    throw new NotImplementedException();
+  }
+
+  Task<DiaryEntry_Food?> IDiaryService.AddFoodEntryAsync(DiaryEntry_Food entry)
+  {
+    throw new NotImplementedException();
+  }
+
+  Task<DiaryEntry_Workout?> IDiaryService.AddWorkoutEntryAsync(DiaryEntry_Workout entry)
+  {
+    throw new NotImplementedException();
+  }
+
+  public Task<DiaryEntry_Food?> UpdateFoodEntryAsync(DiaryEntry_Food entry)
+  {
+    throw new NotImplementedException();
+  }
+
+  public Task<DiaryEntry_Workout?> UpdateWorkoutEntryAsync(DiaryEntry_Workout entry)
+  {
+    throw new NotImplementedException();
+  }
+
+  public Task<bool> DeleteFoodEntryAsync(DiaryEntry_Food entry)
+  {
+    throw new NotImplementedException();
+  }
+
+  public Task<bool> DeleteWorkoutEntryAsync(DiaryEntry_Workout entry)
+  {
+    throw new NotImplementedException();
   }
 }

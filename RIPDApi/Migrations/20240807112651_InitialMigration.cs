@@ -30,10 +30,10 @@ namespace RIPDApi.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DiaryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    DiaryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -313,6 +313,28 @@ namespace RIPDApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FitnessTargets",
+                columns: table => new
+                {
+                    DiaryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EntryNr = table.Column<int>(type: "int", nullable: false),
+                    Weight = table.Column<double>(type: "float", nullable: false),
+                    TargetDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Acted = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Added = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FitnessTargets", x => new { x.DiaryId, x.EntryNr });
+                    table.ForeignKey(
+                        name: "FK_FitnessTargets_Diaries_DiaryId",
+                        column: x => x.DiaryId,
+                        principalTable: "Diaries",
+                        principalColumn: "OwnerId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DiaryFoods",
                 columns: table => new
                 {
@@ -368,41 +390,6 @@ namespace RIPDApi.Migrations
                         principalColumn: "Id");
                 });
 
-            migrationBuilder.CreateTable(
-                name: "FitnessTargets",
-                columns: table => new
-                {
-                    DiaryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EntryNr = table.Column<int>(type: "int", nullable: false),
-                    BodyMetricUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StartBodyMetricEntryNr = table.Column<int>(type: "int", nullable: false),
-                    GoalBodyMetricEntryNr = table.Column<int>(type: "int", nullable: false),
-                    StartDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Acted = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Added = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FitnessTargets", x => new { x.DiaryId, x.EntryNr });
-                    table.ForeignKey(
-                        name: "FK_FitnessTargets_BodyMetrics_BodyMetricUser_GoalBodyMetricEntryNr",
-                        columns: x => new { x.BodyMetricUser, x.GoalBodyMetricEntryNr },
-                        principalTable: "BodyMetrics",
-                        principalColumns: new[] { "DiaryId", "EntryNr" });
-                    table.ForeignKey(
-                        name: "FK_FitnessTargets_BodyMetrics_BodyMetricUser_StartBodyMetricEntryNr",
-                        columns: x => new { x.BodyMetricUser, x.StartBodyMetricEntryNr },
-                        principalTable: "BodyMetrics",
-                        principalColumns: new[] { "DiaryId", "EntryNr" });
-                    table.ForeignKey(
-                        name: "FK_FitnessTargets_Diaries_DiaryId",
-                        column: x => x.DiaryId,
-                        principalTable: "Diaries",
-                        principalColumn: "OwnerId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -453,14 +440,10 @@ namespace RIPDApi.Migrations
                 column: "WorkoutId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FitnessTargets_BodyMetricUser_GoalBodyMetricEntryNr",
+                name: "IX_FitnessTargets_DiaryId",
                 table: "FitnessTargets",
-                columns: new[] { "BodyMetricUser", "GoalBodyMetricEntryNr" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FitnessTargets_BodyMetricUser_StartBodyMetricEntryNr",
-                table: "FitnessTargets",
-                columns: new[] { "BodyMetricUser", "StartBodyMetricEntryNr" });
+                column: "DiaryId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Foods_ContributerId",
@@ -497,6 +480,9 @@ namespace RIPDApi.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "BodyMetrics");
+
+            migrationBuilder.DropTable(
                 name: "DiaryFoods");
 
             migrationBuilder.DropTable(
@@ -516,9 +502,6 @@ namespace RIPDApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "Workouts");
-
-            migrationBuilder.DropTable(
-                name: "BodyMetrics");
 
             migrationBuilder.DropTable(
                 name: "Diaries");

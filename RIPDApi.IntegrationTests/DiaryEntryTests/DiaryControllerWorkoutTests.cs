@@ -1,4 +1,5 @@
-﻿using RIPDShared.Models;
+﻿using RIPDApi.IntegrationTests.Setup;
+using RIPDShared.Models;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -22,12 +23,12 @@ public class DiaryControllerWorkoutEntryTests
     Workout_Create createWorkout = new()
     {
       Name = "Workout Entry test Workout Name",
-      ContributerId = _fixture.TestUser.Id,
+      ContributerId = _fixture.User.Id,
       Description = "Workout Entry test Workout Description",
       Energy = 100
     };
 
-    HttpResponseMessage responseCreatedWorkout = await _fixture.TestClient.PostAsJsonAsync("api/workout", createWorkout, _fixture.JsonOpt);
+    HttpResponseMessage responseCreatedWorkout = await _fixture.Client.PostAsJsonAsync("api/workout", createWorkout, _fixture.JsonOpt);
     Workout? createdWorkout = JsonSerializer.Deserialize<Workout>(await responseCreatedWorkout.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     Assert.Equal(HttpStatusCode.Created, responseCreatedWorkout.StatusCode);
@@ -35,7 +36,7 @@ public class DiaryControllerWorkoutEntryTests
 
     DiaryEntry_Workout_Create createEntry = new()
     {
-      DiaryId = _fixture.TestUser.Id,
+      DiaryId = _fixture.User.Id,
       Acted = DateTime.UtcNow,
       Added = DateTime.UtcNow,
       WorkoutId = createdWorkout.Id,
@@ -43,7 +44,7 @@ public class DiaryControllerWorkoutEntryTests
     };
 
     // Act
-    HttpResponseMessage responseCreateEntry = await _fixture.TestClient.PostAsJsonAsync("api/diary/workout", createEntry, _fixture.JsonOpt);
+    HttpResponseMessage responseCreateEntry = await _fixture.Client.PostAsJsonAsync("api/diary/workout", createEntry, _fixture.JsonOpt);
     DiaryEntry_Workout? createdEntry = JsonSerializer.Deserialize<DiaryEntry_Workout>(await responseCreateEntry.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     // Assert
@@ -55,7 +56,7 @@ public class DiaryControllerWorkoutEntryTests
   public async Task EntryWorkout_Get_FromToDate_ValidEmpty()
   {
     // Act
-    HttpResponseMessage response = await _fixture.TestClient.GetAsync("api/diary/workout");
+    HttpResponseMessage response = await _fixture.Client.GetAsync("api/diary/workout");
     IEnumerable<DiaryEntry_Workout>? got = JsonSerializer.Deserialize<IEnumerable<DiaryEntry_Workout>>(await response.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     // Assert
@@ -69,7 +70,7 @@ public class DiaryControllerWorkoutEntryTests
     await EntryWorkout_WithWorkout_Create_Valid();
 
     // Act
-    HttpResponseMessage response = await _fixture.TestClient.GetAsync("api/diary/workout");
+    HttpResponseMessage response = await _fixture.Client.GetAsync("api/diary/workout");
     IEnumerable<DiaryEntry_Workout>? got = JsonSerializer.Deserialize<IEnumerable<DiaryEntry_Workout>>(await response.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     // Assert
@@ -84,12 +85,12 @@ public class DiaryControllerWorkoutEntryTests
     Workout_Create createWorkout = new()
     {
       Name = "Workout Entry test Workout Name",
-      ContributerId = _fixture.TestUser.Id,
+      ContributerId = _fixture.User.Id,
       Description = "Workout Entry test Workout Description",
       Energy = 100
     };
 
-    HttpResponseMessage responseCreatedWorkout = await _fixture.TestClient.PostAsJsonAsync("api/workout", createWorkout, _fixture.JsonOpt);
+    HttpResponseMessage responseCreatedWorkout = await _fixture.Client.PostAsJsonAsync("api/workout", createWorkout, _fixture.JsonOpt);
     Workout? createdWorkout = JsonSerializer.Deserialize<Workout>(await responseCreatedWorkout.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     Assert.Equal(HttpStatusCode.Created, responseCreatedWorkout.StatusCode);
@@ -97,14 +98,14 @@ public class DiaryControllerWorkoutEntryTests
 
     DiaryEntry_Workout_Create createEntry = new()
     {
-      DiaryId = _fixture.TestUser.Id,
+      DiaryId = _fixture.User.Id,
       Acted = DateTime.UtcNow,
       Added = DateTime.UtcNow,
       WorkoutId = createdWorkout.Id,
       Amount = 100
     };
 
-    HttpResponseMessage responseCreatedEntry = await _fixture.TestClient.PostAsJsonAsync("api/diary/workout", createEntry, _fixture.JsonOpt);
+    HttpResponseMessage responseCreatedEntry = await _fixture.Client.PostAsJsonAsync("api/diary/workout", createEntry, _fixture.JsonOpt);
     DiaryEntry_Workout? createdEntry = JsonSerializer.Deserialize<DiaryEntry_Workout>(await responseCreatedEntry.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     Assert.Equal(HttpStatusCode.Created, responseCreatedEntry.StatusCode);
@@ -112,7 +113,7 @@ public class DiaryControllerWorkoutEntryTests
 
     DiaryEntry_Workout_Update updateEntry = new()
     {
-      DiaryId = _fixture.TestUser.Id,
+      DiaryId = _fixture.User.Id,
       EntryNr = createdEntry.EntryNr,
       Acted = DateTime.UtcNow,
       WorkoutId = createdWorkout.Id ?? new(),
@@ -120,7 +121,7 @@ public class DiaryControllerWorkoutEntryTests
     };
 
     // Act
-    HttpResponseMessage responseUpdatedEntry = await _fixture.TestClient.PutAsJsonAsync("api/diary/workout", updateEntry, _fixture.JsonOpt);
+    HttpResponseMessage responseUpdatedEntry = await _fixture.Client.PutAsJsonAsync("api/diary/workout", updateEntry, _fixture.JsonOpt);
     DiaryEntry_Workout? updatedEntry = JsonSerializer.Deserialize<DiaryEntry_Workout>(await responseUpdatedEntry.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     // Assert
@@ -137,12 +138,12 @@ public class DiaryControllerWorkoutEntryTests
     Workout_Create createWorkout = new()
     {
       Name = "Workout Entry test Workout Name",
-      ContributerId = _fixture.TestUser.Id,
+      ContributerId = _fixture.User.Id,
       Description = "Workout Entry test Workout Description",
       Energy = 100
     };
 
-    HttpResponseMessage responseCreatedWorkout = await _fixture.TestClient.PostAsJsonAsync("api/workout", createWorkout, _fixture.JsonOpt);
+    HttpResponseMessage responseCreatedWorkout = await _fixture.Client.PostAsJsonAsync("api/workout", createWorkout, _fixture.JsonOpt);
     Workout? createdWorkout = JsonSerializer.Deserialize<Workout>(await responseCreatedWorkout.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     Assert.Equal(HttpStatusCode.Created, responseCreatedWorkout.StatusCode);
@@ -150,21 +151,21 @@ public class DiaryControllerWorkoutEntryTests
 
     DiaryEntry_Workout_Create createEntry = new()
     {
-      DiaryId = _fixture.TestUser.Id,
+      DiaryId = _fixture.User.Id,
       Acted = DateTime.UtcNow,
       Added = DateTime.UtcNow,
       WorkoutId = createdWorkout.Id,
       Amount = 100
     };
 
-    HttpResponseMessage responseCreatedEntry = await _fixture.TestClient.PostAsJsonAsync("api/diary/workout", createEntry, _fixture.JsonOpt);
+    HttpResponseMessage responseCreatedEntry = await _fixture.Client.PostAsJsonAsync("api/diary/workout", createEntry, _fixture.JsonOpt);
     DiaryEntry_Workout? createdEntry = JsonSerializer.Deserialize<DiaryEntry_Workout>(await responseCreatedEntry.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     Assert.Equal(HttpStatusCode.Created, responseCreatedEntry.StatusCode);
     Assert.NotNull(createdEntry);
 
     // Act
-    HttpResponseMessage responseDelete = await _fixture.TestClient.DeleteAsync($"api/diary/workout?entry={createdEntry.EntryNr}&diary={createdEntry.DiaryId}");
+    HttpResponseMessage responseDelete = await _fixture.Client.DeleteAsync($"api/diary/workout?entry={createdEntry.EntryNr}&diary={createdEntry.DiaryId}");
 
     // Assert
     Assert.Equal(HttpStatusCode.OK, responseDelete.StatusCode);

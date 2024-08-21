@@ -12,7 +12,7 @@ public partial class DiaryEntryVM : ObservableObject
   private readonly IDiaryService _diaryService;
   public DiaryEntryVM(IDiaryService diaryService)
   {
-    _diaryService = diaryService; 
+    _diaryService = diaryService;
   }
 
   [ObservableProperty]
@@ -42,7 +42,7 @@ public partial class DiaryEntryVM : ObservableObject
   {
     FoodEntry.FoodId = Food.Id;
     FoodEntry.Food = Food;
-    bool success = await _diaryService.AddFoodEntryyAsync(FoodEntry);
+    bool success = default != await _diaryService.AddFoodEntryAsync(FoodEntry);
     if (!success)
       return;
     await GoBack();
@@ -53,7 +53,7 @@ public partial class DiaryEntryVM : ObservableObject
   {
     WorkoutEntry.WorkoutId = Workout.Id;
     WorkoutEntry.Workout = Workout;
-    bool success = await _diaryService.AddWorkoutEntryAsync(WorkoutEntry);
+    bool success = default != await _diaryService.AddWorkoutEntryAsync(WorkoutEntry);
     if (!success)
       return;
     await GoBack();

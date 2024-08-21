@@ -1,4 +1,5 @@
-﻿using RIPDShared.Models;
+﻿using RIPDApi.IntegrationTests.Setup;
+using RIPDShared.Models;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -20,7 +21,7 @@ public class UserControllerTests
   {
     // Arrange
     // Act
-    HttpResponseMessage response = await _fixture.TestClient.PostAsJsonAsync<Dictionary<string, string>>("/api/user/register", new(){
+    HttpResponseMessage response = await _fixture.Client.PostAsJsonAsync<Dictionary<string, string>>("/api/user/register", new(){
       { "Email", "User@UserController.test" },
       { "Password", "P455w0rd!" }
     });
@@ -33,7 +34,7 @@ public class UserControllerTests
   public async Task Login_Valid()
   {
     // Act
-    HttpResponseMessage response = await _fixture.TestClient.PostAsJsonAsync<Dictionary<string, string>>("/api/user/login", new(){
+    HttpResponseMessage response = await _fixture.Client.PostAsJsonAsync<Dictionary<string, string>>("/api/user/login", new(){
       { "Email", "User@UserController.test" },
       { "Password", "P455w0rd!" }
     });
@@ -63,17 +64,23 @@ public class UserControllerTests
     };
 
     // Act
-    HttpResponseMessage response = await _fixture.TestClient.PutAsJsonAsync("/api/user/manage", updateUser);
-
-    // Assert
+    HttpResponseMessage response = await _fixture.Client.PutAsJsonAsync("/api/user/manage", updateUser);
     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-    // Act
     AppUser? updatedUser = JsonSerializer.Deserialize<AppUser>(await response.Content.ReadAsStringAsync(), _fixture.JsonOpt);
 
     // Assert
     Assert.NotNull(updatedUser);
     Assert.Equal(updateUser.UserName, updatedUser.UserName);
     Assert.Equal(updateUser.Email, updatedUser.Email);
+
+    // Act
+    HttpResponseMessage loginResponse = await _fixture.Client.PostAsJsonAsync<Dictionary<string, string>>("/api/user/login", new(){
+      { "Email", "updated@mail.com" },
+      { "Password", "P455w0rd!" }
+    });
+
+    // Assert
+    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
   }
 }

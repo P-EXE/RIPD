@@ -1,27 +1,15 @@
-using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Filters;
 using RIPDShared.Models;
-using System.Text.Json.Serialization;
-using RIPDApi;
+using RIPDApi.Config;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers()
-  .AddJsonOptions(options =>
-  {
-    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-    options.JsonSerializerOptions.WriteIndented = true;
-  });
-
 builder.Services.AddEndpointsApiExplorer();
 
-builder.RegisterRepos();
-builder.RegisterSQLServerDBContext();
-builder.RegisterMongoDBContext();
-builder.RegisterIdentity();
-builder.RegisterAutoMapper();
-builder.RegisterSwagger();
+await builder.Services.RegisterControllers();
+await builder.Services.RegisterRepos();
+await builder.RegisterDatabaseContext();
+await builder.Services.RegisterAuthServices();
+await builder.Services.RegisterTools();
 
 var app = builder.Build();
 

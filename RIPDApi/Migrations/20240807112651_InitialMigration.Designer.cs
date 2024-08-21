@@ -12,7 +12,7 @@ using RIPDApi.Data;
 namespace RIPDApi.Migrations
 {
     [DbContext(typeof(SQLDataBaseContext))]
-    [Migration("20240719133506_InitialMigration")]
+    [Migration("20240807112651_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -263,6 +263,34 @@ namespace RIPDApi.Migrations
                     b.ToTable("BodyMetrics");
                 });
 
+            modelBuilder.Entity("RIPDShared.Models.DiaryEntry_FitnessTarget", b =>
+                {
+                    b.Property<Guid>("DiaryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("EntryNr")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Acted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Added")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("TargetDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Weight")
+                        .HasColumnType("float");
+
+                    b.HasKey("DiaryId", "EntryNr");
+
+                    b.HasIndex("DiaryId")
+                        .IsUnique();
+
+                    b.ToTable("FitnessTargets");
+                });
+
             modelBuilder.Entity("RIPDShared.Models.DiaryEntry_Food", b =>
                 {
                     b.Property<Guid>("DiaryId")
@@ -346,44 +374,6 @@ namespace RIPDApi.Migrations
                     b.HasIndex("WorkoutId");
 
                     b.ToTable("DiaryWorkouts");
-                });
-
-            modelBuilder.Entity("RIPDShared.Models.FitnessTarget", b =>
-                {
-                    b.Property<Guid>("DiaryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("EntryNr")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Acted")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Added")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("BodyMetricUser")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("EndDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("GoalBodyMetricEntryNr")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StartBodyMetricEntryNr")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("StartDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("DiaryId", "EntryNr");
-
-                    b.HasIndex("BodyMetricUser", "GoalBodyMetricEntryNr");
-
-                    b.HasIndex("BodyMetricUser", "StartBodyMetricEntryNr");
-
-                    b.ToTable("FitnessTargets");
                 });
 
             modelBuilder.Entity("RIPDShared.Models.Food", b =>
@@ -655,6 +645,17 @@ namespace RIPDApi.Migrations
                     b.Navigation("Diary");
                 });
 
+            modelBuilder.Entity("RIPDShared.Models.DiaryEntry_FitnessTarget", b =>
+                {
+                    b.HasOne("RIPDShared.Models.Diary", "Diary")
+                        .WithOne("FitnessTarget")
+                        .HasForeignKey("RIPDShared.Models.DiaryEntry_FitnessTarget", "DiaryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Diary");
+                });
+
             modelBuilder.Entity("RIPDShared.Models.DiaryEntry_Food", b =>
                 {
                     b.HasOne("RIPDShared.Models.Diary", "Diary")
@@ -702,33 +703,6 @@ namespace RIPDApi.Migrations
                     b.Navigation("Workout");
                 });
 
-            modelBuilder.Entity("RIPDShared.Models.FitnessTarget", b =>
-                {
-                    b.HasOne("RIPDShared.Models.Diary", "Diary")
-                        .WithMany("FitnessTargets")
-                        .HasForeignKey("DiaryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RIPDShared.Models.DiaryEntry_BodyMetric", "GoalBodyMetric")
-                        .WithMany()
-                        .HasForeignKey("BodyMetricUser", "GoalBodyMetricEntryNr")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("RIPDShared.Models.DiaryEntry_BodyMetric", "StartBodyMetric")
-                        .WithMany()
-                        .HasForeignKey("BodyMetricUser", "StartBodyMetricEntryNr")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Diary");
-
-                    b.Navigation("GoalBodyMetric");
-
-                    b.Navigation("StartBodyMetric");
-                });
-
             modelBuilder.Entity("RIPDShared.Models.Food", b =>
                 {
                     b.HasOne("RIPDShared.Models.AppUser", "Contributer")
@@ -771,7 +745,8 @@ namespace RIPDApi.Migrations
                 {
                     b.Navigation("BodyMetrics");
 
-                    b.Navigation("FitnessTargets");
+                    b.Navigation("FitnessTarget")
+                        .IsRequired();
 
                     b.Navigation("FoodEntries");
 

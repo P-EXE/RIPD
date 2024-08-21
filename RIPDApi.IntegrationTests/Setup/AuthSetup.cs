@@ -14,8 +14,8 @@ public static class AuthSetup
     services.AddAuthentication()
       .AddBearerToken();
 
-    services.AddAuthentication(Defaults.AUTH_SCHEME)
-      .AddScheme<AuthenticationSchemeOptions, TestAuthenticationHandler>(Defaults.AUTH_SCHEME, null);
+    services.AddAuthentication("token")
+      .AddScheme<AuthenticationSchemeOptions, TestAuthenticationHandler>("token", null);
 
     services.AddAuthorization();
   }
@@ -26,9 +26,9 @@ public class TestAuthenticationHandler(IOptionsMonitor<AuthenticationSchemeOptio
   protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
   {
     IEnumerable<Claim> claims =  [];
-    ClaimsIdentity identity = new(claims, Defaults.AUTH_SCHEME);
+    ClaimsIdentity identity = new(claims, "token");
     ClaimsPrincipal principal = new(identity);
-    AuthenticationTicket ticket = new(principal, Defaults.AUTH_SCHEME);
+    AuthenticationTicket ticket = new(principal, "token");
     AuthenticateResult result = AuthenticateResult.Success(ticket);
 
     return result;

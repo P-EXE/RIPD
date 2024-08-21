@@ -11,5 +11,5 @@ public class Diary
   public ICollection<DiaryEntry_Run> RunEntries = [];
 
   public ICollection<DiaryEntry_BodyMetric> BodyMetrics = [];
-  public ICollection<FitnessTarget> FitnessTargets = [];
+  public DiaryEntry_FitnessTarget FitnessTarget { get; set; } = new();
 }

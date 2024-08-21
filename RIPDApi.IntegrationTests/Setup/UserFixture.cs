@@ -1,69 +1,59 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
-using RIPDShared.Models;
+﻿using RIPDShared.Models;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 
-namespace RIPDApi.IntegrationTests;
+namespace RIPDApi.IntegrationTests.Setup;
 
-public class UserFixture : WebApplicationFactory<Program>, IDisposable
+public class UserFixture : DefaultFixture, IAsyncLifetime
 {
-  public readonly HttpClient TestClient;
-  public readonly AppUser TestUser;
-  public readonly JsonSerializerOptions JsonOpt;
+  public string Password { get; private set; }
+  public BearerToken BearerToken { get; private set; }
+  public AuthenticationHeaderValue AuthenticationHeaderValue { get; private set; }
+  public AppUser User { get; private set; }
 
+  // Sync Setup
   public UserFixture()
   {
-    TestClient = CreateClient();
 
-    JsonOpt = new()
-    {
-      PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-    };
-
-    TestUser = TestUserSetup();
   }
-
-  private AppUser TestUserSetup()
+  
+  // Async Setup
+  public async Task InitializeAsync()
   {
-    Dictionary<string, string> testUserLogin = new()
+    Password = "P455w0rd!";
+
+    Dictionary<string, string> credentials = new()
     {
-      ["Email"] = Defaults.TESTUSER_EMAIL,
-      ["Password"] = Defaults.TESTUSER_PASSWORD,
+      ["Email"] = "testuser@mail.com",
+      ["Password"] = Password,
     };
 
-    HttpResponseMessage register = TestClient.PostAsJsonAsync("api/user/register", testUserLogin, JsonOpt).Result;
-    register.EnsureSuccessStatusCode();
+    HttpResponseMessage registerResponse = await Client.PostAsJsonAsync("api/user/register", credentials, JsonOpt);
+    registerResponse.EnsureSuccessStatusCode();
 
-    HttpResponseMessage login = TestClient.PostAsJsonAsync("api/user/login", testUserLogin, JsonOpt).Result;
-    login.EnsureSuccessStatusCode();
+    HttpResponseMessage loginResponse = await Client.PostAsJsonAsync("api/user/login", credentials, JsonOpt);
+    loginResponse.EnsureSuccessStatusCode();
 
-    BearerToken? bt = JsonSerializer.Deserialize<BearerToken>(login.Content.ReadAsStringAsync().Result, JsonOpt);
+    BearerToken? bt = await JsonSerializer.DeserializeAsync<BearerToken>(await loginResponse.Content.ReadAsStreamAsync(), JsonOpt);
     Assert.NotNull(bt);
-    TestClient.DefaultRequestHeaders.Authorization = new(bt!.TokenType, bt.AccessToken);
+    BearerToken = bt;
 
-    HttpResponseMessage self = TestClient.GetAsync("api/user/self/private").Result;
-    self.EnsureSuccessStatusCode();
+    AuthenticationHeaderValue = new(BearerToken.TokenType, BearerToken.AccessToken);
 
-    AppUser? user = JsonSerializer.Deserialize<AppUser>(self.Content.ReadAsStringAsync().Result, JsonOpt);
+    Client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue;
+
+    HttpResponseMessage selfResponse = await Client.GetAsync("api/user/self/private");
+    selfResponse.EnsureSuccessStatusCode();
+
+    AppUser? user = await JsonSerializer.DeserializeAsync<AppUser>(await selfResponse.Content.ReadAsStreamAsync(), JsonOpt);
     Assert.NotNull(user);
-    return user;
+
+    User = user;
   }
 
-  protected override void ConfigureWebHost(IWebHostBuilder builder)
+  async Task IAsyncLifetime.DisposeAsync()
   {
-    base.ConfigureWebHost(builder);
-
-    builder.ConfigureTestServices(services =>
-    {
-      services.SetupTestDB();
-    });
-    builder.UseEnvironment("Development");
-  }
-
-  public override ValueTask DisposeAsync()
-  {
-    return base.DisposeAsync();
+    await DisposeAsync();
   }
 }

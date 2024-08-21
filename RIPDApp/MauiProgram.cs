@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using epj.RouteGenerator;
+using RIPDApp.Config;
 
 namespace RIPDApp;
 
@@ -19,7 +20,12 @@ public static class MauiProgram
         fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
       });
 
-    builder.RegisterEverything();
+    builder.RegisterPages();
+    builder.RegisterViews();
+    builder.RegisterViewModels();
+    builder.RegisterMockServices();
+    builder.RegisterTools();
+    builder.RegisterDatabases();
 
 #if DEBUG
     builder.Logging.AddDebug();

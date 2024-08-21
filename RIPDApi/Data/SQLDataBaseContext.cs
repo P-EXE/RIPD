@@ -16,7 +16,7 @@ public class SQLDataBaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>,
   public DbSet<DiaryEntry_Workout> DiaryWorkouts => Set<DiaryEntry_Workout>();
   public DbSet<DiaryEntry_Run> DiaryRuns => Set<DiaryEntry_Run>();
   public DbSet<DiaryEntry_BodyMetric> BodyMetrics => Set<DiaryEntry_BodyMetric>();
-  public DbSet<FitnessTarget> FitnessTargets => Set<FitnessTarget>();
+  public DbSet<DiaryEntry_FitnessTarget> FitnessTargets => Set<DiaryEntry_FitnessTarget>();
 
   public SQLDataBaseContext(DbContextOptions<SQLDataBaseContext> options) : base(options)
   {
@@ -76,9 +76,8 @@ public class SQLDataBaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>,
         .HasForeignKey(b => b.DiaryId)
         .OnDelete(DeleteBehavior.Cascade);
 
-      d.HasMany(d => d.FitnessTargets)
+      d.HasOne(d => d.FitnessTarget)
         .WithOne(f => f.Diary)
-        .HasForeignKey(f => f.DiaryId)
         .OnDelete(DeleteBehavior.Cascade);
     });
     #endregion Diary
@@ -124,17 +123,10 @@ public class SQLDataBaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>,
       .UseIdentityColumn();
     });
 
-    builder.Entity<FitnessTarget>(ft =>
+    builder.Entity<DiaryEntry_FitnessTarget>(ft =>
     {
-      ft.HasKey(ft => new { ft.DiaryId, ft.EntryNr });
+      ft.HasKey(ft => new { ft.DiaryId });
       ft.Property(ft => ft.DiaryId).ValueGeneratedNever();
-      ft.Property(ft => ft.EntryNr).ValueGeneratedNever();
-      ft.HasOne(ft => ft.StartBodyMetric).WithMany()
-      .HasForeignKey(ft => new { ft.BodyMetricUser, ft.StartBodyMetricEntryNr })
-      .OnDelete(DeleteBehavior.NoAction);
-      ft.HasOne(ft => ft.GoalBodyMetric).WithMany()
-      .HasForeignKey(ft => new { ft.BodyMetricUser, ft.GoalBodyMetricEntryNr })
-      .OnDelete(DeleteBehavior.NoAction);
     });
     #endregion Things in Diary
 
