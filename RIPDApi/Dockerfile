@@ -9,17 +9,18 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["RIPD-API2/RIPD-API2.csproj", "RIPD-API2/"]
-RUN dotnet restore "./RIPD-API2/RIPD-API2.csproj"
+COPY ["RIPDApi/RIPDApi.csproj", "RIPDApi/"]
+COPY ["RIPDShared/RIPDShared.csproj", "RIPDShared/"]
+RUN dotnet restore "./RIPDApi/RIPDApi.csproj"
 COPY . .
-WORKDIR "/src/RIPD-API2"
-RUN dotnet build "./RIPD-API2.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/RIPDApi"
+RUN dotnet build "./RIPDApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./RIPD-API2.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./RIPDApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "RIPD-API2.dll"]
+ENTRYPOINT ["dotnet", "RIPDApi.dll"]
