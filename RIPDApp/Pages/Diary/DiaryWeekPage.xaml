@@ -3,10 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:v="clr-namespace:RIPDApp.Views.Diary"
              xmlns:vm="clr-namespace:RIPDApp.ViewModels"
+             xmlns:micro="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
              x:Class="RIPDApp.Pages.DiaryWeekPage"
              x:DataType="vm:DiaryVM">
 
-  <Grid>
-    <v:DiaryFoodListV/>
+  <Grid RowDefinitions="auto,auto">
+    <v:DiaryFoodListV Grid.Row="0"/>
+    <Label Text="Consumed Calories" Grid.Row="1" ZIndex="1" Margin="5,0,0,0" TextColor="LimeGreen"/>
+    <micro:ChartView Chart="{Binding WeekChartView}" Grid.Row="1" HeightRequest="300" VerticalOptions="StartAndExpand"/>
+    <Label Text="Burned Calories" Grid.Row="1" ZIndex="1" HorizontalTextAlignment="End" Margin="5,0,5,0" TextColor="Red"/>
+    <micro:ChartView Chart="{Binding WeekChartView1}" Grid.Row="1" Margin="0,270,0,0" HeightRequest="300"  VerticalOptions="StartAndExpand"/>
   </Grid>
 </ContentPage>

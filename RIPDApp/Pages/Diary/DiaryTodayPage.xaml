@@ -10,6 +10,9 @@
   <Grid RowDefinitions="auto,auto,auto">
     <v:DiaryFoodListV Grid.Row="0"/>
     <v:DiaryWorkoutListV Grid.Row="1"/>
-    <micro:ChartView Grid.Row="2" x:Name="chartView" HeightRequest="400"  VerticalOptions="StartAndExpand"/>
+    <Label Text="Consumed Calories" Grid.Row="2" ZIndex="1" Margin="5,0,0,0" TextColor="LimeGreen"/>
+    <micro:ChartView Grid.Row="2" Chart="{Binding TodayChartView}" HeightRequest="300" VerticalOptions="StartAndExpand"/>
+    <Label Text="Burned Calories" Grid.Row="1" ZIndex="1" HorizontalTextAlignment="End" Margin="5,0,5,0" TextColor="Red"/>
+    <micro:ChartView Grid.Row="2" Chart="{Binding TodayChartView1}" Margin="0,270,0,0" HeightRequest="300" VerticalOptions="StartAndExpand"/>
   </Grid>
 </ContentPage>
