@@ -9,18 +9,18 @@ namespace RIPDApi.Repos;
 
 public class DiaryRepo : IDiaryRepo
 {
-  private readonly SQLDataBaseContext _sqlContext;
-  private readonly MongoDBService _mongoService;
+  private readonly SQLDataBaseContext _sql;
+  private readonly MongoDataBaseContext _mongo;
   private readonly IMapper _mapper;
 
   // Determines the ammount of Items returned via the Take method
   const int takeSize = 20;
 
-  public DiaryRepo(SQLDataBaseContext sqlContext, MongoDBService mongoService, IMapper mapper)
+  public DiaryRepo(SQLDataBaseContext sql, MongoDataBaseContext mongo, IMapper mapper)
   {
-    _sqlContext = sqlContext;
+    _sql = sql;
     _mapper = mapper;
-    _mongoService = mongoService;
+    _mongo = mongo;
   }
 
   #region Create
@@ -30,14 +30,14 @@ public class DiaryRepo : IDiaryRepo
     DiaryEntry_Food foodEntry = _mapper.Map<DiaryEntry_Food>(createFood);
 
     // SQL Context
-    ICollection<DiaryEntry_Food> foodEntries = _sqlContext.Diaries
+    ICollection<DiaryEntry_Food> foodEntries = _sql.Diaries
       .Include(d => d.FoodEntries)
       .First(d => d.OwnerId == createFood.DiaryId)
       .FoodEntries;
 
     foodEntries.Add(foodEntry);
 
-    await _sqlContext.SaveChangesAsync();
+    await _sql.SaveChangesAsync();
 
     // Return
     return foodEntry;
@@ -49,14 +49,14 @@ public class DiaryRepo : IDiaryRepo
     DiaryEntry_Workout workoutEntry = _mapper.Map<DiaryEntry_Workout>(createWorkout);
 
     // SQL Context
-    ICollection<DiaryEntry_Workout> workoutEntries = _sqlContext.Diaries
+    ICollection<DiaryEntry_Workout> workoutEntries = _sql.Diaries
       .Include(d => d.WorkoutEntries)
       .First(d => d.OwnerId == createWorkout.DiaryId)
       .WorkoutEntries;
 
     workoutEntries.Add(workoutEntry);
 
-    await _sqlContext.SaveChangesAsync();
+    await _sql.SaveChangesAsync();
 
     // Return
     return workoutEntry;
@@ -69,41 +69,42 @@ public class DiaryRepo : IDiaryRepo
     entry.EntryNr = 0;
 
     // SQL Context
-    ICollection<DiaryEntry_BodyMetric> entries = _sqlContext.Diaries
+    ICollection<DiaryEntry_BodyMetric> entries = _sql.Diaries
       .Include(d => d.BodyMetrics)
       .First(d => d.OwnerId == create.DiaryId)
       .BodyMetrics;
 
     entries.Add(entry);
 
-    await _sqlContext.SaveChangesAsync();
+    await _sql.SaveChangesAsync();
 
     // Return
     return entry;
   }
 
-  public async Task<DiaryEntry_Run?> CreateRunEntryAsync(DiaryEntry_Run_Create createRun)
+  public async Task<DiaryEntry_Run?> CreateRunEntryAsync(DiaryEntry_Run_Create create)
   {
     // Mapping
-    DiaryEntry_Run runEntry = _mapper.Map<DiaryEntry_Run>(createRun);
+    DiaryEntry_Run entry = _mapper.Map<DiaryEntry_Run>(create);
+    entry.EntryNr = 0;
+
+    // Mongo Context
+    await _mongo.Runs.AddAsync(entry.Run);
+
+    entry.MongoDBId = entry.Run.Id.ToString();
 
     // SQL Context
-    ICollection<DiaryEntry_Run>? runEntries = _sqlContext.Diaries
+    ICollection<DiaryEntry_Run>? runEntries = _sql.Diaries
       .Include(d => d.RunEntries)
-      .First(d => d.OwnerId == createRun.DiaryId)
+      .First(d => d.OwnerId == create.DiaryId)
       .RunEntries;
 
-    runEntry.EntryNr = runEntries.Last().EntryNr + 1;
+    runEntries.Add(entry);
 
-    runEntries.Add(runEntry);
-
-    // Warning: Untested
-    await _mongoService.SaveToMongoDBAsync("Runs", runEntry.Run);
-
-    await _sqlContext.SaveChangesAsync();
+    await _sql.SaveChangesAsync();
 
     // Return
-    return runEntry;
+    return entry;
   }
   #endregion Create
 
@@ -112,7 +113,7 @@ public class DiaryRepo : IDiaryRepo
   public async Task<IEnumerable<DiaryEntry_Food>?> ReadFoodEntriesFromToDateAsync(Guid diaryId, DateTime start, DateTime end)
   {
     // SQL Context
-    IEnumerable<DiaryEntry_Food> foods = _sqlContext.Diaries
+    IEnumerable<DiaryEntry_Food> foods = _sql.Diaries
       .Include(d => d.FoodEntries).ThenInclude(fe => fe.Food)
       .First(d => d.OwnerId == diaryId)
       .FoodEntries
@@ -125,7 +126,7 @@ public class DiaryRepo : IDiaryRepo
   public async Task<IEnumerable<DiaryEntry_Workout>?> ReadWorkoutEntriesFromToDateAsync(Guid diaryId, DateTime start, DateTime end)
   {
     // SQL Context
-    IEnumerable<DiaryEntry_Workout> workouts = _sqlContext.Diaries
+    IEnumerable<DiaryEntry_Workout> workouts = _sql.Diaries
       .Include(d => d.WorkoutEntries).ThenInclude(we => we.Workout)
       .First(d => d.OwnerId == diaryId)
       .WorkoutEntries
@@ -138,7 +139,7 @@ public class DiaryRepo : IDiaryRepo
   public async Task<IEnumerable<DiaryEntry_BodyMetric>?> ReadBodyMetricEntriesFromToDateAsync(Guid diaryId, DateTime start, DateTime end)
   {
     // SQL Context
-    IEnumerable<DiaryEntry_BodyMetric> entries = _sqlContext.Diaries
+    IEnumerable<DiaryEntry_BodyMetric> entries = _sql.Diaries
       .Include(d => d.BodyMetrics)
       .First(d => d.OwnerId == diaryId)
       .BodyMetrics
@@ -153,7 +154,7 @@ public class DiaryRepo : IDiaryRepo
     DiaryEntry_FitnessTarget? entry;
 
     // SQL Context
-    entry = _sqlContext.Diaries
+    entry = _sql.Diaries
       .Include(d => d.FitnessTarget)
       .First(d => d.OwnerId == diaryId)
       .FitnessTarget;
@@ -164,7 +165,7 @@ public class DiaryRepo : IDiaryRepo
   public async Task<IEnumerable<DiaryEntry_Run>?> ReadRunEntriesFromToDateAsync(Guid diaryId, DateTime start, DateTime end)
   {
     // SQL Context
-    IEnumerable<DiaryEntry_Run> runEntries = _sqlContext.Diaries
+    IEnumerable<DiaryEntry_Run> runEntries = _sql.Diaries
       .Include(d => d.FoodEntries)
       .First(d => d.OwnerId == diaryId)
       .RunEntries
@@ -174,7 +175,7 @@ public class DiaryRepo : IDiaryRepo
     // MongoDB Helper
     foreach (DiaryEntry_Run runEntry in runEntries)
     {
-      runEntry.Run = await _mongoService.GetFromMongoDBAsync<Run>("Runs", runEntry.MongoDBId);
+      runEntry.Run = await _mongo.Runs.FindAsync(runEntry.MongoDBId);
     }
 
     // Return
@@ -187,8 +188,8 @@ public class DiaryRepo : IDiaryRepo
   {
     DiaryEntry_Food updater = _mapper.Map<DiaryEntry_Food>(update);
 
-    _sqlContext.DiaryFoods.Update(updater);
-    await _sqlContext.SaveChangesAsync();
+    _sql.DiaryFoods.Update(updater);
+    await _sql.SaveChangesAsync();
 
     return updater;
   }
@@ -197,8 +198,8 @@ public class DiaryRepo : IDiaryRepo
   {
     DiaryEntry_Workout updater = _mapper.Map<DiaryEntry_Workout>(update);
 
-    _sqlContext.DiaryWorkouts.Update(updater);
-    await _sqlContext.SaveChangesAsync();
+    _sql.DiaryWorkouts.Update(updater);
+    await _sql.SaveChangesAsync();
 
     return updater;
   }
@@ -207,8 +208,8 @@ public class DiaryRepo : IDiaryRepo
   {
     DiaryEntry_BodyMetric updater = _mapper.Map<DiaryEntry_BodyMetric>(update);
 
-    _sqlContext.BodyMetrics.Update(updater);
-    await _sqlContext.SaveChangesAsync();
+    _sql.BodyMetrics.Update(updater);
+    await _sql.SaveChangesAsync();
 
     return updater;
   }
@@ -217,8 +218,8 @@ public class DiaryRepo : IDiaryRepo
   {
     DiaryEntry_FitnessTarget updater = _mapper.Map<DiaryEntry_FitnessTarget>(update);
 
-    _sqlContext.FitnessTargets.Update(updater);
-    await _sqlContext.SaveChangesAsync();
+    _sql.FitnessTargets.Update(updater);
+    await _sql.SaveChangesAsync();
 
     return updater;
   }
@@ -227,8 +228,8 @@ public class DiaryRepo : IDiaryRepo
   {
     DiaryEntry_Run updater = _mapper.Map<DiaryEntry_Run>(update);
 
-    _sqlContext.DiaryRuns.Update(updater);
-    await _sqlContext.SaveChangesAsync();
+    _sql.DiaryRuns.Update(updater);
+    await _sql.SaveChangesAsync();
 
     return updater;
   }
@@ -238,7 +239,7 @@ public class DiaryRepo : IDiaryRepo
   public async Task<bool> DeleteFoodEntryAsync(Guid diaryId, int deleteId)
   {
     // SQL Context
-    DiaryEntry_Food? delete = _sqlContext.Diaries
+    DiaryEntry_Food? delete = _sql.Diaries
       .Include(d => d.FoodEntries)
       .FirstOrDefault(d => d.OwnerId == diaryId)?
       .FoodEntries
@@ -246,9 +247,9 @@ public class DiaryRepo : IDiaryRepo
 
     if (delete == null) return false;
 
-    _sqlContext.DiaryFoods.Remove(delete);
+    _sql.DiaryFoods.Remove(delete);
 
-    await _sqlContext.SaveChangesAsync();
+    await _sql.SaveChangesAsync();
 
     // Return
     return true;
@@ -257,7 +258,7 @@ public class DiaryRepo : IDiaryRepo
   public async Task<bool> DeleteWorkoutEntryAsync(Guid diaryId, int deleteId)
   {
     // SQL Context
-    DiaryEntry_Workout? delete = _sqlContext.Diaries
+    DiaryEntry_Workout? delete = _sql.Diaries
       .Include(d => d.WorkoutEntries)
       .FirstOrDefault(d => d.OwnerId == diaryId)?
       .WorkoutEntries
@@ -265,9 +266,9 @@ public class DiaryRepo : IDiaryRepo
 
     if (delete == null) return false;
 
-    _sqlContext.DiaryWorkouts.Remove(delete);
+    _sql.DiaryWorkouts.Remove(delete);
 
-    await _sqlContext.SaveChangesAsync();
+    await _sql.SaveChangesAsync();
 
     // Return
     return true;
@@ -276,7 +277,7 @@ public class DiaryRepo : IDiaryRepo
   public async Task<bool> DeleteBodyMetricEntryAsync(Guid diaryId, int deleteId)
   {
     // SQL Context
-    DiaryEntry_BodyMetric? delete = _sqlContext.Diaries
+    DiaryEntry_BodyMetric? delete = _sql.Diaries
       .Include(d => d.BodyMetrics)
       .FirstOrDefault(d => d.OwnerId == diaryId)?
       .BodyMetrics
@@ -284,9 +285,9 @@ public class DiaryRepo : IDiaryRepo
 
     if (delete == null) return false;
 
-    _sqlContext.BodyMetrics.Remove(delete);
+    _sql.BodyMetrics.Remove(delete);
 
-    await _sqlContext.SaveChangesAsync();
+    await _sql.SaveChangesAsync();
 
     // Return
     return true;
@@ -295,7 +296,7 @@ public class DiaryRepo : IDiaryRepo
   public async Task<bool> DeleteRunEntryAsync(Guid diaryId, int deleteId)
   {
     // SQL Context
-    DiaryEntry_Run? delete = _sqlContext.Diaries
+    DiaryEntry_Run? delete = _sql.Diaries
       .Include(d => d.RunEntries)
       .FirstOrDefault(d => d.OwnerId == diaryId)?
       .RunEntries
@@ -303,9 +304,9 @@ public class DiaryRepo : IDiaryRepo
 
     if (delete == null) return false;
 
-    _sqlContext.DiaryRuns.Remove(delete);
+    _sql.DiaryRuns.Remove(delete);
 
-    await _sqlContext.SaveChangesAsync();
+    await _sql.SaveChangesAsync();
 
     // Return
     return true;

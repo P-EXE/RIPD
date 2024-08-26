@@ -31,11 +31,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\RIPD\RIPDShared\RIPDShared.csproj" />
+    <InternalsVisibleTo Include="RIPDApi.IntegrationTests" />
   </ItemGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="RIPDApi.IntegrationTests" />
+    <Folder Include="Properties\PublishProfiles\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RIPDShared\RIPDShared.csproj" />
   </ItemGroup>
 
 </Project>
