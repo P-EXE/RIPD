@@ -102,6 +102,7 @@ public class DiaryRepo : IDiaryRepo
     runEntries.Add(entry);
 
     await _sql.SaveChangesAsync();
+    await _mongo.SaveChangesAsync();
 
     // Return
     return entry;

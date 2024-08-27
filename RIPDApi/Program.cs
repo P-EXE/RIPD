@@ -12,7 +12,7 @@ await services.RegisterAuthServices();
 if (builder.Environment.IsDevelopment())
 {
   await services.RegisterDebugTools();
-  await services.RegisterSQLiteInMemory();
+  await services.RegisterSQLServerTestDatabase();
   await services.RegisterMongoServerTestDatabase();
 }
 else if (builder.Environment.IsStaging())
