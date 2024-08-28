@@ -46,8 +46,11 @@
           </DataTemplate>
         </CollectionView.ItemTemplate>
       </CollectionView>
-
+      
+      <Button Text="Refresh" Command="{Binding RefreshCommand}"/>
+      
     </VerticalStackLayout>
+
   </ScrollView>
 
 </ContentPage>

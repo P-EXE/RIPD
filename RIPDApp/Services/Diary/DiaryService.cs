@@ -65,9 +65,15 @@ public class DiaryService : IDiaryService
     return await _httpService.GetAsync<IEnumerable<DiaryEntry_Food>?>($"diary/foods", queries);
   }
 
-  public Task<IEnumerable<DiaryEntry_Food>?> GetWorkoutEntriesAsync(Diary diary, DateTime startDate, DateTime endDate)
+  public async Task<IEnumerable<DiaryEntry_Workout>?> GetWorkoutEntriesAsync(Diary diary, DateTime startDate, DateTime endDate)
   {
-    throw new NotImplementedException();
+    Dictionary<string, object> queries = new()
+    {
+      ["diary"] = diary.OwnerId,
+      ["startDate"] = startDate,
+      ["endDate"] = endDate,
+    };
+    return await _httpService.GetAsync<IEnumerable<DiaryEntry_Workout>?>($"diary/workouts", queries);
   }
 
   public async Task<IEnumerable<DiaryEntry_BodyMetric>?> GetBodyMetricEntriesAsync(Diary diary, DateTime startDate, DateTime endDate)

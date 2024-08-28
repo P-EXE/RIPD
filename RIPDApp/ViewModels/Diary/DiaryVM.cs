@@ -107,10 +107,15 @@ public partial class DiaryVM : ObservableObject
     }
   }
 
-  private async Task GetFoodEntriesInDateRange()
+  [RelayCommand]
+  private async Task Refresh()
   {
     IEnumerable<DiaryEntry_Food>? foodEntries = await _diaryService.GetFoodEntriesAsync(Statics.Auth.Owner.Diary, StartDate, EndDate);
     FoodEntries = foodEntries?.ToObservableCollection();
+    IEnumerable<DiaryEntry_Workout>? workoutEntries = await _diaryService.GetWorkoutEntriesAsync(Statics.Auth.Owner.Diary, StartDate, EndDate);
+    WorkoutEntries = workoutEntries?.ToObservableCollection();
+
+    // TODO: Perform some kind of transformation for display
   }
 
   // Needs to be adjusted to FoodEntryPage

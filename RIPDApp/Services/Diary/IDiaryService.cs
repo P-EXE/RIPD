@@ -15,7 +15,7 @@ public interface IDiaryService
 
   #region Read
   Task<IEnumerable<DiaryEntry_Food>?> GetFoodEntriesAsync(Diary diary, DateTime startDate, DateTime endDate);
-  Task<IEnumerable<DiaryEntry_Food>?> GetWorkoutEntriesAsync(Diary diary, DateTime startDate, DateTime endDate);
+  Task<IEnumerable<DiaryEntry_Workout>?> GetWorkoutEntriesAsync(Diary diary, DateTime startDate, DateTime endDate);
   Task<IEnumerable<DiaryEntry_BodyMetric>?> GetBodyMetricEntriesAsync(Diary diary, DateTime startDate, DateTime endDate);
   Task<DiaryEntry_FitnessTarget?> GetFitnessTargetEntryAsync();
   Task<IEnumerable<DiaryEntry_Run>?> GetRunEntriesAsync(DateTime startDate, DateTime endDate);
