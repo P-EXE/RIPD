@@ -1,18 +1,52 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:v="clr-namespace:RIPDApp.Views.Diary"
+             xmlns:v="clr-namespace:RIPDApp.Views"
              xmlns:vm="clr-namespace:RIPDApp.ViewModels"
              xmlns:micro="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
              x:Class="RIPDApp.Pages.DiaryTodayPage"
-             x:DataType="vm:DiaryVM">
+             x:DataType="vm:DiaryVM"
+             Title="">
 
-  <Grid RowDefinitions="auto,auto,auto">
-    <v:DiaryFoodListV Grid.Row="0"/>
-    <v:DiaryWorkoutListV Grid.Row="1"/>
-    <Label Text="Consumed Calories" Grid.Row="2" ZIndex="1" Margin="5,0,0,0" TextColor="LimeGreen"/>
-    <micro:ChartView Grid.Row="2" Chart="{Binding TodayChartView}" HeightRequest="300" VerticalOptions="StartAndExpand"/>
-    <Label Text="Burned Calories" Grid.Row="1" ZIndex="1" HorizontalTextAlignment="End" Margin="5,0,5,0" TextColor="Red"/>
-    <micro:ChartView Grid.Row="2" Chart="{Binding TodayChartView1}" Margin="0,270,0,0" HeightRequest="300" VerticalOptions="StartAndExpand"/>
-  </Grid>
+  <ScrollView>
+    <VerticalStackLayout>
+
+      <Grid RowDefinitions="100,100">
+        <micro:ChartView Grid.Row="0" Chart="{Binding Positive}" Margin="0,0,0,-39"/>
+        <micro:ChartView Grid.Row="1" Chart="{Binding Negative}" Margin="0,-39,0,0" RotationX="180"/>
+      </Grid>
+
+      <Border Background="#20FFFFFF" StrokeThickness="0" Padding="10">
+        <Label Text="Foods"
+               FontSize="Default"/>
+      </Border>
+
+      <CollectionView SelectionMode="Single"
+                      ItemsSource="{Binding FoodEntries}">
+        <CollectionView.ItemTemplate>
+          <DataTemplate>
+            <SwipeView>
+              <Label Text="Food"/>
+            </SwipeView>
+          </DataTemplate>
+        </CollectionView.ItemTemplate>
+      </CollectionView>
+
+      <Border Background="#20FFFFFF" StrokeThickness="0" Padding="10">
+        <Label Text="Workouts"
+               FontSize="Default"/>
+      </Border>
+
+      <CollectionView SelectionMode="Single">
+        <CollectionView.ItemTemplate>
+          <DataTemplate>
+            <SwipeView>
+              <Label/>
+            </SwipeView>
+          </DataTemplate>
+        </CollectionView.ItemTemplate>
+      </CollectionView>
+
+    </VerticalStackLayout>
+  </ScrollView>
 </ContentPage>

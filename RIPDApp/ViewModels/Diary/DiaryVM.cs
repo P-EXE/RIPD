@@ -18,7 +18,6 @@ public partial class DiaryVM : ObservableObject
   public DiaryVM(IDiaryService diaryService)
   {
     _diaryService = diaryService;
-
   }
 
   [ObservableProperty]
@@ -37,121 +36,48 @@ public partial class DiaryVM : ObservableObject
   [ObservableProperty]
   ObservableCollection<DiaryEntry_Workout>? _workoutEntries = [];
 
- 
-
-  private static readonly ObservableCollection<ChartEntry> _weekconsumedcalories = [
-    new(3400){ ValueLabel = "3400",Color = SKColors.LimeGreen,ValueLabelColor = SKColors.White},
-    new(3500){ ValueLabel = "3500",Color = SKColors.LimeGreen,ValueLabelColor = SKColors.White},
-    new(4400){ ValueLabel = "4400",Color = SKColors.LimeGreen,ValueLabelColor = SKColors.White},
-    new(2400){ ValueLabel = "2400",Color = SKColors.LimeGreen,ValueLabelColor = SKColors.White},
-    new(1900){ ValueLabel = "1900",Color = SKColors.LimeGreen,ValueLabelColor = SKColors.White},
-    new(3600){ ValueLabel = "3600",Color = SKColors.LimeGreen,ValueLabelColor = SKColors.White},
-    new(2400){ ValueLabel = "2400",Color = SKColors.LimeGreen,ValueLabelColor = SKColors.White},
-    ];
-
-  private static readonly ObservableCollection<ChartEntry> _weekburnedcalories = [
-    new(-3400){ ValueLabel = "3400",Color = SKColors.Red,ValueLabelColor = SKColors.White},
-    new(-3000){ ValueLabel = "3000",Color = SKColors.Red,ValueLabelColor = SKColors.White},
-    new(-2000){ ValueLabel = "2000",Color = SKColors.Red,ValueLabelColor = SKColors.White},
-    new(-1400){ ValueLabel = "1400",Color = SKColors.Red,ValueLabelColor = SKColors.White},
-    new(-1900){ ValueLabel = "1900",Color = SKColors.Red,ValueLabelColor = SKColors.White},
-    new(-4000){ ValueLabel = "4000",Color = SKColors.Red,ValueLabelColor = SKColors.White},
-    new(-1200){ ValueLabel = "1200",Color = SKColors.Red,ValueLabelColor = SKColors.White}
-    ];
-
-  private static readonly ObservableCollection<ChartEntry> _monthconsumedcalories = [
-    new(3400){ ValueLabel = "3400",Color = SKColors.LimeGreen,ValueLabelColor = SKColors.White},
-    new(3500){ ValueLabel = "3500",Color = SKColors.LimeGreen,ValueLabelColor = SKColors.White},
-    new(4400){ ValueLabel = "4400",Color = SKColors.LimeGreen,ValueLabelColor = SKColors.White},
-    new(2400){ ValueLabel = "2400",Color = SKColors.LimeGreen,ValueLabelColor = SKColors.White}
-    ];
-
-  private static readonly ObservableCollection<ChartEntry> _monthburnedcalories = [
-    new(-3400){ ValueLabel = "3400",Color = SKColors.Red,ValueLabelColor = SKColors.White},
-    new(-3000){ ValueLabel = "3000",Color = SKColors.Red,ValueLabelColor = SKColors.White},
-    new(-2000){ ValueLabel = "2000",Color = SKColors.Red,ValueLabelColor = SKColors.White},
-    new(-1400){ ValueLabel = "1400",Color = SKColors.Red,ValueLabelColor = SKColors.White}
-    ];
-
-  private static readonly ObservableCollection<ChartEntry> _dayconsumedcalories = [
-    new(4000){ ValueLabel = "4000",Color = SKColors.LimeGreen,ValueLabelColor = SKColors.White}
-    ];
-
-  private static readonly ObservableCollection<ChartEntry> _dayburnedcalories = [
-    new(-2500){ ValueLabel = "2500",Color = SKColors.Red,ValueLabelColor = SKColors.White}
-    ];
-
+  private const int CornerRadius = 1000;
+  private static readonly SKColor bgColor = SKColor.Parse("#00000000");
+  private static readonly SKColor posColor = SKColor.Parse("#2000FF00");
+  private static readonly SKColor negColor = SKColor.Parse("#20FF0000");
   [ObservableProperty]
-  private PointChart _weekChartView = new PointChart
+  private BarChart _positive = new()
   {
-    //BackgroundColor = SKColor.Parse("#172610"),
-    BackgroundColor = SKColors.Black,
-    LabelOrientation = Orientation.Horizontal,
-    ValueLabelOption = ValueLabelOption.TopOfElement,
-    ValueLabelOrientation = Orientation.Horizontal,
-
-    Entries = _weekconsumedcalories
+    Entries = _posEntries,
+    CornerRadius = 10,
+    BackgroundColor = bgColor,
+    ValueLabelOption = ValueLabelOption.None,
+    BarAreaAlpha = 0
   };
   [ObservableProperty]
-  private PointChart _weekChartView1 = new PointChart
+  private BarChart _negative = new()
   {
-    //BackgroundColor = SKColor.Parse("#172610"),
-    BackgroundColor = SKColors.Black,
-    LabelOrientation = Orientation.Horizontal,
-    ValueLabelOption = ValueLabelOption.TopOfElement,
-    ValueLabelOrientation = Orientation.Horizontal,
-    
-
-    Entries = _weekburnedcalories
+    Entries = _negEntries,
+    CornerRadius = 10,
+    BackgroundColor = bgColor,
+    ValueLabelOption = ValueLabelOption.None,
+    BarAreaAlpha = 0
   };
 
-  [ObservableProperty]
-  private PointChart _monthChartView = new PointChart
-  {
-    BackgroundColor = SKColors.Black,
-    LabelOrientation = Orientation.Horizontal,
-    ValueLabelOption = ValueLabelOption.TopOfElement,
-    ValueLabelOrientation = Orientation.Horizontal,
+  private static readonly ObservableCollection<ChartEntry> _posEntries = [
+    new(0.1f){Color = posColor},
+    new(0.2f){Color = posColor},
+    new(0.3f){Color = posColor},
+    new(0.4f){Color = posColor},
+    new(0.5f){Color = posColor},
+    new(0.6f){Color = posColor},
+    new(0.7f){Color = posColor}
+    ];
 
-    Entries = _monthconsumedcalories
-  };
-
-  [ObservableProperty]
-  private PointChart _monthChartView1 = new PointChart
-  {
-    //BackgroundColor = SKColor.Parse("#172610"),
-    BackgroundColor = SKColors.Black,
-    LabelOrientation = Orientation.Horizontal,
-    ValueLabelOption = ValueLabelOption.TopOfElement,
-    ValueLabelOrientation = Orientation.Horizontal,
-
-
-    Entries = _monthburnedcalories
-  };
-
-  [ObservableProperty]
-  private PointChart _todayChartView = new PointChart
-  {
-    BackgroundColor = SKColors.Black,
-    LabelOrientation = Orientation.Horizontal,
-    ValueLabelOption = ValueLabelOption.TopOfElement,
-    ValueLabelOrientation = Orientation.Horizontal,
-
-    Entries = _dayconsumedcalories
-  };
-
-  [ObservableProperty]
-  private PointChart _todayChartView1 = new PointChart
-  {
-    //BackgroundColor = SKColor.Parse("#172610"),
-    BackgroundColor = SKColors.Black,
-    LabelOrientation = Orientation.Horizontal,
-    ValueLabelOption = ValueLabelOption.TopOfElement,
-    ValueLabelOrientation = Orientation.Horizontal,
-
-
-    Entries = _dayburnedcalories
-  };
+  private static readonly ObservableCollection<ChartEntry> _negEntries = [
+    new(0.1f){Color = negColor},
+    new(0.2f){Color = negColor},
+    new(0.3f){Color = negColor},
+    new(0.4f){Color = negColor},
+    new(0.5f){Color = negColor},
+    new(0.6f){Color = negColor},
+    new(0.7f){Color = negColor}
+  ];
 
   partial void OnActivePageModeChanged(int value)
   {

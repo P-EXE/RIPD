@@ -19,6 +19,12 @@ public class DiaryServiceMock : IDiaryService
   {
     throw new NotImplementedException();
   }
+
+  public Task<DiaryEntry_Run?> AddRunEntryAsync(DiaryEntry_Run_Create entry)
+  {
+    throw new NotImplementedException();
+  }
+
   #endregion Create / Add
 
   #region Read
@@ -38,6 +44,11 @@ public class DiaryServiceMock : IDiaryService
   }
 
   public Task<DiaryEntry_FitnessTarget?> GetFitnessTargetEntryAsync()
+  {
+    throw new NotImplementedException();
+  }
+
+  public Task<IEnumerable<DiaryEntry_Run>?> GetRunEntriesAsync(DateTime startDate, DateTime endDate)
   {
     throw new NotImplementedException();
   }
@@ -78,6 +89,11 @@ public class DiaryServiceMock : IDiaryService
   }
 
   public Task<bool> DeleteWorkoutEntryAsync(DiaryEntry_Workout entry)
+  {
+    throw new NotImplementedException();
+  }
+
+  public Task<bool> DeleteRunEntryAsync(DiaryEntry_Run entry)
   {
     throw new NotImplementedException();
   }

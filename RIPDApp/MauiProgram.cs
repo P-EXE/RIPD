@@ -29,9 +29,10 @@ public static class MauiProgram
     services.RegisterPages();
     services.RegisterViews();
     services.RegisterViewModels();
-    services.RegisterMockServices();
+    services.RegisterServices();
     services.RegisterTools();
     services.RegisterSQLiteDatabase();
+    RoutesConfig.RegisterRoutes();
 
 #if DEBUG
     builder.Logging.AddDebug();

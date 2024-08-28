@@ -5,11 +5,11 @@ namespace RIPDApp.Statics;
 public static class API
 {
 #if ANDROID
-  public static string RouteBaseHttp = "http://10.0.2.2:5115/api/";
-  public static string RouteBaseHttps = "https://localhost:7116/api/";
+  public static string RouteBaseHttp = "http://10.0.2.2:42069/api/";
+  public static string RouteBaseHttps = "https://localhost:42070/api/";
 #elif WINDOWS
-  public static string RouteBaseHttp = "http://localhost:5115/api/";
-  public static string RouteBaseHttps = "https://localhost:7116/api/";
+  public static string RouteBaseHttp = "http://localhost:42069/api/";
+  public static string RouteBaseHttps = "https://localhost:42070/api/";
 #else
   public static string RouteBaseHttp = string.Empty;
   public static string RouteBaseHttps = string.Empty;
