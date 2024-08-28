@@ -2,5 +2,8 @@
 
 public interface IRunGpsLocationService
 {
-  Task<Location> GetCurrentLocation();
+  Task StartGettingLocationAsync();
+  Task StopGettingLocationAsync();
+
+  event EventHandler<GeolocationLocationChangedEventArgs> LocationChanged;
 }

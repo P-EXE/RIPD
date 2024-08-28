@@ -1,96 +1,60 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Amazon.Runtime.Internal.Util;
+using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
 namespace RIPDApp.Services;
 
-public partial class RunGpsLocationService : IRunGpsLocationService
+public class RunGpsLocationService(ILogger<RunGpsLocationService> logger) : IRunGpsLocationService
 {
-  private CancellationTokenSource _cancelTokenSource;
-  private bool _isCheckingLocation;
+  private readonly ILogger<RunGpsLocationService> _logger = logger;
 
+  public event EventHandler<GeolocationLocationChangedEventArgs> LocationChanged;
 
-  public ObservableCollection<Location> LocationsList = new ObservableCollection<Location>();
-
-  public async Task<Location> GetCurrentLocation()
+  public async Task StartGettingLocationAsync()
   {
-    try
-    {
-      _isCheckingLocation = true;
-
-      GeolocationRequest request = new GeolocationRequest(GeolocationAccuracy.High, TimeSpan.FromSeconds(5));
-
-      _cancelTokenSource = new CancellationTokenSource();
-
-      Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
-
-      if (location != null)
-      {
-        LocationsList.Add(location);
-        await OnStartListening();
-        return location;
-      }
-      //Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
-
-    }
-    // Catch one of the following exceptions:
-    //   FeatureNotSupportedException
-    //   FeatureNotEnabledException
-    //   PermissionException
-    catch (Exception ex)
-    {
-      // Unable to get location
-      Debug.WriteLine(ex);
-    }
-    finally
-    {
-      _isCheckingLocation = false;
-    }
-    return null;
-  }
-
-  async Task OnStartListening()
-  {
+    _logger.LogInformation("Trying to start listening for foreground location updates");
     try
     {
       Geolocation.LocationChanged += Geolocation_LocationChanged;
-      var request = new GeolocationListeningRequest(GeolocationAccuracy.High);
-      var success = await Geolocation.StartListeningForegroundAsync(request);
+      GeolocationListeningRequest request = new();
+      bool success = await Geolocation.StartListeningForegroundAsync(request);
 
-      string status = success
-          ? "Started listening for foreground location updates"
-          : "Couldn't start listening";
+      string status = success ? "Started listening for foreground location updates" : "Couldn't start listening";
+      _logger.LogInformation(status);
+
+      return;
     }
     catch (Exception ex)
     {
       // Unable to start listening for location changes
-      Debug.WriteLine(ex);
+      _logger.LogError("Unable to start listening for foreground location updates");
     }
   }
 
-  void Geolocation_LocationChanged(object sender, GeolocationLocationChangedEventArgs e)
-  {
-    // Process e.Location to get the new location
-    LocationsList.Add(e.Location);
-  }
-
-   async public Task OnStopListening()
+  public Task StopGettingLocationAsync()
   {
     try
     {
       Geolocation.LocationChanged -= Geolocation_LocationChanged;
       Geolocation.StopListeningForeground();
       string status = "Stopped listening for foreground location updates";
+      _logger.LogInformation(status);
     }
     catch (Exception ex)
     {
       // Unable to stop listening for location changes
+      _logger.LogError("Unable to stop listening for foreground location updates");
     }
+
+    return Task.CompletedTask;
   }
 
-  public void CancelRequest()
+  void Geolocation_LocationChanged(object? sender, GeolocationLocationChangedEventArgs e)
   {
-    if (_isCheckingLocation && _cancelTokenSource != null && _cancelTokenSource.IsCancellationRequested == false)
-      _cancelTokenSource.Cancel();
+    // Process e.Location to get the new location
+    LocationChanged?.Invoke(sender, e);
+    _logger.LogInformation("Obtained location update {e}", e);
   }
 }

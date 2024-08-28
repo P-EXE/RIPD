@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:RIPDApp.ViewModels"
+             xmlns:sensors="clr-namespace:Microsoft.Maui.Devices.Sensors;assembly=Microsoft.Maui.Essentials"
              x:Class="RIPDApp.Pages.RunPage"
              x:DataType="vm:RunVM"
              Title="RunPage">
@@ -9,6 +10,17 @@
   <VerticalStackLayout>
     <Button Text="Start getting Location" Command="{Binding StartGettingLocationCommand}"/>
     <Button Text="Stop gettting Location" Command="{Binding StopGettingLocationCommand}" WidthRequest="250"/>
-    <Label Text="{Binding CurrentLocation}"/>
+    <ScrollView>
+      <CollectionView ItemsSource="{Binding Locations}">
+        <CollectionView.ItemTemplate>
+          <DataTemplate x:DataType="sensors:Location">
+            <VerticalStackLayout>
+              <Label Text="{Binding Latitude}"/>
+              <Label Text="{Binding Longitude}"/>
+            </VerticalStackLayout>
+          </DataTemplate>
+        </CollectionView.ItemTemplate>
+      </CollectionView>
+    </ScrollView>
   </VerticalStackLayout>
 </ContentPage>

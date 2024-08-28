@@ -38,7 +38,7 @@ public static class ServiceRegisterer
     builder.Services.AddTransient<IWorkoutService, WorkoutService>();
     builder.Services.AddTransient<IUserService, UserService>();
     builder.Services.AddTransient<IDiaryService, DiaryService>();
-    builder.Services.AddTransient<RunGpsLocationService>();
+    builder.Services.AddTransient<IRunGpsLocationService, RunGpsLocationService>();
   }
   private static void RegisterPages(this MauiAppBuilder builder)
   {

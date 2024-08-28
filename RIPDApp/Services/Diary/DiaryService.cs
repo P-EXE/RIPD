@@ -45,4 +45,15 @@ public class DiaryService : IDiaryService
     };
     return await _httpService.GetAsync<IEnumerable<DiaryEntry_Food>?>($"diary/{diary.OwnerId}/foods", queries);
   }
+
+  public async Task<bool> AddRunEntryToDiaryAsync(DiaryEntry_Run entry)
+  {
+    // Mapping
+    DiaryEntry_Run_Create createEntry = _mapper.Map<DiaryEntry_Run_Create>(entry);
+
+    // Api
+    return await _httpService.PostAsync("diary/run", createEntry);
+
+    // Return
+  }
 }
