@@ -22,7 +22,7 @@ public partial class FoodDetailsVM : ObservableObject
     {
       SetManufacturer(m.Value);
     });
-    WeakReferenceMessenger.Default.Register<PageReturnObjectMessage<string>>(this, (r, m) =>
+    WeakReferenceMessenger.Default.Register<FoodCreatePageBarcodeResponse<string>>(this, (r, m) =>
     {
       SetBarcode(m.Value);
     });

@@ -6,5 +6,6 @@
              x:DataType="vm:HomeVM">
   <VerticalStackLayout>
     <Button Text="Diary" Command="{Binding GoToDiaryCommand}"/>
+    <Button Text="Run" Command="{Binding GoToRunCommand}"/>
   </VerticalStackLayout>
 </ContentPage>

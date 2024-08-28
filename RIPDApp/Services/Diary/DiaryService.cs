@@ -138,4 +138,15 @@ public class DiaryService : IDiaryService
   {
     throw new NotImplementedException();
   }
+
+  public async Task<bool> AddRunEntryToDiaryAsync(DiaryEntry_Run entry)
+  {
+    // Mapping
+    DiaryEntry_Run_Create createEntry = _mapper.Map<DiaryEntry_Run_Create>(entry);
+
+    // Api
+    return await _httpService.PostAsync("diary/run", createEntry);
+
+    // Return
+  }
 }

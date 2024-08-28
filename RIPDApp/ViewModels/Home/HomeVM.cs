@@ -11,4 +11,10 @@ public partial class HomeVM : ObservableObject
   {
     await Shell.Current.GoToAsync(nameof(DiaryTodayPage));
   }
+
+  [RelayCommand]
+  async Task GoToRun()
+  {
+    await Shell.Current.GoToAsync(nameof(RunPage));
+  }
 }

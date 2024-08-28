@@ -15,6 +15,7 @@ public static class MauiProgram
     var builder = MauiApp.CreateBuilder();
     builder
       .UseMauiApp<App>()
+      .UseMicrocharts()
       .UseMauiCommunityToolkit()
       .UseBarcodeReader()
       .UseMicrocharts()

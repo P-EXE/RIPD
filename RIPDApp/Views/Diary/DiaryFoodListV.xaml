@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:m="clr-namespace:RIPDShared.Models;assembly=RIPDShared"
+             xmlns:vm="clr-namespace:RIPDApp.ViewModels"
+             x:DataType="vm:DiaryVM"
+             x:Class="RIPDApp.Views.Diary.DiaryFoodListV">
+
+  <Grid RowDefinitions="auto, auto">
+    
+    <Label Grid.Row="0"
+           Text="Foods"/>
+    
+    <CollectionView Grid.Row="1"
+                    ItemsSource="{Binding FoodEntries}">
+      <CollectionView.ItemTemplate>
+        <DataTemplate x:DataType="m:DiaryEntry_Food">
+          <Label Text="{Binding Food.Name}"/>
+        </DataTemplate>
+      </CollectionView.ItemTemplate>
+    </CollectionView>
+  
+  </Grid>
+
+</ContentView>
