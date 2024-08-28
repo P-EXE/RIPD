@@ -23,7 +23,7 @@ public static class MauiProgram
     builder.RegisterPages();
     builder.RegisterViews();
     builder.RegisterViewModels();
-    builder.RegisterMockServices();
+    builder.RegisterServices();
     builder.RegisterTools();
     builder.RegisterDatabases();
 
