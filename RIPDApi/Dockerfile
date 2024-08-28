@@ -9,8 +9,8 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["RIPDApi/RIPDApi.csproj", "RIPDApi/"]
-COPY ["RIPDShared/RIPDShared.csproj", "RIPDShared/"]
+COPY ["/RIPDApi/RIPDApi.csproj", "RIPDApi/"]
+COPY ["/RIPDShared/RIPDShared.csproj", "RIPDShared/"]
 RUN dotnet restore "./RIPDApi/RIPDApi.csproj"
 COPY . .
 WORKDIR "/src/RIPDApi"

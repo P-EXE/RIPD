@@ -8,60 +8,54 @@ namespace RIPDApi.Config;
 
 public static class DatabaseConfig
 {
-  public static async Task RegisterDatabaseContext(this WebApplicationBuilder builder)
+  public static async Task RegisterSQLiteInMemory(this IServiceCollection services)
   {
-    await ConfigureSQLServerDatabaseContext(builder);
-    await ConfigureMongoDBContext(builder);
-  }
-
-  public static async Task RegisterTestDatabaseContext(this WebApplicationBuilder builder)
-  {
-    await ConfigureSQLServerDatabaseContext(builder);
-    await ConfigureMongoDBContext(builder);
-  }
-
-  private static Task ConfigureSQLServerDatabaseContext(WebApplicationBuilder builder)
-  {
-    builder.Services.AddDbContext<SQLDataBaseContext>(options =>
-      options.UseSqlServer(
-        builder.Configuration.GetConnectionString("RIPDDB-SQLConnection")
-      )
+    services.AddDbContext<SQLDataBaseContext>(options =>
+      options.UseSqlite("DataSource=sharedInMemoryDB;mode=memory;cache=shared")
     );
 
-    return Task.CompletedTask;
+    var context = services.BuildServiceProvider().GetRequiredService<SQLDataBaseContext>();
+    await context.Database.EnsureCreatedAsync();
   }
 
-  private static Task ConfigureSQLiteInMemoryDatabaseContext(WebApplicationBuilder builder)
+  public static async Task RegisterSQLServerTestDatabase(this IServiceCollection services)
   {
-    builder.Services.AddSingleton<DbConnection>(container =>
-    {
-      SqliteConnection connection = new("DataSource=sharedInMemoryDB;mode=memory;cache=shared");
-      connection.Open();
-
-      return connection;
-    });
-
-    builder.Services.AddDbContext<SQLDataBaseContext>((container, options) =>
-    {
-      var connection = container.GetRequiredService<DbConnection>();
-      options.UseSqlite(connection);
-    });
-
-    return Task.CompletedTask;
-  }
-
-  private static Task ConfigureMongoDBContext(WebApplicationBuilder builder)
-  {
-    MongoDataBaseSettings mongoDataBaseSettings = builder.Configuration.GetSection("MongoDataBaseSettings").Get<MongoDataBaseSettings>();
-    builder.Services.Configure<MongoDataBaseSettings>(builder.Configuration.GetSection("MongoDataBaseSettings"));
-    builder.Services.AddDbContext<MongoDataBaseContext>(options =>
-      options.UseMongoDB(
-        mongoDataBaseSettings.ConnectionString, mongoDataBaseSettings.DatabaseName
-      )
+    string connectionString = "Server=.\\SQLEXPRESS;Database=RIPDTest;Trusted_Connection=true;TrustServerCertificate=true;";
+    services.AddDbContext<SQLDataBaseContext>(options =>
+      options.UseSqlServer(connectionString)
     );
 
-    builder.Services.AddSingleton<MongoDBService>();
+    var context = services.BuildServiceProvider().GetRequiredService<SQLDataBaseContext>();
+    await context.Database.EnsureCreatedAsync();
+  }
 
-    return Task.CompletedTask;
+  public static async Task RegisterSQLServerContainer(this IServiceCollection services)
+  {
+    services.AddDbContext<SQLDataBaseContext>(options =>
+      options.UseSqlServer(DockerConfig.SQLServerConnectionString)
+    );
+
+    var context = services.BuildServiceProvider().GetRequiredService<SQLDataBaseContext>();
+    await context.Database.EnsureCreatedAsync();
+  }
+
+  public static async Task RegisterMongoServerContainer(this IServiceCollection services)
+  {
+    services.AddDbContext<MongoDataBaseContext>(options =>
+      options.UseMongoDB(DockerConfig.MongoServerConnectionString, DockerConfig.MongoServerDatabase)
+    );
+
+    var context = services.BuildServiceProvider().GetRequiredService<MongoDataBaseContext>();
+    await context.Database.EnsureCreatedAsync();
+  }
+
+  public static async Task RegisterMongoServerTestDatabase(this IServiceCollection services)
+  {
+    services.AddDbContext<MongoDataBaseContext>(options =>
+      options.UseMongoDB("mongodb://localhost:27017/", "RIPDTest")
+    );
+
+    var context = services.BuildServiceProvider().GetRequiredService<MongoDataBaseContext>();
+    await context.Database.EnsureCreatedAsync();
   }
 }

@@ -5,31 +5,31 @@ namespace RIPDApp.Config;
 
 public static class ServicesConfig
 {
-  public static Task RegisterServices(this MauiAppBuilder builder)
+  public static Task RegisterServices(this IServiceCollection services)
   {
-    builder.Services.AddTransient<IHttpService, HttpService>();
-    builder.Services.AddHttpClient<IHttpService, HttpService>(options =>
+    services.AddTransient<IHttpService, HttpService>();
+    services.AddHttpClient<IHttpService, HttpService>(options =>
     {
       options.BaseAddress = new(Statics.API.RouteBaseHttp);
       options.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Statics.Auth.BearerToken?.AccessToken ?? "");
     });
 
-    builder.Services.AddTransient<IOwnerService, OwnerService>();
-    builder.Services.AddTransient<IFoodService, FoodService>();
-    builder.Services.AddTransient<IWorkoutService, WorkoutService>();
-    builder.Services.AddTransient<IUserService, UserService>();
-    builder.Services.AddTransient<IDiaryService, DiaryService>();
+    services.AddTransient<IOwnerService, OwnerService>();
+    services.AddTransient<IFoodService, FoodService>();
+    services.AddTransient<IWorkoutService, WorkoutService>();
+    services.AddTransient<IUserService, UserService>();
+    services.AddTransient<IDiaryService, DiaryService>();
 
     return Task.CompletedTask;
   }
 
-  public static Task RegisterMockServices(this MauiAppBuilder builder)
+  public static Task RegisterMockServices(this IServiceCollection services)
   {
-    builder.Services.AddTransient<IOwnerService, OwnerServiceMock>();
-    builder.Services.AddTransient<IFoodService, FoodServiceMock>();
-    builder.Services.AddTransient<IWorkoutService, WorkoutServiceMock>();
-    builder.Services.AddTransient<IUserService, UserServiceMock>();
-    builder.Services.AddTransient<IDiaryService, DiaryServiceMock>();
+    services.AddTransient<IOwnerService, OwnerServiceMock>();
+    services.AddTransient<IFoodService, FoodServiceMock>();
+    services.AddTransient<IWorkoutService, WorkoutServiceMock>();
+    services.AddTransient<IUserService, UserServiceMock>();
+    services.AddTransient<IDiaryService, DiaryServiceMock>();
 
     return Task.CompletedTask;
   }

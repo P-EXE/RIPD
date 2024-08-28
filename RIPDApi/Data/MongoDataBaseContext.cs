@@ -17,7 +17,6 @@ public class MongoDataBaseContext : DbContext
     builder.Entity<Run>(r =>
     {
       r.HasKey(r => r.Id);
-
     });
   }
 }

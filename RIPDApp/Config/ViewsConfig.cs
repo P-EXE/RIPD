@@ -4,11 +4,11 @@ namespace RIPDApp.Config;
 
 public static class ViewsConfig
 {
-  public static Task RegisterViews(this MauiAppBuilder builder)
+  public static Task RegisterViews(this IServiceCollection services)
   {
-    builder.Services.AddTransient<StatusBarV>();
+    services.AddTransient<StatusBarV>();
 
-    builder.Services.AddTransient<FoodListFoodV>();
+    services.AddTransient<FoodListFoodV>();
 
     return Task.CompletedTask;
   }
