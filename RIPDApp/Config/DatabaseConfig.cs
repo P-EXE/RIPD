@@ -1,22 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using RIPDApp.DataBase;
 
 namespace RIPDApp.Config;
 
 public static class DatabaseConfig
 {
-  public static Task RegisterDatabases(this MauiAppBuilder builder)
+  public static async Task RegisterSQLiteDatabase(this IServiceCollection services)
   {
-    RegisterSQLiteDBContext(builder);
-    return Task.CompletedTask;
-  }
-
-  private static Task RegisterSQLiteDBContext(MauiAppBuilder builder)
-  {
-    builder.Services.AddDbContext<LocalDBContext>(options =>
+    services.AddDbContext<LocalDBContext>(options =>
       options.UseSqlite(Statics.LocalDB.SQLiteConnection)
     );
 
-    return Task.CompletedTask;
+    var context = services.BuildServiceProvider().GetRequiredService<LocalDBContext>();
+    await context.Database.EnsureCreatedAsync();
   }
 }

@@ -4,45 +4,45 @@ namespace RIPDApp.Config;
 
 public static class PagesConfig
 {
-  public static Task RegisterPages(this MauiAppBuilder builder)
+  public static Task RegisterPages(this IServiceCollection services)
   {
-    builder.Services.AddScoped<AutoLoginPage>();
-    builder.Services.AddTransient<RegisterPage>();
-    builder.Services.AddTransient<LoginPage>();
+    services.AddScoped<AutoLoginPage>();
+    services.AddTransient<RegisterPage>();
+    services.AddTransient<LoginPage>();
 
-    builder.Services.AddTransient<HomePage>();
+    services.AddTransient<HomePage>();
 
-    builder.Services.AddTransient<DiaryTodayPage>();
-    builder.Services.AddTransient<DiaryWeekPage>();
-    builder.Services.AddTransient<DiaryMonthPage>();
+    services.AddTransient<DiaryTodayPage>();
+    services.AddTransient<DiaryWeekPage>();
+    services.AddTransient<DiaryMonthPage>();
 
-    builder.Services.AddTransient<DiaryEntryFoodCreatePage>();
-    builder.Services.AddTransient<DiaryEntryWorkoutCreatePage>();
+    services.AddTransient<DiaryEntryFoodCreatePage>();
+    services.AddTransient<DiaryEntryWorkoutCreatePage>();
 
-    builder.Services.AddTransient<FoodSearchPage>();
-    builder.Services.AddTransient<WorkoutSearchPage>();
-    builder.Services.AddTransient<UserSearchPage>();
+    services.AddTransient<FoodSearchPage>();
+    services.AddTransient<WorkoutSearchPage>();
+    services.AddTransient<UserSearchPage>();
 
-    builder.Services.AddTransient<FoodDetailsPage>();
-    builder.Services.AddTransient<FoodCreatePage>();
-    builder.Services.AddTransient<FoodUpdatePage>();
-    builder.Services.AddTransient<FoodViewPage>();
+    services.AddTransient<FoodDetailsPage>();
+    services.AddTransient<FoodCreatePage>();
+    services.AddTransient<FoodUpdatePage>();
+    services.AddTransient<FoodViewPage>();
 
-    builder.Services.AddTransient<WorkoutCreatePage>();
+    services.AddTransient<WorkoutCreatePage>();
 
-    builder.Services.AddTransient<BodyMetricPage>();
-    builder.Services.AddTransient<BodyMetricCreatePage>();
-    builder.Services.AddTransient<BodyMetricViewPage>();
+    services.AddTransient<BodyMetricPage>();
+    services.AddTransient<BodyMetricCreatePage>();
+    services.AddTransient<BodyMetricViewPage>();
 
-    builder.Services.AddTransient<FitnessTargetPage>();
+    services.AddTransient<FitnessTargetPage>();
 
-    builder.Services.AddTransient<BarcodeScannerPage>();
+    services.AddTransient<BarcodeScannerPage>();
 
-    builder.Services.AddTransient<UserProfilePage>();
-    builder.Services.AddScoped<UserProfileUpdatePage>();
+    services.AddTransient<UserProfilePage>();
+    services.AddScoped<UserProfileUpdatePage>();
 
-    builder.Services.AddTransient<SettingsPage>();
-    builder.Services.AddTransient<SettingsDevPage>();
+    services.AddTransient<SettingsPage>();
+    services.AddTransient<SettingsDevPage>();
 
     return Task.CompletedTask;
   }

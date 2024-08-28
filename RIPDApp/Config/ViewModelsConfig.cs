@@ -4,38 +4,38 @@ namespace RIPDApp.Config;
 
 public static class ViewModelsConfig
 {
-  public static Task RegisterViewModels(this MauiAppBuilder builder)
+  public static Task RegisterViewModels(this IServiceCollection services)
   {
-    builder.Services.AddTransient<StatusBarVM>();
+    services.AddTransient<StatusBarVM>();
 
-    builder.Services.AddTransient<RegisterLoginVM>();
+    services.AddTransient<RegisterLoginVM>();
 
-    builder.Services.AddTransient<HomeVM>();
+    services.AddTransient<HomeVM>();
 
-    builder.Services.AddTransient<DiaryVM>();
+    services.AddTransient<DiaryVM>();
 
-    builder.Services.AddTransient<DiaryEntryVM>();
+    services.AddTransient<DiaryEntryVM>();
 
-    builder.Services.AddTransient<FoodSearchVM>();
-    builder.Services.AddTransient<WorkoutSearchVM>();
-    builder.Services.AddTransient<UserSearchVM>();
+    services.AddTransient<FoodSearchVM>();
+    services.AddTransient<WorkoutSearchVM>();
+    services.AddTransient<UserSearchVM>();
 
-    builder.Services.AddTransient<FoodListFoodVM>();
+    services.AddTransient<FoodListFoodVM>();
 
-    builder.Services.AddTransient<FoodDetailsVM>();
-    builder.Services.AddTransient<WorkoutDetailsVM>();
+    services.AddTransient<FoodDetailsVM>();
+    services.AddTransient<WorkoutDetailsVM>();
 
-    builder.Services.AddTransient<BodyMetricVM>();
-    builder.Services.AddTransient<BodyMetricDetailsVM>();
+    services.AddTransient<BodyMetricVM>();
+    services.AddTransient<BodyMetricDetailsVM>();
 
-    builder.Services.AddTransient<FitnessTargetVM>();
+    services.AddTransient<FitnessTargetVM>();
 
-    builder.Services.AddTransient<ScannerVM>();
+    services.AddTransient<ScannerVM>();
 
-    builder.Services.AddTransient<UserProfileVM>();
+    services.AddTransient<UserProfileVM>();
 
-    builder.Services.AddTransient<SettingsVM>();
-    builder.Services.AddTransient<SettingsDevVM>();
+    services.AddTransient<SettingsVM>();
+    services.AddTransient<SettingsDevVM>();
 
     return Task.CompletedTask;
   }

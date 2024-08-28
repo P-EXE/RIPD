@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Logging;
 using epj.RouteGenerator;
 using RIPDApp.Config;
+using ZXing.Net.Maui.Controls;
+using Microcharts.Maui;
 
 namespace RIPDApp;
 
@@ -14,18 +16,20 @@ public static class MauiProgram
     builder
       .UseMauiApp<App>()
       .UseMauiCommunityToolkit()
+      .UseBarcodeReader()
       .ConfigureFonts(fonts =>
       {
         fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
         fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
       });
+    var services = builder.Services;
 
-    builder.RegisterPages();
-    builder.RegisterViews();
-    builder.RegisterViewModels();
-    builder.RegisterMockServices();
-    builder.RegisterTools();
-    builder.RegisterDatabases();
+    services.RegisterPages();
+    services.RegisterViews();
+    services.RegisterViewModels();
+    services.RegisterMockServices();
+    services.RegisterTools();
+    services.RegisterSQLiteDatabase();
 
 #if DEBUG
     builder.Logging.AddDebug();
