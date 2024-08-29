@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson;
 using RIPDShared.Models;
 
 namespace RIPDApi.Data;
@@ -113,6 +114,11 @@ public class SQLDataBaseContext : IdentityDbContext<AppUser, IdentityRole<Guid>,
       re.Property(e => e.DiaryId).ValueGeneratedNever();
       re.Property(e => e.EntryNr).ValueGeneratedOnAdd()
       .UseIdentityColumn();
+      re.Property(e => e.MongoDBId)
+      .HasConversion(
+        e => e.ToString(),
+        e => ObjectId.Parse(e)
+      );
     });
 
     builder.Entity<DiaryEntry_BodyMetric>(be =>

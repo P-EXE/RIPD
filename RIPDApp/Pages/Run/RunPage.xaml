@@ -7,10 +7,9 @@
              x:DataType="vm:RunVM"
              Title="">
 
-  <VerticalStackLayout>
-    <Button Text="Start getting Location" Command="{Binding StartGettingLocationCommand}" IsVisible="{Binding IsNotListening}"/>
-    <Button Text="Stop gettting Location" Command="{Binding StopGettingLocationCommand}" IsVisible="{Binding IsListening}"/>
-    <ScrollView>
+  <Grid RowDefinitions="*,auto">
+    
+    <ScrollView Grid.Row="0">
       <CollectionView ItemsSource="{Binding Locations}">
         <CollectionView.ItemTemplate>
           <DataTemplate x:DataType="sensors:Location">
@@ -22,5 +21,11 @@
         </CollectionView.ItemTemplate>
       </CollectionView>
     </ScrollView>
-  </VerticalStackLayout>
+    
+    <VerticalStackLayout Grid.Row="1">
+      <Button Text="Start getting Location" Command="{Binding StartGettingLocationCommand}" IsVisible="{Binding IsNotListening}"/>
+      <Button Text="Stop gettting Location" Command="{Binding StopGettingLocationCommand}" IsVisible="{Binding IsListening}"/>
+    </VerticalStackLayout>
+    
+  </Grid>
 </ContentPage>

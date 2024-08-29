@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using RIPDShared.Models;
-using System.Net;
 
 namespace RIPDApp.Services;
 

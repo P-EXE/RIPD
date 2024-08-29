@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson;
 using RIPDApi.Data;
 using RIPDApi.Services;
 using RIPDShared.Models;
@@ -86,12 +87,11 @@ public class DiaryRepo : IDiaryRepo
   {
     // Mapping
     DiaryEntry_Run entry = _mapper.Map<DiaryEntry_Run>(create);
-    entry.EntryNr = 0;
+    entry.Run.Id = ObjectId.GenerateNewId();
+    entry.MongoDBId = entry.Run.Id;
 
     // Mongo Context
     await _mongo.Runs.AddAsync(entry.Run);
-
-    entry.MongoDBId = entry.Run.Id.ToString();
 
     // SQL Context
     ICollection<DiaryEntry_Run>? runEntries = _sql.Diaries
