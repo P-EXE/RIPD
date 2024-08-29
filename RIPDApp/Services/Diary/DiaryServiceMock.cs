@@ -20,7 +20,7 @@ public class DiaryServiceMock : IDiaryService
     throw new NotImplementedException();
   }
 
-  public Task<DiaryEntry_Run?> AddRunEntryAsync(DiaryEntry_Run_Create entry)
+  public Task<DiaryEntry_Run?> AddRunEntryAsync(DiaryEntry_Run entry)
   {
     throw new NotImplementedException();
   }

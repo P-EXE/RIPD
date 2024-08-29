@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
+using MongoDB.Bson;
 using RIPDApp.Services;
 using RIPDShared.Models;
 using System.Collections.ObjectModel;
@@ -47,12 +48,17 @@ namespace RIPDApp.ViewModels
       IsListening = false;
 
       if (!Locations.Any()) return;
-      DiaryEntry_Run_Create entry = new()
+      Run run = new()
+      {
+        Id = ObjectId.Empty,
+        Locations = Locations
+      };
+      DiaryEntry_Run entry = new()
       {
         Acted = Locations.First().Timestamp.UtcDateTime,
         Added = DateTime.UtcNow,
         DiaryId = Statics.Auth.Owner.Id,
-        Locations = Locations,
+        Run = run
       };
 
       await _diaryService.AddRunEntryAsync(entry);

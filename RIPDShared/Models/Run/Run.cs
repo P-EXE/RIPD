@@ -10,6 +10,6 @@ namespace RIPDShared.Models;
 // Run should not exist without a DiaryEntry_Run.
 public class Run
 {
-  public ObjectId Id { get; set; }
+  public ObjectId? Id { get; set; }
   public virtual ICollection<Location> Locations { get; set; } = [];
 }

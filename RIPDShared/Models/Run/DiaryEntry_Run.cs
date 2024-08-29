@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson;
 
 namespace RIPDShared.Models;
 
@@ -9,10 +10,6 @@ namespace RIPDShared.Models;
 // DiaryEntry_Run should not exist without a Run.
 public class DiaryEntry_Run : DiaryEntry
 {
-  public string? MongoDBId { get; set; }
-  // This should normally be null.
-  // Can be filled at runtime to allow easier CRUD operations.
-  // ↑ Previous statement needs to be tested.
-  /*  public Run? Run { get; set; }*/
-  public Run Run { get; set; } = new();
+  public ObjectId? MongoDBId { get; set; }
+  public Run Run { get; set; }
 }

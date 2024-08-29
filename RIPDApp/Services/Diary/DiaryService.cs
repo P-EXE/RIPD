@@ -48,9 +48,12 @@ public class DiaryService : IDiaryService
     // Return
   }
 
-  public Task<DiaryEntry_Run?> AddRunEntryAsync(DiaryEntry_Run_Create entry)
+  public async Task<DiaryEntry_Run?> AddRunEntryAsync(DiaryEntry_Run entry)
   {
-    throw new NotImplementedException();
+    // Mapping
+    DiaryEntry_Run_Create create = _mapper.Map<DiaryEntry_Run_Create>(entry);
+
+    return await _httpService.PostAsync<DiaryEntry_Run_Create,DiaryEntry_Run>("diary/run", create);
   }
 
 

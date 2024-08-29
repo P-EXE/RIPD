@@ -4,5 +4,5 @@ namespace RIPDShared.Models;
 
 public class DiaryEntry_Run_Create : DiaryEntry_Create
 {
-  public ICollection<Location> Locations { get; set; } = [];
+  public Run Run { get; set; } = new();
 }

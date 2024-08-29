@@ -9,7 +9,7 @@ public interface IDiaryService
   Task<DiaryEntry_Food?> AddFoodEntryAsync(DiaryEntry_Food entry);
   Task<DiaryEntry_Workout?> AddWorkoutEntryAsync(DiaryEntry_Workout entry);
   Task<DiaryEntry_BodyMetric?> AddBodyMetricEntryAsync(DiaryEntry_BodyMetric entry);
-  Task<DiaryEntry_Run?> AddRunEntryAsync(DiaryEntry_Run_Create entry);
+  Task<DiaryEntry_Run?> AddRunEntryAsync(DiaryEntry_Run entry);
   // Fitness Target can only be Read or Updated
   #endregion Create / Add
 
