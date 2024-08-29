@@ -62,7 +62,7 @@ public class DiaryService : IDiaryService
       ["startDate"] = startDate,
       ["endDate"] = endDate,
     };
-    return await _httpService.GetAsync<IEnumerable<DiaryEntry_Food>?>($"diary/foods", queries);
+    return await _httpService.GetAsync<IEnumerable<DiaryEntry_Food>?>($"diary/food", queries);
   }
 
   public async Task<IEnumerable<DiaryEntry_Workout>?> GetWorkoutEntriesAsync(Diary diary, DateTime startDate, DateTime endDate)
@@ -73,7 +73,7 @@ public class DiaryService : IDiaryService
       ["startDate"] = startDate,
       ["endDate"] = endDate,
     };
-    return await _httpService.GetAsync<IEnumerable<DiaryEntry_Workout>?>($"diary/workouts", queries);
+    return await _httpService.GetAsync<IEnumerable<DiaryEntry_Workout>?>($"diary/workout", queries);
   }
 
   public async Task<IEnumerable<DiaryEntry_BodyMetric>?> GetBodyMetricEntriesAsync(Diary diary, DateTime startDate, DateTime endDate)
@@ -126,14 +126,28 @@ public class DiaryService : IDiaryService
   }
 
 
-  public Task<bool> DeleteFoodEntryAsync(DiaryEntry_Food entry)
+  public async Task<bool> DeleteFoodEntryAsync(DiaryEntry_Food entry)
   {
-    throw new NotImplementedException();
+    Dictionary<string, object> queries = new()
+    {
+      ["entry"] = entry.EntryNr,
+      ["diary"] = entry.DiaryId,
+    };
+
+    // Api
+    return await _httpService.DeleteAsync<bool>("diary/food", queries);
   }
 
-  public Task<bool> DeleteWorkoutEntryAsync(DiaryEntry_Workout entry)
+  public async Task<bool> DeleteWorkoutEntryAsync(DiaryEntry_Workout entry)
   {
-    throw new NotImplementedException();
+    Dictionary<string, object> queries = new()
+    {
+      ["entry"] = entry.EntryNr,
+      ["diary"] = entry.DiaryId,
+    };
+
+    // Api
+    return await _httpService.DeleteAsync<bool>("diary/workout", queries);
   }
 
   public async Task<bool> DeleteBodyMetricEntryAsync(DiaryEntry_BodyMetric entry)

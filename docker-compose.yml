@@ -11,8 +11,8 @@ services:
       MONGOSERVER_SERVER:  "mongodb://mongo:27017/"
       MONGOSERVER_DATABASE: "RIPD"
     ports:
-      - "8080:8080"
-      - "8081:8081"
+      - "42069:8080"
+      - "42070:8081"
     networks:
       - ripd_network
 

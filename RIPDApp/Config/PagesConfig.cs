@@ -11,13 +11,16 @@ public static class PagesConfig
     services.AddTransient<LoginPage>();
 
     services.AddTransient<HomePage>();
+    services.AddTransient<RunPage>();
 
     services.AddTransient<DiaryTodayPage>();
     services.AddTransient<DiaryWeekPage>();
     services.AddTransient<DiaryMonthPage>();
 
     services.AddTransient<DiaryEntryFoodCreatePage>();
+    services.AddTransient<DiaryEntryFoodEditPage>();
     services.AddTransient<DiaryEntryWorkoutCreatePage>();
+    services.AddTransient<DiaryEntryWorkoutEditPage>();
 
     services.AddTransient<FoodSearchPage>();
     services.AddTransient<WorkoutSearchPage>();

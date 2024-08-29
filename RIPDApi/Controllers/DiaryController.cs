@@ -336,7 +336,7 @@ public class DiaryController : ControllerBase
       return UnprocessableEntity(ex);
     }
 
-    return success ? Ok(entry) : NotFound(entry);
+    return success ? Ok() : NotFound(entry);
   }
   [HttpDelete("workout")]
   public async Task<ActionResult> DeleteWorkoutEntryAsync([FromQuery] int entry, [FromQuery] string? diary = default)
@@ -356,7 +356,7 @@ public class DiaryController : ControllerBase
       return UnprocessableEntity(ex);
     }
 
-    return success ? Ok(entry) : NotFound(entry);
+    return success ? Ok() : NotFound(entry);
   }
 
   [HttpDelete("bodymetric")]
@@ -398,7 +398,7 @@ public class DiaryController : ControllerBase
       return UnprocessableEntity(ex);
     }
 
-    return success ? Ok(entry) : NotFound(entry);
+    return success ? Ok() : NotFound(entry);
   }
   #endregion Delete
 }

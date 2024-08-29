@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:v="clr-namespace:RIPDApp.Views.Diary"
              xmlns:vm="clr-namespace:RIPDApp.ViewModels"
+             xmlns:m="clr-namespace:RIPDShared.Models;assembly=RIPDShared"
              xmlns:micro="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
              x:Class="RIPDApp.Pages.DiaryMonthPage"
              x:DataType="vm:DiaryVM"
@@ -22,11 +23,23 @@
       </Border>
 
       <CollectionView SelectionMode="Single"
-                      ItemsSource="{Binding FoodEntries}">
+                      ItemsSource="{Binding FoodEntries}"
+                      SelectionChangedCommand="{Binding ShowFoodDetailsCommand}"
+                      SelectedItem="{Binding SelectedFoodEntry}">
         <CollectionView.ItemTemplate>
-          <DataTemplate>
+          <DataTemplate x:DataType="m:DiaryEntry_Food">
             <SwipeView>
-              <Label Text="Food"/>
+              <FlexLayout AlignContent="SpaceEvenly">
+                <VerticalStackLayout FlexLayout.Grow="1">
+                  <Label Text="{Binding Food.Name}"/>
+                  <Label Text="{Binding Food.Manufacturer}"/>
+                </VerticalStackLayout>
+                <Label FlexLayout.Grow="1" Text="{Binding Food.Energy, StringFormat='{0:0 KCal}'}" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <VerticalStackLayout FlexLayout.Grow="0">
+                  <Label Text="{Binding Acted, StringFormat='{0:dd.MM.yyyy}'}"/>
+                  <Label Text="{Binding Acted, StringFormat='{0:HH:mm:ss}'}"/>
+                </VerticalStackLayout>
+              </FlexLayout>
             </SwipeView>
           </DataTemplate>
         </CollectionView.ItemTemplate>
@@ -37,17 +50,33 @@
                FontSize="Default"/>
       </Border>
 
-      <CollectionView SelectionMode="Single">
+      <CollectionView SelectionMode="Single"
+                      ItemsSource="{Binding WorkoutEntries}"
+                      SelectionChangedCommand="{Binding ShowWorkoutDetailsCommand}"
+                      SelectedItem="{Binding SelectedWorkoutEntry}">
         <CollectionView.ItemTemplate>
-          <DataTemplate>
+          <DataTemplate x:DataType="m:DiaryEntry_Workout">
             <SwipeView>
-              <Label/>
+              <FlexLayout AlignContent="SpaceEvenly">
+                <VerticalStackLayout FlexLayout.Grow="1">
+                  <Label Text="{Binding Workout.Name}"/>
+                  <Label Text="{Binding Workout.Contributer}"/>
+                </VerticalStackLayout>
+                <Label FlexLayout.Grow="1" Text="{Binding Workout.Energy, StringFormat='{0:0 KCal}'}" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <VerticalStackLayout FlexLayout.Grow="0">
+                  <Label Text="{Binding Acted, StringFormat='{0:dd.MM.yyyy}'}"/>
+                  <Label Text="{Binding Acted, StringFormat='{0:HH:mm:ss}'}"/>
+                </VerticalStackLayout>
+              </FlexLayout>
             </SwipeView>
           </DataTemplate>
         </CollectionView.ItemTemplate>
       </CollectionView>
 
+      <Button Text="Refresh" Command="{Binding RefreshCommand}"/>
+
     </VerticalStackLayout>
+
   </ScrollView>
 
 </ContentPage>

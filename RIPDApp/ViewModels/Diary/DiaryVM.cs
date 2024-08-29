@@ -12,6 +12,8 @@ using System.Collections.ObjectModel;
 namespace RIPDApp.ViewModels;
 
 [QueryProperty(nameof(ActivePageMode), nameof(PageMode))]
+[QueryProperty(nameof(DeletedFoodEntry), nameof(DeletedFoodEntry))]
+[QueryProperty(nameof(DeletedWorkoutEntry), nameof(DeletedWorkoutEntry))]
 public partial class DiaryVM : ObservableObject
 {
   private readonly IDiaryService _diaryService;
@@ -30,12 +32,19 @@ public partial class DiaryVM : ObservableObject
   private DateTime _endDate = DateTime.Today;
 
   [ObservableProperty]
-  ObservableCollection<DiaryEntry_Food>? _foodEntries = [];
+  private ObservableCollection<DiaryEntry_Food> _foodEntries = [];
   [ObservableProperty]
-  DiaryEntry_Food? _selectedFoodEntry;
+  private DiaryEntry_Food? _selectedFoodEntry;
   [ObservableProperty]
-  ObservableCollection<DiaryEntry_Workout>? _workoutEntries = [];
+  private DiaryEntry_Food? _deletedFoodEntry;
+  [ObservableProperty]
+  private ObservableCollection<DiaryEntry_Workout> _workoutEntries = [];
+  [ObservableProperty]
+  private DiaryEntry_Workout? _selectedWorkoutEntry;
+  [ObservableProperty]
+  private DiaryEntry_Workout? _deletedWorkoutEntry;
 
+  #region Charts
   private const int CornerRadius = 1000;
   private static readonly SKColor bgColor = SKColor.Parse("#00000000");
   private static readonly SKColor posColor = SKColor.Parse("#2000FF00");
@@ -78,6 +87,7 @@ public partial class DiaryVM : ObservableObject
     new(0.6f){Color = negColor},
     new(0.7f){Color = negColor}
   ];
+  #endregion Charts
 
   partial void OnActivePageModeChanged(int value)
   {
@@ -107,6 +117,27 @@ public partial class DiaryVM : ObservableObject
     }
   }
 
+  partial void OnDeletedFoodEntryChanged(DiaryEntry_Food? value)
+  {
+    if (value == null)
+    {
+      Shell.Current.DisplayAlert("Error", "Unable to remove Food Entry.", "Close");
+      return;
+    }
+    FoodEntries.Remove(value);
+  }
+
+  partial void OnDeletedWorkoutEntryChanged(DiaryEntry_Workout? value)
+  {
+    if (value == null)
+    {
+      Shell.Current.DisplayAlert("Error", "Unable to remove Workout Entry.", "Close");
+      return;
+    }
+    WorkoutEntries.Remove(value);
+  }
+
+
   [RelayCommand]
   private async Task Refresh()
   {
@@ -118,16 +149,26 @@ public partial class DiaryVM : ObservableObject
     // TODO: Perform some kind of transformation for display
   }
 
-  // Needs to be adjusted to FoodEntryPage
   [RelayCommand]
   private async Task ShowFoodDetails()
   {
-    await Shell.Current.GoToAsync($"{nameof(FoodDetailsPage)}", true, new Dictionary<string, object>
+    await Shell.Current.GoToAsync($"{Routes.DiaryEntryFoodEditPage}", true, new Dictionary<string, object>
     {
-      {"Food", SelectedFoodEntry},
-      {"PageMode", FoodDetailsVM.PageMode.View}
+      {"FoodEntry", SelectedFoodEntry},
+      {"Food", SelectedFoodEntry.Food}
     });
     SelectedFoodEntry = null;
+  }
+
+  [RelayCommand]
+  private async Task ShowWorkoutDetails()
+  {
+    await Shell.Current.GoToAsync($"{Routes.DiaryEntryWorkoutEditPage}", true, new Dictionary<string, object>
+    {
+      {"WorkoutEntry", SelectedWorkoutEntry},
+      {"Workout", SelectedWorkoutEntry.Workout}
+    });
+    SelectedWorkoutEntry = null;
   }
 
   public enum PageMode

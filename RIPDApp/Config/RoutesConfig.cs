@@ -30,16 +30,19 @@ public static class RoutesConfig
 
   private static Task RegisterHomeRoutes()
   {
-    Routing.RegisterRoute(Routes.HomePage, typeof(HomePage));
+    Routing.RegisterRoute(Routes.HomePage + $"/{Routes.RunPage}", typeof(RunPage));
 
     return Task.CompletedTask;
   }
 
   private static Task RegisterDiaryRoutes()
   {
-    Routing.RegisterRoute(Routes.DiaryTodayPage, typeof(DiaryTodayPage));
-    Routing.RegisterRoute(Routes.DiaryWeekPage, typeof(DiaryWeekPage));
-    Routing.RegisterRoute(Routes.DiaryMonthPage, typeof(DiaryMonthPage));
+    Routing.RegisterRoute(Routes.DiaryTodayPage + $"/{Routes.DiaryEntryFoodEditPage}", typeof(DiaryEntryFoodEditPage));
+    Routing.RegisterRoute(Routes.DiaryTodayPage + $"/{Routes.DiaryEntryWorkoutEditPage}", typeof(DiaryEntryWorkoutEditPage));
+    Routing.RegisterRoute(Routes.DiaryWeekPage + $"/{Routes.DiaryEntryFoodEditPage}", typeof(DiaryEntryFoodEditPage));
+    Routing.RegisterRoute(Routes.DiaryWeekPage + $"/{Routes.DiaryEntryWorkoutEditPage}", typeof(DiaryEntryWorkoutEditPage));
+    Routing.RegisterRoute(Routes.DiaryMonthPage + $"/{Routes.DiaryEntryFoodEditPage}", typeof(DiaryEntryFoodEditPage));
+    Routing.RegisterRoute(Routes.DiaryMonthPage + $"/{Routes.DiaryEntryWorkoutEditPage}", typeof(DiaryEntryWorkoutEditPage));
 
     return Task.CompletedTask;
   }

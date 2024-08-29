@@ -6,13 +6,53 @@ using RIPDShared.Models;
 namespace RIPDApp.ViewModels;
 
 [QueryProperty(nameof(Food), nameof(Food))]
+[QueryProperty(nameof(FoodEntry), nameof(FoodEntry))]
 [QueryProperty(nameof(Workout), nameof(Workout))]
+[QueryProperty(nameof(WorkoutEntry), nameof(WorkoutEntry))]
+[QueryProperty(nameof(ActivePageMode), nameof(PageMode))]
 public partial class DiaryEntryVM : ObservableObject
 {
   private readonly IDiaryService _diaryService;
   public DiaryEntryVM(IDiaryService diaryService)
   {
     _diaryService = diaryService;
+  }
+
+  [ObservableProperty]
+  private int _activePageMode;
+  [ObservableProperty]
+  private bool _pageModeCreate;
+  [ObservableProperty]
+  private bool _pageModeUpdate;
+  [ObservableProperty]
+  private bool _pageModeDelete;
+
+  partial void OnActivePageModeChanged(int value)
+  {
+    switch ((PageMode)value)
+    {
+      case PageMode.Create:
+        {
+          PageModeCreate = true;
+          PageModeUpdate = false;
+          PageModeDelete = false;
+          break;
+        }
+      case PageMode.Update:
+        {
+          PageModeCreate = false;
+          PageModeUpdate = true;
+          PageModeDelete = true;
+          break;
+        }
+      case PageMode.Delete:
+        {
+          PageModeCreate = false;
+          PageModeUpdate = true;
+          PageModeDelete = true;
+          break;
+        }
+    }
   }
 
   [ObservableProperty]
@@ -59,8 +99,58 @@ public partial class DiaryEntryVM : ObservableObject
     await GoBack();
   }
 
+  [RelayCommand]
+  private async Task UpdateFoodEntry()
+  {
+    FoodEntry.FoodId = Food.Id;
+    FoodEntry.Food = Food;
+    bool success = default != await _diaryService.UpdateFoodEntryAsync(FoodEntry);
+    if (!success)
+      return;
+    await GoBack();
+  }
+
+  [RelayCommand]
+  private async Task UpdateWorkoutEntry()
+  {
+    WorkoutEntry.WorkoutId = Workout.Id;
+    WorkoutEntry.Workout = Workout;
+    bool success = default != await _diaryService.UpdateWorkoutEntryAsync(WorkoutEntry);
+    if (!success)
+      return;
+    await GoBack();
+  }
+
+  [RelayCommand]
+  private async Task DeleteFoodEntryFromDiary()
+  {
+    await _diaryService.DeleteFoodEntryAsync(FoodEntry);
+    await Shell.Current.GoToAsync("..", false, new()
+    {
+      { "DeletedFoodEntry", FoodEntry }
+    });
+  }
+
+  [RelayCommand]
+  private async Task DeleteWorkoutEntryFromDiary()
+  {
+    await _diaryService.DeleteWorkoutEntryAsync(WorkoutEntry);
+    await Shell.Current.GoToAsync("..", false, new()
+    {
+      { "DeletedWorkoutEntry", WorkoutEntry }
+    });
+  }
+
   private async Task GoBack()
   {
     await Shell.Current.GoToAsync("..", true);
   }
+
+  public enum PageMode
+  {
+    Create,
+    Update,
+    Delete
+  }
 }
+

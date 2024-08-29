@@ -33,7 +33,7 @@ public class DiaryServiceMock : IDiaryService
     throw new NotImplementedException();
   }
 
-  public Task<IEnumerable<DiaryEntry_Food>?> GetWorkoutEntriesAsync(Diary diary, DateTime startDate, DateTime endDate)
+  public Task<IEnumerable<DiaryEntry_Workout>?> GetWorkoutEntriesAsync(Diary diary, DateTime startDate, DateTime endDate)
   {
     throw new NotImplementedException();
   }

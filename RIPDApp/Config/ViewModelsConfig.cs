@@ -11,6 +11,7 @@ public static class ViewModelsConfig
     services.AddTransient<RegisterLoginVM>();
 
     services.AddTransient<HomeVM>();
+    services.AddTransient<RunVM>();
 
     services.AddTransient<DiaryVM>();
 

@@ -46,6 +46,7 @@ namespace RIPDApp.ViewModels
       await _locationService.StopGettingLocationAsync();
       IsListening = false;
 
+      if (!Locations.Any()) return;
       DiaryEntry_Run_Create entry = new()
       {
         Acted = Locations.First().Timestamp.UtcDateTime,

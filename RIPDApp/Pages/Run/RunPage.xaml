@@ -5,11 +5,11 @@
              xmlns:sensors="clr-namespace:Microsoft.Maui.Devices.Sensors;assembly=Microsoft.Maui.Essentials"
              x:Class="RIPDApp.Pages.RunPage"
              x:DataType="vm:RunVM"
-             Title="RunPage">
+             Title="">
 
   <VerticalStackLayout>
-    <Button Text="Start getting Location" Command="{Binding StartGettingLocationCommand}"/>
-    <Button Text="Stop gettting Location" Command="{Binding StopGettingLocationCommand}" WidthRequest="250"/>
+    <Button Text="Start getting Location" Command="{Binding StartGettingLocationCommand}" IsVisible="{Binding IsNotListening}"/>
+    <Button Text="Stop gettting Location" Command="{Binding StopGettingLocationCommand}" IsVisible="{Binding IsListening}"/>
     <ScrollView>
       <CollectionView ItemsSource="{Binding Locations}">
         <CollectionView.ItemTemplate>

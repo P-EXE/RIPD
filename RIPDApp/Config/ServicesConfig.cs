@@ -15,6 +15,7 @@ public static class ServicesConfig
     });
 
     services.AddTransient<IOwnerService, OwnerService>();
+    services.AddTransient<IRunGpsLocationService, RunGpsLocationService>();
     services.AddTransient<IFoodService, FoodService>();
     services.AddTransient<IWorkoutService, WorkoutService>();
     services.AddTransient<IUserService, UserService>();

@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:RIPDApp.ViewModels"
-             x:Class="RIPDApp.Pages.DiaryEntryFoodCreatePage"
+             x:Class="RIPDApp.Pages.DiaryEntryFoodEditPage"
              x:DataType="vm:DiaryEntryVM">
   <Grid RowDefinitions="auto,*,auto">
 
@@ -154,8 +154,9 @@
       </VerticalStackLayout>
     </ScrollView>
 
-
-    <Button Text="Add to Diary" Grid.Row="2" Command="{Binding AddFoodEntryToDiaryCommand}"/>
-
+    <VerticalStackLayout Grid.Row="2">
+      <Button Text="Update Entry" Command="{Binding UpdateFoodEntryCommand}"/>
+      <Button Text="Delete Entry" Command="{Binding DeleteFoodEntryFromDiaryCommand}"/>
+    </VerticalStackLayout>
   </Grid>
 </ContentPage>

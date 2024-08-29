@@ -69,7 +69,7 @@ public partial class FoodSearchVM : ObservableObject
     await Shell.Current.GoToAsync($"{nameof(FoodViewPage)}", true, new Dictionary<string, object>
     {
       {"Food", SelectedFood},
-      {"PageMode", FoodDetailsVM.PageMode.View}
+      {"PageMode", DiaryEntryVM.PageMode.Create}
     });
     SelectedFood = null;
   }
@@ -80,7 +80,7 @@ public partial class FoodSearchVM : ObservableObject
     await Shell.Current.GoToAsync($"{nameof(DiaryEntryFoodCreatePage)}", true, new Dictionary<string, object>
     {
       {"Food", SelectedFood},
-      {"PageMode", FoodDetailsVM.PageMode.View}
+      {"PageMode", FoodDetailsVM.PageMode.Create}
     });
     SelectedFood = null;
   }
