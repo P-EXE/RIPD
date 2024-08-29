@@ -1,0 +1,49 @@
+services:
+
+  ripdapi:
+    image: ${DOCKER_REGISTRY-}ripdapi
+    build:
+      context: .
+      dockerfile: RIPDApi/Dockerfile
+    environment:
+      # ASPNETCORE_ENVIRONMENT: Development
+      SQLSERVER_SERVER: "Server=mssql; Database=RIPD; User Id=sa; Password=P455w0rd!; TrustServerCertificate=true;"
+      MONGOSERVER_SERVER:  "mongodb://mongo:27017/"
+      MONGOSERVER_DATABASE: "RIPD"
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    networks:
+      - ripd_network
+
+  mssql:
+    container_name: sql-server-2022
+    hostname: sql-server-2022
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: 'Y'
+      MSSQL_SA_PASSWORD: 'P455w0rd!'
+      MSSQL_PID: 'Developer'
+      MSSQL_TCP_PORT: 1433
+    ports:
+      - "1433:1433"
+    networks:
+      - ripd_network
+    depends_on:
+      - ripdapi
+
+  mongo:
+    container_name: mongodb-community-server
+    hostname: mongodb-community-server
+    image: mongodb/mongodb-community-server:latest
+    ports:
+      - "27017:27017"
+    networks:
+      - ripd_network
+    depends_on:
+      - ripdapi
+
+networks:
+  ripd_network:
+    driver: bridge
+    name: ripd_network
