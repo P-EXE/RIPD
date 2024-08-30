@@ -20,12 +20,16 @@ public class DiaryControllerRunEntryTests
   public async Task EntryRun_Create_Valid()
   {
     // Arrange
+
+    Run run = new();
+    run.Locations = [new() { Latitude = 10, Longitude = 10, Timestamp = DateTime.UtcNow }];
+
     DiaryEntry_Run_Create createEntry = new()
     {
       DiaryId = _fixture.User.Id,
       Acted = DateTime.UtcNow,
       Added = DateTime.UtcNow,
-      Locations = [new() { Latitude = 10, Longitude = 10, Timestamp = DateTime.UtcNow}]
+      Run = run,
     };
 
     // Act

@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microcharts;
 using Microcharts.Maui;
+using MongoDB.Driver.Linq;
 using RIPDApp.Pages;
 using RIPDApp.Services;
 using RIPDShared.Models;
@@ -11,7 +12,6 @@ using System.Collections.ObjectModel;
 
 namespace RIPDApp.ViewModels;
 
-[QueryProperty(nameof(ActivePageMode), nameof(PageMode))]
 [QueryProperty(nameof(DeletedFoodEntry), nameof(DeletedFoodEntry))]
 [QueryProperty(nameof(DeletedWorkoutEntry), nameof(DeletedWorkoutEntry))]
 public partial class DiaryVM : ObservableObject
@@ -21,9 +21,6 @@ public partial class DiaryVM : ObservableObject
   {
     _diaryService = diaryService;
   }
-
-  [ObservableProperty]
-  private int _activePageMode;
 
   [ObservableProperty]
   private DateTime _startDate;
@@ -89,34 +86,6 @@ public partial class DiaryVM : ObservableObject
   ];
   #endregion Charts
 
-  partial void OnActivePageModeChanged(int value)
-  {
-    switch ((PageMode)value)
-    {
-      case PageMode.Today:
-        {
-          StartDate = DateTime.Today;
-          // Maybe add 23h59m59s
-          EndDate = DateTime.Today;
-          break;
-        }
-      case PageMode.Week:
-        {
-          StartDate = DateTime.Today.AddDays(-7);
-          // Maybe add 23h59m59s
-          EndDate = DateTime.Today;
-          break;
-        }
-      case PageMode.Month:
-        {
-          StartDate = DateTime.Today.AddMonths(-1);
-          // Maybe add 23h59m59s
-          EndDate = DateTime.Today;
-          break;
-        }
-    }
-  }
-
   partial void OnDeletedFoodEntryChanged(DiaryEntry_Food? value)
   {
     if (value == null)
@@ -137,13 +106,29 @@ public partial class DiaryVM : ObservableObject
     WorkoutEntries.Remove(value);
   }
 
+  [RelayCommand]
+  private async Task RefreshToday()
+  {
+    await Refresh(DateTime.UtcNow.Date, DateTime.UtcNow);
+  }
 
   [RelayCommand]
-  private async Task Refresh()
+  private async Task RefreshWeek()
   {
-    IEnumerable<DiaryEntry_Food>? foodEntries = await _diaryService.GetFoodEntriesAsync(Statics.Auth.Owner.Diary, StartDate, EndDate);
+    await Refresh(DateTime.UtcNow.Date.AddDays(-7), DateTime.UtcNow);
+  }
+
+  [RelayCommand]
+  private async Task RefreshMonth()
+  {
+    await Refresh(DateTime.UtcNow.Date.AddMonths(-1), DateTime.UtcNow);
+  }
+
+  private async Task Refresh(DateTime start, DateTime end)
+  {
+    IEnumerable<DiaryEntry_Food>? foodEntries = await _diaryService.GetFoodEntriesAsync(Statics.Auth.Owner.Diary, start, end);
     FoodEntries = foodEntries?.ToObservableCollection();
-    IEnumerable<DiaryEntry_Workout>? workoutEntries = await _diaryService.GetWorkoutEntriesAsync(Statics.Auth.Owner.Diary, StartDate, EndDate);
+    IEnumerable<DiaryEntry_Workout>? workoutEntries = await _diaryService.GetWorkoutEntriesAsync(Statics.Auth.Owner.Diary, start, end);
     WorkoutEntries = workoutEntries?.ToObservableCollection();
 
     // TODO: Perform some kind of transformation for display
@@ -169,12 +154,5 @@ public partial class DiaryVM : ObservableObject
       {"Workout", SelectedWorkoutEntry.Workout}
     });
     SelectedWorkoutEntry = null;
-  }
-
-  public enum PageMode
-  {
-    Today = 0,
-    Week = 1,
-    Month = 2,
   }
 }

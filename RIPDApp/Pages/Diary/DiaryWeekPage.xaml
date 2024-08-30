@@ -73,7 +73,7 @@
         </CollectionView.ItemTemplate>
       </CollectionView>
 
-      <Button Text="Refresh" Command="{Binding RefreshCommand}"/>
+      <Button Text="Refresh" Command="{Binding RefreshWeekCommand}"/>
 
     </VerticalStackLayout>
 
