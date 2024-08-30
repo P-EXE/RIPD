@@ -61,8 +61,8 @@ public class DiaryService : IDiaryService
     Dictionary<string, object> queries = new()
     {
       ["diary"] = diary.OwnerId,
-      ["startDate"] = startDate,
-      ["endDate"] = endDate,
+      ["startDate"] = startDate.ToString("yyyy-MM-ddThh:mm:ss.FFFZ"),
+      ["endDate"] = endDate.ToString("yyyy-MM-ddThh:mm:ss.FFFZ"),
     };
     return await _httpService.GetAsync<IEnumerable<DiaryEntry_Food>?>($"diary/food", queries);
   }
@@ -72,8 +72,8 @@ public class DiaryService : IDiaryService
     Dictionary<string, object> queries = new()
     {
       ["diary"] = diary.OwnerId,
-      ["startDate"] = startDate,
-      ["endDate"] = endDate,
+      ["startDate"] = startDate.ToString("yyyy-MM-ddThh:mm:ss.FFFZ"),
+      ["endDate"] = endDate.ToString("yyyy-MM-ddThh:mm:ss.FFFZ"),
     };
     return await _httpService.GetAsync<IEnumerable<DiaryEntry_Workout>?>($"diary/workout", queries);
   }
