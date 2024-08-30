@@ -1,258 +1,267 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFrameworks>net8.0-ios;net8.0-maccatalyst;net8.0-android34.0</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
-		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
-		<!-- <TargetFrameworks>$(TargetFrameworks);net8.0-tizen</TargetFrameworks> -->
+  <PropertyGroup>
+    <TargetFrameworks>net8.0-maccatalyst;net8.0-android34.0</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
+    <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
+    <!-- <TargetFrameworks>$(TargetFrameworks);net8.0-tizen</TargetFrameworks> -->
 
-		<!-- Note for MacCatalyst:
+    <!-- Note for MacCatalyst:
 		The default runtime is maccatalyst-x64, except in Release config, in which case the default is maccatalyst-x64;maccatalyst-arm64.
 		When specifying both architectures, use the plural <RuntimeIdentifiers> instead of the singular <RuntimeIdentifier>.
 		The Mac App Store will NOT accept apps with ONLY maccatalyst-arm64 indicated;
 		either BOTH runtimes must be indicated or ONLY macatalyst-x64. -->
-		<!-- For example: <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
+    <!-- For example: <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
 
-		<OutputType>Exe</OutputType>
-		<RootNamespace>RIPDApp</RootNamespace>
-		<UseMaui>true</UseMaui>
-		<SingleProject>true</SingleProject>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
 
-		<!-- Display name -->
-		<ApplicationTitle>RIPD</ApplicationTitle>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>RIPDApp</RootNamespace>
+    <UseMaui>true</UseMaui>
+    <SingleProject>true</SingleProject>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
 
-		<!-- App Identifier -->
-		<ApplicationId>com.companyname.ripd</ApplicationId>
+    <!-- Display name -->
+    <ApplicationTitle>RIPD</ApplicationTitle>
 
-		<!-- Versions -->
-		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
-		<ApplicationVersion>1</ApplicationVersion>
+    <!-- App Identifier -->
+    <ApplicationId>com.companyname.ripd</ApplicationId>
 
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">13.1</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
-		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
-		<GenerateAppInstallerFile>False</GenerateAppInstallerFile>
-		<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
-		<PackageCertificateThumbprint>AF5E00D530732D50ABCF1DA9B07BA2BEFC49FC65</PackageCertificateThumbprint>
-		<AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
-		<AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
-		<AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
-		<GenerateTestArtifacts>True</GenerateTestArtifacts>
-		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-	</PropertyGroup>
+    <!-- Versions -->
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <ApplicationVersion>1</ApplicationVersion>
 
-	<ItemGroup>
-		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">13.1</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+    <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+    <PackageCertificateThumbprint>AF5E00D530732D50ABCF1DA9B07BA2BEFC49FC65</PackageCertificateThumbprint>
+    <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
+    <GenerateTestArtifacts>True</GenerateTestArtifacts>
+    <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+  </PropertyGroup>
 
-		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-android34.0|AnyCPU'">
+    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+  </PropertyGroup>
 
-		<!-- Images -->
-		<MauiImage Include="Resources\Images\*" />
-		<MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
+  <ItemGroup>
+    <!-- App Icon -->
+    <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
 
-		<!-- Custom Fonts -->
-		<MauiFont Include="Resources\Fonts\*" />
+    <!-- Splash Screen -->
+    <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
 
-		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
-		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
-	</ItemGroup>
+    <!-- Images -->
+    <MauiImage Include="Resources\Images\*" />
+    <MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
 
-	<ItemGroup>
-	  <None Remove="Platforms\Android\Resources\xml\network_security_config.xml" />
-	  <None Remove="Resources\Styles\Styles.xaml.bak" />
-	</ItemGroup>
+    <!-- Custom Fonts -->
+    <MauiFont Include="Resources\Fonts\*" />
 
-	<ItemGroup>
-	  <MauiXaml Include="Resources\Styles\Styles.xaml.bak" />
-	</ItemGroup>
+    <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+    <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="AutoMapper" Version="13.0.1" />
-		<PackageReference Include="CommunityToolkit.Maui" Version="8.0.1" />
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-		<PackageReference Include="epj.RouteGenerator" Version="1.0.1" />
-		<PackageReference Include="Microcharts.Maui" Version="1.0.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.8" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.80" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.80" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
-		<PackageReference Include="ZXing.Net" Version="0.16.9" />
-		<PackageReference Include="ZXing.Net.Maui.Controls" Version="0.4.0" />
-	</ItemGroup>
+  <ItemGroup>
+    <None Remove="Platforms\Android\Resources\xml\network_security_config.xml" />
+    <None Remove="Resources\Styles\Styles.xaml.bak" />
+  </ItemGroup>
 
-	<ItemGroup>
-	  <ProjectReference Include="..\RIPDShared\RIPDShared.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+    <MauiXaml Include="Resources\Styles\Styles.xaml.bak" />
+  </ItemGroup>
 
-	<ItemGroup>
-	  <Compile Update="Pages\BodyMetric\BodyMetricViewPage.xaml.cs">
-	    <DependentUpon>BodyMetricViewPage.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Pages\BodyMetric\BodyMetricCreatePage.xaml.cs">
-	    <DependentUpon>BodyMetricCreatePage.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Pages\DiaryEntry\DiaryEntryFoodEditPage.xaml.cs">
-	    <DependentUpon>DiaryEntryFoodEditPage.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Pages\DiaryEntry\DiaryEntryWorkoutEditPage.xaml.cs">
-	    <DependentUpon>DiaryEntryWorkoutEditPage.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Pages\Diary\DiaryMonthPage.xaml.cs">
-	    <DependentUpon>DiaryMonthPage.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Pages\Diary\DiaryTodayPage.xaml.cs">
-	    <DependentUpon>DiaryTodayPage.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Pages\Food\FoodUpdatePage.xaml.cs">
-	    <DependentUpon>FoodUpdatePage.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Pages\Food\FoodCreatePage.xaml.cs">
-	    <DependentUpon>FoodCreatePage.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Pages\Food\FoodSearchPage.xaml.cs">
-	    <DependentUpon>FoodSearchPage.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Pages\Register Login\AutoLoginPage.xaml.cs">
-	    <DependentUpon>AutoLoginPage.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Pages\User\UserProfileUpdatePage.xaml.cs">
-	    <DependentUpon>UserProfileUpdatePage.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Pages\User\UserProfilePage.xaml.cs">
-	    <DependentUpon>UserProfilePage.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Views\Food\FoodCreateV.xaml.cs">
-	    <DependentUpon>FoodCreateV.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Views\Food\FoodDetailsV.xaml.cs">
-	    <DependentUpon>FoodDetailsV.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Views\Food\FoodListFoodV.xaml.cs">
-	    <DependentUpon>FoodListFoodV.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Views\StatusBar\StatusBarV.xaml.cs">
-	    <DependentUpon>StatusBarV.xaml</DependentUpon>
-	  </Compile>
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="CommunityToolkit.Maui" Version="8.0.1" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="epj.RouteGenerator" Version="1.0.1" />
+    <PackageReference Include="Microcharts.Maui" Version="1.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.80" />
+    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.80" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+    <PackageReference Include="ZXing.Net" Version="0.16.9" />
+    <PackageReference Include="ZXing.Net.Maui.Controls" Version="0.4.0" />
+  </ItemGroup>
 
-	<ItemGroup>
-	  <MauiXaml Update="Pages\BodyMetric\BodyMetricViewPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\BodyMetric\BodyMetricPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\DiaryEntry\DiaryEntryFoodEditPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\DiaryEntry\DiaryEntryFoodCreatePage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\DiaryEntry\DiaryEntryWorkoutEditPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\DiaryEntry\DiaryEntryWorkoutCreatePage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\BodyMetric\BodyMetricCreatePage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\Diary\DiaryTodayPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\Diary\DiaryMonthPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\Diary\DiaryWeekPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\Food\FoodCreatePage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\Food\FoodUpdatePage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\Food\FoodSearchPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\Feed\FeedPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\Food\FoodDetailsPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\Home\HomePage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\Register Login\AutoLoginPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\Register Login\LoginPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\Run\RunPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\User\OwnerProfilePage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\User\UserProfilePage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\Register Login\RegisterPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\Settings\SettingsDevPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\Settings\SettingsPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\User\UserSearchPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Resources\Styles\Styles.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\Diary\BarChartV.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\Diary\DiaryFoodListV.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\Diary\DiaryWorkoutListV.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\Food\FoodCreateV.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\Food\FoodDetailsV.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\Food\FoodUpdateView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\Food\ListFoodEntryV.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\Food\FoodListFoodV.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\StatusBar\StatusBarV.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\User\UserListUserV.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RIPDShared\RIPDShared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Pages\BodyMetric\BodyMetricViewPage.xaml.cs">
+      <DependentUpon>BodyMetricViewPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\BodyMetric\BodyMetricCreatePage.xaml.cs">
+      <DependentUpon>BodyMetricCreatePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\DiaryEntry\DiaryEntryFoodEditPage.xaml.cs">
+      <DependentUpon>DiaryEntryFoodEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\DiaryEntry\DiaryEntryWorkoutEditPage.xaml.cs">
+      <DependentUpon>DiaryEntryWorkoutEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Diary\DiaryMonthPage.xaml.cs">
+      <DependentUpon>DiaryMonthPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Diary\DiaryTodayPage.xaml.cs">
+      <DependentUpon>DiaryTodayPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Food\FoodUpdatePage.xaml.cs">
+      <DependentUpon>FoodUpdatePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Food\FoodCreatePage.xaml.cs">
+      <DependentUpon>FoodCreatePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Food\FoodSearchPage.xaml.cs">
+      <DependentUpon>FoodSearchPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Register Login\AutoLoginPage.xaml.cs">
+      <DependentUpon>AutoLoginPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\User\UserProfileUpdatePage.xaml.cs">
+      <DependentUpon>UserProfileUpdatePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\User\UserProfilePage.xaml.cs">
+      <DependentUpon>UserProfilePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Food\FoodCreateV.xaml.cs">
+      <DependentUpon>FoodCreateV.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Food\FoodDetailsV.xaml.cs">
+      <DependentUpon>FoodDetailsV.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Food\FoodListFoodV.xaml.cs">
+      <DependentUpon>FoodListFoodV.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\StatusBar\StatusBarV.xaml.cs">
+      <DependentUpon>StatusBarV.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <MauiXaml Update="Pages\BodyMetric\BodyMetricViewPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Pages\BodyMetric\BodyMetricPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Pages\DiaryEntry\DiaryEntryFoodEditPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Pages\DiaryEntry\DiaryEntryFoodCreatePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Pages\DiaryEntry\DiaryEntryWorkoutEditPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Pages\DiaryEntry\DiaryEntryWorkoutCreatePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Pages\BodyMetric\BodyMetricCreatePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Pages\Diary\DiaryTodayPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Pages\Diary\DiaryMonthPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Pages\Diary\DiaryWeekPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Pages\Food\FoodCreatePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Pages\Food\FoodUpdatePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Pages\Food\FoodSearchPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Pages\Feed\FeedPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Pages\Food\FoodDetailsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Pages\Home\HomePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Pages\Register Login\AutoLoginPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Pages\Register Login\LoginPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Pages\Run\RunPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Pages\User\OwnerProfilePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Pages\User\UserProfilePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Pages\Register Login\RegisterPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Pages\Settings\SettingsDevPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Pages\Settings\SettingsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Pages\User\UserSearchPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Resources\Styles\Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\Diary\BarChartV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\Diary\DiaryFoodListV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\Diary\DiaryWorkoutListV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\Food\FoodCreateV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\Food\FoodDetailsV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\Food\FoodUpdateView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\Food\ListFoodEntryV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\Food\FoodListFoodV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\StatusBar\StatusBarV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\User\UserListUserV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
+  </ItemGroup>
 
 </Project>
