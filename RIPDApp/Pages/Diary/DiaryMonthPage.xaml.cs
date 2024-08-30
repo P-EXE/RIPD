@@ -9,6 +9,6 @@ public partial class DiaryMonthPage : ContentPage
 	{
 		InitializeComponent();
 		_vm = vm;
-		BindingContext = _vm;
+    BindingContext = _vm;
 	}
 }

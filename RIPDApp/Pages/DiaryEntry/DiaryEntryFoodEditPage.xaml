@@ -27,8 +27,8 @@
       <!-- #region Entry -->
       <VerticalStackLayout>
         <HorizontalStackLayout>
-          <DatePicker Date="{Binding FoodEntry.Acted.Date}"/>
-          <TimePicker Time="{Binding FoodEntry.Acted.TimeOfDay}"/>
+          <DatePicker Date="{Binding ActedDate}"/>
+          <TimePicker Time="{Binding ActedTime}"/>
         </HorizontalStackLayout>
         <Entry Placeholder="Amount" Text="{Binding FoodEntry.Amount}"/>
       </VerticalStackLayout>

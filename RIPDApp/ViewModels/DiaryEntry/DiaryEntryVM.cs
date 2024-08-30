@@ -27,6 +27,11 @@ public partial class DiaryEntryVM : ObservableObject
   [ObservableProperty]
   private bool _pageModeDelete;
 
+  [ObservableProperty]
+  private DateTime _actedDate = DateTime.UtcNow;
+  [ObservableProperty]
+  private DateTime _actedTime = DateTime.UtcNow;
+
   partial void OnActivePageModeChanged(int value)
   {
     switch ((PageMode)value)
@@ -60,8 +65,6 @@ public partial class DiaryEntryVM : ObservableObject
   [ObservableProperty]
   private DiaryEntry_Food _foodEntry = new()
   {
-    Acted = DateTime.Now,
-    Added = DateTime.Now,
     DiaryId = Statics.Auth.Owner.Diary.OwnerId,
     Diary = Statics.Auth.Owner.Diary
   };
@@ -71,8 +74,6 @@ public partial class DiaryEntryVM : ObservableObject
   [ObservableProperty]
   private DiaryEntry_Workout _workoutEntry = new()
   {
-    Acted = DateTime.Now,
-    Added = DateTime.Now,
     DiaryId = Statics.Auth.Owner.Diary.OwnerId,
     Diary = Statics.Auth.Owner.Diary
   };
@@ -82,6 +83,8 @@ public partial class DiaryEntryVM : ObservableObject
   {
     FoodEntry.FoodId = Food.Id;
     FoodEntry.Food = Food;
+    FoodEntry.Acted = ActedDate.Add(ActedTime.TimeOfDay);
+
     bool success = default != await _diaryService.AddFoodEntryAsync(FoodEntry);
     if (!success)
       return;
@@ -93,6 +96,7 @@ public partial class DiaryEntryVM : ObservableObject
   {
     WorkoutEntry.WorkoutId = Workout.Id;
     WorkoutEntry.Workout = Workout;
+    WorkoutEntry.Acted = ActedDate.Add(ActedTime.TimeOfDay);
     bool success = default != await _diaryService.AddWorkoutEntryAsync(WorkoutEntry);
     if (!success)
       return;
@@ -104,6 +108,7 @@ public partial class DiaryEntryVM : ObservableObject
   {
     FoodEntry.FoodId = Food.Id;
     FoodEntry.Food = Food;
+    FoodEntry.Acted = ActedDate.Add(ActedTime.TimeOfDay);
     bool success = default != await _diaryService.UpdateFoodEntryAsync(FoodEntry);
     if (!success)
       return;
@@ -115,6 +120,7 @@ public partial class DiaryEntryVM : ObservableObject
   {
     WorkoutEntry.WorkoutId = Workout.Id;
     WorkoutEntry.Workout = Workout;
+    WorkoutEntry.Acted = ActedDate.Add(ActedTime.TimeOfDay);
     bool success = default != await _diaryService.UpdateWorkoutEntryAsync(WorkoutEntry);
     if (!success)
       return;

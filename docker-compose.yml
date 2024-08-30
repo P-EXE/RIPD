@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: RIPDApi/Dockerfile
     environment:
-      # ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_ENVIRONMENT: Production
       SQLSERVER_SERVER: "Server=mssql; Database=RIPD; User Id=sa; Password=P455w0rd!; TrustServerCertificate=true;"
       MONGOSERVER_SERVER:  "mongodb://mongo:27017/"
       MONGOSERVER_DATABASE: "RIPD"
@@ -23,7 +23,6 @@ services:
     environment:
       ACCEPT_EULA: 'Y'
       MSSQL_SA_PASSWORD: 'P455w0rd!'
-      MSSQL_PID: 'Developer'
       MSSQL_TCP_PORT: 1433
     ports:
       - "1433:1433"

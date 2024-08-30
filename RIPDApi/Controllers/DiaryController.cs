@@ -108,18 +108,18 @@ public class DiaryController : ControllerBase
 
   #region Read
   [HttpGet("food"), Authorize]
-  public async Task<ActionResult<IEnumerable<DiaryEntry_Food>?>> GetFoodEntries([FromQuery] string? diary = null, [FromQuery] DateTime start = default, [FromQuery] DateTime end = default)
+  public async Task<ActionResult<IEnumerable<DiaryEntry_Food>?>> GetFoodEntries([FromQuery] string? diary, [FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
   {
     AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
     IEnumerable<DiaryEntry_Food>? diaryEntries = null;
 
     Guid diaryId = diary == null ? user.Id : new(diary);
-    DateTime startDate = start == default ? DateTime.MinValue : start;
-    DateTime endDate = end == default ? DateTime.Now : end;
+    DateTime start = startDate == default ? DateTime.MinValue : startDate;
+    DateTime end = endDate == default ? DateTime.Now : endDate;
 
     try
     {
-      diaryEntries = await _diaryRepo.ReadFoodEntriesFromToDateAsync(diaryId, startDate, endDate);
+      diaryEntries = await _diaryRepo.ReadFoodEntriesFromToDateAsync(diaryId, startDate, end);
     }
     catch (Exception ex)
     {
@@ -130,18 +130,18 @@ public class DiaryController : ControllerBase
   }
 
   [HttpGet("workout"), Authorize]
-  public async Task<ActionResult<IEnumerable<DiaryEntry_Workout>?>> GetWorkoutEntriesFromToDate([FromQuery] string? diary = null, [FromQuery] DateTime start = default, [FromQuery] DateTime end = default)
+  public async Task<ActionResult<IEnumerable<DiaryEntry_Workout>?>> GetWorkoutEntriesFromToDate([FromQuery] string? diary, [FromQuery] DateTime startDate = default, [FromQuery] DateTime endDate = default)
   {
     AppUser? user = await _userManager.GetUserAsync(HttpContext.User);
     IEnumerable<DiaryEntry_Workout>? diaryEntries = null;
 
     Guid diaryId = diary == null ? user.Id : new(diary);
-    DateTime startDate = start == default ? DateTime.MinValue : start;
-    DateTime endDate = end == default ? DateTime.Now : end;
+    DateTime start = startDate == default ? DateTime.MinValue : startDate;
+    DateTime end = endDate == default ? DateTime.Now : endDate;
 
     try
     {
-      diaryEntries = await _diaryRepo.ReadWorkoutEntriesFromToDateAsync(diaryId, startDate, endDate);
+      diaryEntries = await _diaryRepo.ReadWorkoutEntriesFromToDateAsync(diaryId, start, end);
     }
     catch (Exception ex)
     {

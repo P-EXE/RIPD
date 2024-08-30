@@ -13,6 +13,6 @@ public partial class DiaryTodayPage : ContentPage
 	{
 		_vm = vm;
 		BindingContext = _vm;
-		InitializeComponent();
+    InitializeComponent();
   }
 }

@@ -21,8 +21,8 @@
       <!-- #region Entry -->
       <VerticalStackLayout>
         <HorizontalStackLayout>
-          <DatePicker Date="{Binding WorkoutEntry.Acted.Date}"/>
-          <TimePicker Time="{Binding WorkoutEntry.Acted.TimeOfDay}"/>
+          <DatePicker Date="{Binding ActedDate}"/>
+          <TimePicker Time="{Binding ActedTime}"/>
         </HorizontalStackLayout>
         <Entry Placeholder="Amount" Text="{Binding WorkoutEntry.Amount}"/>
       </VerticalStackLayout>
