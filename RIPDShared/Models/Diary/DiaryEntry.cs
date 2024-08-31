@@ -2,7 +2,7 @@
 
 namespace RIPDShared.Models;
 
-public class DiaryEntry
+public abstract class DiaryEntry
 {
   [Key]
   public Guid DiaryId { get; set; }

@@ -41,3 +41,5 @@ public static class Settings
     Imperial = 1
   }
 }
+
+// Hi there
